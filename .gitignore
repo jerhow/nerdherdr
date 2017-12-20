@@ -1,0 +1,54 @@
+### <Template from GitHub>
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+### </Template from GitHub>
+
+### <Mine>
+*.DS_Store
+*hydrate_db.sql
+scratch.*
+*.sqlite3
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj/
+_test/
+
+Godeps/
+vendor/
+
+# TBD
+static/*
+
+# Config (TBD)
+*.json
+
+# My compiled binaries
+nerdherdr
+
+# For quickly keeping track of things
+nextsteps.txt
+
+# For quick experiments
+scratch.*
+
+# Ignore some Docker things for the moment
+docker-compose.yml
+Dockerfile*
+### </Mine>
