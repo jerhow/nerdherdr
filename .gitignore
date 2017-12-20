@@ -37,7 +37,7 @@ _test/
 static/*
 
 # Config (TBD)
-*.json
+# *.json
 
 # My compiled binaries
 # nerdherdr
