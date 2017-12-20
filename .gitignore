@@ -30,6 +30,7 @@ scratch.*
 _obj/
 _test/
 
+# NOTE: These are commented out because Heroku needs them to build the app
 # Godeps/
 # vendor/
 
@@ -37,7 +38,7 @@ _test/
 static/*
 
 # Config (TBD)
-# *.json
+# config/*.json
 
 # My compiled binaries
 nerdherdr
