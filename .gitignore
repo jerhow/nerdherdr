@@ -30,8 +30,8 @@ scratch.*
 _obj/
 _test/
 
-Godeps/
-vendor/
+# Godeps/
+# vendor/
 
 # TBD
 static/*
