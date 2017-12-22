@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	_ "strconv"
 )
 
 type Todo struct {
@@ -16,6 +17,7 @@ type Todo struct {
 
 type TodoPageData struct {
 	PageTitle string
+	BodyTitle string
 	Todos     []Todo
 }
 
@@ -40,14 +42,28 @@ func DeleteMovieEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func RenderTmpl1(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("tmpl1.html"))
+	tmpl := template.Must(template.ParseFiles("templates/tmpl1.html"))
 	data := TodoPageData{
-		PageTitle: "My TODO list",
+		PageTitle: "Template 1",
+		BodyTitle: "My TODO list",
 		Todos: []Todo{
 			{Title: "Task 1", Done: false},
 			{Title: "Task 2", Done: true},
 			{Title: "Task 3", Done: true},
 		},
+	}
+	tmpl.Execute(w, data)
+}
+
+func RenderTmpl2(w http.ResponseWriter, r *http.Request) {
+	type PageData struct {
+		PageTitle string
+		BodyTitle string
+	}
+	tmpl := template.Must(template.ParseFiles("templates/tmpl2.html"))
+	data := PageData{
+		PageTitle: "Template 2",
+		BodyTitle: "This is the second template",
 	}
 	tmpl.Execute(w, data)
 }
@@ -71,6 +87,7 @@ func main() {
 	r.HandleFunc("/movies", DeleteMovieEndPoint).Methods("DELETE")
 	r.HandleFunc("/movies/{id}", FindMovieEndPoint).Methods("GET")
 	r.HandleFunc("/tmpl1", RenderTmpl1).Methods("GET")
+	r.HandleFunc("/tmpl2", RenderTmpl2).Methods("GET")
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
