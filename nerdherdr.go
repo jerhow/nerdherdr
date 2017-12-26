@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./mylib" // "github.com/jerhow/nerdherdr/mylib"
 	"fmt"
 	"github.com/gorilla/mux"
 	"html/template"
@@ -87,6 +88,9 @@ func main() {
 	r.HandleFunc("/movies/{id}", FindMovieEndPoint).Methods("GET")
 	r.HandleFunc("/tmpl1", RenderTmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", RenderTmpl2).Methods("GET")
+
+	fmt.Println(mylib.Hi("Jerry"))
+	fmt.Println(mylib.AddTwoInts(1, 2))
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
