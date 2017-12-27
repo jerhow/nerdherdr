@@ -144,7 +144,7 @@ func dbPopulateStruct() {
 	err = db.Ping()
 	errChk(err)
 
-	results, err2 := db.Query("SELECT id, l_name, f_initial FROM t_users")
+	results, err2 := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
 	errChk(err2)
 
 	fmt.Println()
