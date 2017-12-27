@@ -2,7 +2,9 @@ package main
 
 import (
 	"./mylib" // "github.com/jerhow/nerdherdr/mylib"
+	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"html/template"
 	"log"
@@ -79,6 +81,26 @@ func GetPort() string {
 	return ":" + port
 }
 
+func db() {
+	fmt.Println("sup from db()")
+	db, db_err := sql.Open("mysql", "jerry:pass@tcp(go_mysql_1:3306)/nerdherdr01")
+	if db_err != nil {
+		log.Fatal(db_err)
+	}
+	// fmt.Println(db.Stats())
+	// defer db.Close()
+
+	insert, db_err2 := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
+	if db_err2 != nil {
+		// panic(db_err2.Error)
+		log.Fatal(db_err2)
+	}
+	// defer insert.Close()
+
+	insert.Close()
+	db.Close()
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
@@ -91,6 +113,7 @@ func main() {
 
 	fmt.Println(mylib.Hi("Jerry"))
 	fmt.Println(mylib.AddTwoInts(1, 2))
+	db()
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
