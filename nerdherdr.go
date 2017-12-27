@@ -143,13 +143,37 @@ func dbPopulateStruct() {
 	err = db.Ping()
 	errChk(err)
 
-	results, err2 := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
-	errChk(err2)
+	stmt, err := db.Prepare("SELECT id, l_name, f_initial FROM t_users WHERE id > ?")
+	errChk(err)
+	defer stmt.Close()
+
+	rows, err := stmt.Query(6)
+	errChk(err)
+	defer rows.Close()
+
+	// According to this:
+	// http://go-database-sql.org/prepared.html and http://go-database-sql.org/retrieving.html
+	// """"
+	// Go creates prepared statements for you under the covers.
+	// A simple db.Query(sql, param1, param2), for example, works by preparing the sql,
+	// then executing it with the parameters and finally closing the statement.
+	// """"
+	// Which means, the more verbose way we're doing it above is good when you want to
+	// explicitly manage the prepared statements you're spawning (as in for heavy reuse, or efficiency),
+	// but in other cases, the more concise method below is fine, since it does it all for you.
+	// See this as well for more details and concerns over efficiency where it concerns
+	// prepared statements. Basically, the preparation, execution and closing of the prepared
+	// statement constitute three separate round trips to the database (!).
+	// https://www.vividcortex.com/blog/2014/11/19/analyzing-prepared-statement-performance-with-vividcortex/
+	//
+	// rows, err := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
+	// errChk(err)
+	// defer rows.Close()
 
 	fmt.Println()
-	for results.Next() { // for each row, scan the result into the tag object (struct)
+	for rows.Next() { // for each row, scan the result into the tag object (struct)
 		var tag Tag
-		err := results.Scan(&tag.Id, &tag.Lname, &tag.Finitial)
+		err := rows.Scan(&tag.Id, &tag.Lname, &tag.Finitial)
 		errChk(err)
 		fmt.Println(strconv.Itoa(tag.Id) + ": " + tag.Lname + ", " + tag.Finitial)
 	}
