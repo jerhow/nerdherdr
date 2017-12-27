@@ -116,7 +116,6 @@ func db() {
 
 	_, err2 := stmtIns.Exec("Franklin", "A")
 	errChk(err2)
-	defer stmtIns.Close()
 
 	// insert, err := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
 	// if err != nil {
