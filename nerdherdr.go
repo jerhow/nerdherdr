@@ -87,9 +87,22 @@ func GetPort() string {
 	return ":" + port
 }
 
+func dbDsn() string {
+	dbUser := "jerry"
+	dbPass := "pass"
+	dbHost := "go_mysql_1"
+	dbPort := "3306"
+	dbName := "nerdherdr01"
+
+	connStr := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
+	return connStr
+}
+
 func db() {
 	fmt.Println("sup from db()")
-	db, err := sql.Open("mysql", "jerry:pass@tcp(go_mysql_1:3306)/nerdherdr01")
+	driver := "mysql"
+	dsn := dbDsn()
+	db, err := sql.Open(driver, dsn)
 	errChk(err)
 	defer db.Close()
 
