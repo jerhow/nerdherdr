@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type Todo struct {
@@ -124,6 +125,38 @@ func db() {
 	// defer insert.Close()
 }
 
+func dbPopulateStruct() {
+	fmt.Println("sup from dbPopulateStruct()")
+
+	// Tag... - a very simple struct
+	type Tag struct {
+		Id       int    `json:"id"`
+		Lname    string `json:"l_name"`
+		Finitial string `json:"f_initial"`
+	}
+
+	driver := "mysql"
+	dsn := dbDsn()
+	db, err := sql.Open(driver, dsn)
+	errChk(err)
+	defer db.Close()
+
+	err = db.Ping()
+	errChk(err)
+
+	results, err2 := db.Query("SELECT id, l_name, f_initial FROM t_users")
+	errChk(err2)
+
+	fmt.Println()
+	for results.Next() { // for each row, scan the result into the tag object (struct)
+		var tag Tag
+		err := results.Scan(&tag.Id, &tag.Lname, &tag.Finitial)
+		errChk(err)
+		fmt.Println(strconv.Itoa(tag.Id) + ": " + tag.Lname + ", " + tag.Finitial)
+	}
+	fmt.Println()
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
@@ -137,6 +170,7 @@ func main() {
 	fmt.Println(mylib.Hi("Jerry"))
 	fmt.Println(mylib.AddTwoInts(1, 2))
 	db()
+	dbPopulateStruct()
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
