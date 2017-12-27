@@ -143,14 +143,15 @@ func dbPopulateStruct() {
 	err = db.Ping()
 	errChk(err)
 
-	stmt, err := db.Prepare("SELECT id, l_name, f_initial FROM t_users WHERE id > ?")
-	errChk(err)
-	defer stmt.Close()
-
-	rows, err := stmt.Query(6)
-	errChk(err)
-	defer rows.Close()
-
+	// stmt, err := db.Prepare("SELECT id, l_name, f_initial FROM t_users WHERE id > ?")
+	// errChk(err)
+	// defer stmt.Close()
+	//
+	// rows, err := stmt.Query(6)
+	// errChk(err)
+	// defer rows.Close()
+	//
+	// Regarding what's above ^^
 	// According to this:
 	// http://go-database-sql.org/prepared.html and http://go-database-sql.org/retrieving.html
 	// """"
@@ -166,9 +167,11 @@ func dbPopulateStruct() {
 	// statement constitute three separate round trips to the database (!).
 	// https://www.vividcortex.com/blog/2014/11/19/analyzing-prepared-statement-performance-with-vividcortex/
 	//
-	// rows, err := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
-	// errChk(err)
-	// defer rows.Close()
+	//
+	// THIS IS PERFECTLY FINE AS WELL:
+	rows, err := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
+	errChk(err)
+	defer rows.Close()
 
 	fmt.Println()
 	for rows.Next() { // for each row, scan the result into the tag object (struct)
