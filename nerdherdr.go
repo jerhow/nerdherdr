@@ -183,6 +183,32 @@ func dbPopulateStruct() {
 	fmt.Println()
 }
 
+func dbSingleRowQuery() {
+	fmt.Println("sup from dbSingleRowQuery()")
+	var LName, FInitial string
+
+	driver := "mysql"
+	dsn := dbDsn()
+	db, err := sql.Open(driver, dsn)
+	errChk(err)
+	defer db.Close()
+
+	err = db.Ping()
+	errChk(err)
+
+	err = db.QueryRow(
+		"SELECT l_name, f_initial FROM t_users WHERE id = ?", 1).Scan(&LName, &FInitial)
+
+	switch {
+	case err == sql.ErrNoRows:
+		fmt.Println("No user with that ID")
+	case err != nil:
+		log.Fatal(err)
+	default:
+		fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
+	}
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
@@ -197,6 +223,7 @@ func main() {
 	fmt.Println(mylib.AddTwoInts(1, 2))
 	db()
 	dbPopulateStruct()
+	dbSingleRowQuery()
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
