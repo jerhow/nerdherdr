@@ -83,22 +83,26 @@ func GetPort() string {
 
 func db() {
 	fmt.Println("sup from db()")
-	db, db_err := sql.Open("mysql", "jerry:pass@tcp(go_mysql_1:3306)/nerdherdr01")
-	if db_err != nil {
-		log.Fatal(db_err)
+	db, err := sql.Open("mysql", "jerry:pass@tcp(go_mysql_1:3306)/nerdherdr01")
+	if err != nil {
+		log.Fatal(err)
 	}
-	// fmt.Println(db.Stats())
-	// defer db.Close()
+	defer db.Close()
 
-	insert, db_err2 := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
-	if db_err2 != nil {
-		// panic(db_err2.Error)
-		log.Fatal(db_err2)
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
 	}
-	// defer insert.Close()
 
-	insert.Close()
-	db.Close()
+	insert, err := db.Query("INSERT INTO t_user (l_name, f_initial) VALUES ('Franklin', 'A')")
+	if err != nil {
+		// panic(err.Error)
+		log.Fatal(err)
+	}
+	defer insert.Close()
+
+	// insert.Close()
+	// db.Close()
 }
 
 func main() {
