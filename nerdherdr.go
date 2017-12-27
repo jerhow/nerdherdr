@@ -23,6 +23,12 @@ type TodoPageData struct {
 	Todos     []Todo
 }
 
+func errChk(err error) {
+	if err != nil {
+		log.Fatal(err) // panic(err.Error)
+	}
+}
+
 func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "GET /movies (All Movies). Not implemented yet. PORT env var: "+os.Getenv("PORT"))
 }
@@ -84,26 +90,18 @@ func GetPort() string {
 func db() {
 	fmt.Println("sup from db()")
 	db, err := sql.Open("mysql", "jerry:pass@tcp(go_mysql_1:3306)/nerdherdr01")
-	if err != nil {
-		log.Fatal(err)
-	}
+	errChk(err)
 	defer db.Close()
 
 	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
+	errChk(err)
 
 	stmtIns, err := db.Prepare("INSERT INTO t_users (l_name, f_initial) VALUES (?, ?)")
-	if err != nil {
-		log.Fatal(err)
-	}
+	errChk(err)
 	defer stmtIns.Close()
 
 	_, err2 := stmtIns.Exec("Franklin", "A")
-	if err2 != nil {
-		log.Fatal(err2)
-	}
+	errChk(err2)
 	defer stmtIns.Close()
 
 	// insert, err := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
