@@ -94,15 +94,23 @@ func db() {
 		log.Fatal(err)
 	}
 
-	insert, err := db.Query("INSERT INTO t_user (l_name, f_initial) VALUES ('Franklin', 'A')")
+	stmtIns, err := db.Prepare("INSERT INTO t_users (l_name, f_initial) VALUES (?, ?)")
 	if err != nil {
-		// panic(err.Error)
 		log.Fatal(err)
 	}
-	defer insert.Close()
+	defer stmtIns.Close()
 
-	// insert.Close()
-	// db.Close()
+	_, err2 := stmtIns.Exec("Franklin", "A")
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	defer stmtIns.Close()
+
+	// insert, err := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
+	// if err != nil {
+	// 	log.Fatal(err) // panic(err.Error)
+	// }
+	// defer insert.Close()
 }
 
 func main() {
