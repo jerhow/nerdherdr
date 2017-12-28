@@ -229,13 +229,31 @@ func IndexEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
+	type PageData struct {
+		PageTitle string
+		BodyTitle string
+		LoginMsg  string
+	}
+
 	var un, pw string
+	data := PageData{
+		PageTitle: "Nerdherdr: Tools for Technical Managers",
+		BodyTitle: "Welcome!",
+	}
 
 	un = r.PostFormValue("un")
 	pw = r.PostFormValue("pw")
 
-	fmt.Printf("%+v\n", un)
-	fmt.Printf("%+v\n", pw)
+	if un == "" || pw == "" {
+		// fmt.Println("un is an empty string, no value provided")
+		data.LoginMsg = "Invalid login"
+	} else {
+		// fmt.Printf("%+v\n", un)
+		data.LoginMsg = "Valid login :)"
+	}
+
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	tmpl.Execute(w, data)
 
 	// driver := "mysql"
 	// dsn := dbDsn()
