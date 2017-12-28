@@ -228,14 +228,41 @@ func IndexEndPoint(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, data)
 }
 
-// func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
+func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
+	var un, pw string
 
-// }
+	un = r.PostFormValue("un")
+	pw = r.PostFormValue("pw")
+
+	fmt.Printf("%+v\n", un)
+	fmt.Printf("%+v\n", pw)
+
+	// driver := "mysql"
+	// dsn := dbDsn()
+	// db, err := sql.Open(driver, dsn)
+	// errChk(err)
+	// defer db.Close()
+
+	// err = db.Ping()
+	// errChk(err)
+
+	// err = db.QueryRow(
+	// 	"SELECT l_name, f_initial FROM t_users WHERE id = ?", 1).Scan(&LName, &FInitial)
+
+	// switch {
+	// case err == sql.ErrNoRows:
+	// 	fmt.Println("No user with that ID")
+	// case err != nil:
+	// 	log.Fatal(err)
+	// default:
+	// 	fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
+	// }
+}
 
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", IndexEndPoint).Methods("GET")
-	// r.HandleFunc("/login", LoginEndPoint).Methods("POST")
+	r.HandleFunc("/login", LoginEndPoint).Methods("POST")
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
 	r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")
 	r.HandleFunc("/movies", UpdateMovieEndPoint).Methods("PUT")
