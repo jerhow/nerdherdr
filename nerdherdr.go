@@ -35,7 +35,9 @@ func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindMovieEndPoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "GET /movies/{id} (Find Movie). Not implemented yet, fool!")
+	id := r.FormValue("id")
+	fmt.Fprintf(w, "ID: %s", id)
+	// fmt.Fprintln(w, "GET /movies/{id} (Find Movie). Not implemented yet, fool!")
 }
 
 func CreateMovieEndPoint(w http.ResponseWriter, r *http.Request) {
