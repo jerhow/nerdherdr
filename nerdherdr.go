@@ -41,10 +41,10 @@ func FindMovieEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateMovieEndPoint(w http.ResponseWriter, r *http.Request) {
-
 	// fmt.Printf("%+v\n", r)
+	id := r.FormValue("id")
 	name := r.PostFormValue("name")
-	fmt.Fprintf(w, "Hello, %s!", name)
+	fmt.Fprintf(w, "Hello, %s! ID: %s", name, id)
 	// fmt.Fprintln(w, "POST /movies (Create Movie). Not implemented yet.")
 }
 
