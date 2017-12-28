@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge"> -->
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!-- <meta name="robots" content="index, follow"> -->
+<title>{{.PageTitle}}</title>
+</head>
+<body>
+<h3>{{.BodyTitle}}</h3>
+
+<form action="/login" method="post">
+    <table>
+        <tr>
+            <td>
+                Email: 
+            </td>
+            <td>
+                <input type="text" id="email" name="email" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password: 
+            </td>
+            <td>
+                <input type="password" id="pwd" name="pwd" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <br />
+                <input type="submit" value="Submit" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

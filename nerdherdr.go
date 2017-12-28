@@ -215,8 +215,27 @@ func dbSingleRowQuery() {
 	}
 }
 
+func IndexEndPoint(w http.ResponseWriter, r *http.Request) {
+	type PageData struct {
+		PageTitle string
+		BodyTitle string
+	}
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	data := PageData{
+		PageTitle: "Nerdherdr: Tools for Technical Managers",
+		BodyTitle: "Welcome!",
+	}
+	tmpl.Execute(w, data)
+}
+
+// func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
+
+// }
+
 func main() {
 	r := mux.NewRouter()
+	r.HandleFunc("/", IndexEndPoint).Methods("GET")
+	// r.HandleFunc("/login", LoginEndPoint).Methods("POST")
 	r.HandleFunc("/movies", AllMoviesEndPoint).Methods("GET")
 	r.HandleFunc("/movies", CreateMovieEndPoint).Methods("POST")
 	r.HandleFunc("/movies", UpdateMovieEndPoint).Methods("PUT")
