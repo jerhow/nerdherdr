@@ -1,8 +1,7 @@
 package main
 
 import (
-	"./internal/mylib" // "github.com/jerhow/nerdherdr/internal/mylib"
-	"./internal/util"  // "github.com/jerhow/nerdherdr/internal/util"
+	"./internal/util" // "github.com/jerhow/nerdherdr/internal/util"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
@@ -301,8 +300,8 @@ func main() {
 	r.HandleFunc("/tmpl1", RenderTmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", RenderTmpl2).Methods("GET")
 
-	fmt.Println(mylib.Hi("Jerry"))
-	fmt.Println(mylib.AddTwoInts(1, 2))
+	fmt.Println(util.Hi("Jerry"))
+	fmt.Println(util.AddTwoInts(1, 2))
 	db()
 	dbPopulateStruct()
 	dbSingleRowQuery()
