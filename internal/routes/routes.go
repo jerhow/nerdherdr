@@ -4,6 +4,7 @@ package routes
 
 import (
 	"fmt"
+	"github.com/jerhow/nerdherdr/internal/db"
 	"html/template"
 	"net/http"
 	"os"
@@ -68,10 +69,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if un == "" || pw == "" {
 		// fmt.Println("un is an empty string, no value provided")
-		data.LoginMsg = "Invalid login"
+		data.LoginMsg = "Invalid login (one or more fields left blank)"
 	} else {
 		// fmt.Printf("%+v\n", un)
-		data.LoginMsg = "Valid login :)"
+		if db.Authenticate(un, pw) {
+			data.LoginMsg = "Valid login!!! :)"
+		} else {
+			data.LoginMsg = "Invalid login (auth)"
+		}
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))

@@ -43,10 +43,12 @@ func main() {
 
 	fmt.Println("=================")
 	// fmt.Println(hashIt("wut"))
-	pwd := "secret"
+	pwd := "pass"
 	hash, _ := login.HashPwd(pwd)
 	fmt.Println("Password:", pwd)
 	fmt.Println("Hash:    ", hash)
+
+	// db.WritePwd(hash)
 
 	match := login.CheckPasswordHash(pwd, hash)
 	fmt.Println("Match:   ", match)

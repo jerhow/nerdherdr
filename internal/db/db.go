@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
+	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"log"
 	"strconv"
@@ -22,6 +23,52 @@ func dsn() string {
 
 	connStr := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
 	return connStr
+}
+
+// TEMP
+func WritePwd(pwd string) {
+	driver := "mysql"
+	dsn := dsn()
+	dbh, err := sql.Open(driver, dsn)
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	stmt, err := dbh.Prepare("UPDATE t_users SET un = ?, pw = ? WHERE id = 1")
+	util.ErrChk(err)
+	defer stmt.Close()
+
+	_, err2 := stmt.Exec("j@h.com", pwd)
+	util.ErrChk(err2)
+}
+
+func Authenticate(un string, pwdFromUser string) bool {
+	var pwdHashFromDb string
+
+	driver := "mysql"
+	dsn := dsn()
+	dbh, err := sql.Open(driver, dsn)
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	err = dbh.QueryRow("SELECT pw FROM t_users WHERE un = ?", un).Scan(&pwdHashFromDb)
+
+	switch {
+	case err == sql.ErrNoRows:
+		fmt.Println("No user with that ID")
+	case err != nil:
+		log.Fatal(err)
+	default:
+		// fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
+		fmt.Println("Something happened")
+	}
+
+	return login.CheckPasswordHash(pwdFromUser, pwdHashFromDb)
 }
 
 func Db1() {
