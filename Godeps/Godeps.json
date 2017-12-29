@@ -15,6 +15,14 @@
 			"ImportPath": "github.com/gorilla/mux",
 			"Comment": "v1.6.0-5-g7904d2e",
 			"Rev": "7904d2e42e7ebbdb4a6eb3e57eb201b11df25c57"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "95a4943f35d008beabde8c11e5075a1b714e6419"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "95a4943f35d008beabde8c11e5075a1b714e6419"
 		}
 	]
 }
