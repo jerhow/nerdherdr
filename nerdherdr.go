@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"log"
 	"net/http"
@@ -277,6 +278,22 @@ func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
 	// }
 }
 
+func pepper() string {
+	// NOTE: We're not really going to do this in the real world
+	return "MyRandomPepper123"
+}
+
+func hashPwd(pwd string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(pwd), 14)
+	errChk(err)
+	return string(bytes), err
+}
+
+func checkPasswordHash(pwd string, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
+	return err == nil // 'CompareHashAndPassword' returns nil on success, or an error on failure
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", IndexEndPoint).Methods("GET")
@@ -294,6 +311,17 @@ func main() {
 	db()
 	dbPopulateStruct()
 	dbSingleRowQuery()
+
+	fmt.Println("=================")
+	// fmt.Println(hashIt("wut"))
+	pwd := "secret"
+	hash, _ := hashPwd(pwd)
+	fmt.Println("Password:", pwd)
+	fmt.Println("Hash:    ", hash)
+
+	match := checkPasswordHash(pwd, hash)
+	fmt.Println("Match:   ", match)
+	fmt.Println("=================")
 
 	if err := http.ListenAndServe(GetPort(), r); err != nil {
 		log.Fatal(err)
