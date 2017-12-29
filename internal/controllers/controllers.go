@@ -1,6 +1,7 @@
-// Package routes is the place for route (endpoint) handlers.
+// Package controllers is the place for route handler functions, which people
+// seem to like referring to as controllers.
 // These functions are named in the route declarations for the mux router.
-package routes
+package controllers
 
 import (
 	"fmt"
