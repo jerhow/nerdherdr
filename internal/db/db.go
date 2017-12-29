@@ -9,28 +9,24 @@ import (
 	"strconv"
 )
 
-const driver string = "mysql"
+const DRIVER string = "mysql"
+const DB_USER string = "jerry"
+const DB_PASS string = "pass"
+const DB_HOST string = "go_mysql_1"
+const DB_PORT string = "3306"
+const DB_NAME string = "nerdherdr01"
 
 func Doit(s string) string {
 	return util.Hi(s)
 }
 
 func dsn() string {
-	dbUser := "jerry"
-	dbPass := "pass"
-	dbHost := "go_mysql_1"
-	dbPort := "3306"
-	dbName := "nerdherdr01"
-
-	connStr := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
-	return connStr
+	return DB_USER + ":" + DB_PASS + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME
 }
 
 // TEMP
 func WritePwd(pwd string) {
-	driver := "mysql"
-	dsn := dsn()
-	dbh, err := sql.Open(driver, dsn)
+	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
@@ -49,7 +45,7 @@ func FetchPwdHash(un string) string {
 	var pwdHashFromDb string
 	var retVal string = ""
 
-	dbh, err := sql.Open(driver, dsn())
+	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
@@ -74,9 +70,7 @@ func FetchPwdHash(un string) string {
 
 func Db1() {
 	fmt.Println("sup from db()")
-	driver := "mysql"
-	dsn := dsn()
-	dbh, err := sql.Open(driver, dsn)
+	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
@@ -107,9 +101,7 @@ func DbPopulateStruct() {
 		Finitial string `json:"f_initial"`
 	}
 
-	driver := "mysql"
-	dsn := dsn()
-	dbh, err := sql.Open(driver, dsn)
+	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
@@ -160,9 +152,7 @@ func DbSingleRowQuery() {
 	fmt.Println("sup from dbSingleRowQuery()")
 	var LName, FInitial string
 
-	driver := "mysql"
-	dsn := dsn()
-	dbh, err := sql.Open(driver, dsn)
+	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
