@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jerhow/nerdherdr/internal/db"
+	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/routes"
 	"github.com/jerhow/nerdherdr/internal/util"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 	"os"
@@ -21,22 +21,6 @@ func GetPort() string {
 		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
 	}
 	return ":" + port
-}
-
-func pepper() string {
-	// NOTE: We're not really going to do this in the real world
-	return "MyRandomPepper123"
-}
-
-func hashPwd(pwd string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(pwd), 14)
-	util.ErrChk(err)
-	return string(bytes), err
-}
-
-func checkPasswordHash(pwd string, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
-	return err == nil // 'CompareHashAndPassword' returns nil on success, or an error on failure
 }
 
 func main() {
@@ -60,11 +44,11 @@ func main() {
 	fmt.Println("=================")
 	// fmt.Println(hashIt("wut"))
 	pwd := "secret"
-	hash, _ := hashPwd(pwd)
+	hash, _ := login.HashPwd(pwd)
 	fmt.Println("Password:", pwd)
 	fmt.Println("Hash:    ", hash)
 
-	match := checkPasswordHash(pwd, hash)
+	match := login.CheckPasswordHash(pwd, hash)
 	fmt.Println("Match:   ", match)
 	fmt.Println("=================")
 
