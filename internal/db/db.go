@@ -4,11 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
-	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"log"
 	"strconv"
 )
+
+const driver string = "mysql"
 
 func Doit(s string) string {
 	return util.Hi(s)
@@ -44,12 +45,11 @@ func WritePwd(pwd string) {
 	util.ErrChk(err2)
 }
 
-func Authenticate(un string, pwdFromUser string) bool {
+func FetchPwdHash(un string) string {
 	var pwdHashFromDb string
+	var retVal string = ""
 
-	driver := "mysql"
-	dsn := dsn()
-	dbh, err := sql.Open(driver, dsn)
+	dbh, err := sql.Open(driver, dsn())
 	util.ErrChk(err)
 	defer dbh.Close()
 
@@ -60,15 +60,16 @@ func Authenticate(un string, pwdFromUser string) bool {
 
 	switch {
 	case err == sql.ErrNoRows:
-		fmt.Println("No user with that ID")
+		// fmt.Println("No user with that ID")
 	case err != nil:
-		log.Fatal(err)
+		log.Fatal(err) // Fatal is equivalent to Print() followed by a call to os.Exit(1)
 	default:
 		// fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
-		fmt.Println("Something happened")
+		// fmt.Println("Something happened")
+		retVal = pwdHashFromDb
 	}
 
-	return login.CheckPasswordHash(pwdFromUser, pwdHashFromDb)
+	return retVal
 }
 
 func Db1() {

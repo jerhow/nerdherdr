@@ -1,6 +1,7 @@
 package login
 
 import (
+	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -19,4 +20,9 @@ func HashPwd(pwd string) (string, error) {
 func CheckPasswordHash(pwd string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
 	return err == nil // 'CompareHashAndPassword' returns nil on success, or an error on failure
+}
+
+func Authenticate(un string, pwdFromUser string) bool {
+	pwdHashFromDb := db.FetchPwdHash(un)
+	return CheckPasswordHash(pwdFromUser, pwdHashFromDb)
 }

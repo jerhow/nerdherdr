@@ -5,7 +5,7 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/jerhow/nerdherdr/internal/db"
+	"github.com/jerhow/nerdherdr/internal/login"
 	"html/template"
 	"net/http"
 	"os"
@@ -73,7 +73,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		data.LoginMsg = "Invalid login (one or more fields left blank)"
 	} else {
 		// fmt.Printf("%+v\n", un)
-		if db.Authenticate(un, pw) {
+		if login.Authenticate(un, pw) {
 			data.LoginMsg = "Valid login!!! :)"
 		} else {
 			data.LoginMsg = "Invalid login (auth)"
