@@ -1,10 +1,11 @@
 package main
 
 import (
-	"./mylib" // "github.com/jerhow/nerdherdr/mylib"
+	"./internal/mylib" // "github.com/jerhow/nerdherdr/internal/mylib"
+	"./internal/util"  // "github.com/jerhow/nerdherdr/internal/util"
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
@@ -23,12 +24,6 @@ type TodoPageData struct {
 	PageTitle string
 	BodyTitle string
 	Todos     []Todo
-}
-
-func errChk(err error) {
-	if err != nil {
-		log.Fatal(err) // panic(err.Error)
-	}
 }
 
 func AllMoviesEndPoint(w http.ResponseWriter, r *http.Request) {
@@ -111,18 +106,18 @@ func db() {
 	driver := "mysql"
 	dsn := dbDsn()
 	db, err := sql.Open(driver, dsn)
-	errChk(err)
+	util.ErrChk(err)
 	defer db.Close()
 
 	err = db.Ping()
-	errChk(err)
+	util.ErrChk(err)
 
 	stmtIns, err := db.Prepare("INSERT INTO t_users (l_name, f_initial) VALUES (?, ?)")
-	errChk(err)
+	util.ErrChk(err)
 	defer stmtIns.Close()
 
 	_, err2 := stmtIns.Exec("Franklin", "A")
-	errChk(err2)
+	util.ErrChk(err2)
 
 	// insert, err := db.Query("INSERT INTO t_users (l_name, f_initial) VALUES ('Franklin', 'A')")
 	// if err != nil {
@@ -144,18 +139,18 @@ func dbPopulateStruct() {
 	driver := "mysql"
 	dsn := dbDsn()
 	db, err := sql.Open(driver, dsn)
-	errChk(err)
+	util.ErrChk(err)
 	defer db.Close()
 
 	err = db.Ping()
-	errChk(err)
+	util.ErrChk(err)
 
 	// stmt, err := db.Prepare("SELECT id, l_name, f_initial FROM t_users WHERE id > ?")
-	// errChk(err)
+	// util.ErrChk(err)
 	// defer stmt.Close()
 	//
 	// rows, err := stmt.Query(6)
-	// errChk(err)
+	// util.ErrChk(err)
 	// defer rows.Close()
 	//
 	// Regarding what's above ^^
@@ -177,14 +172,14 @@ func dbPopulateStruct() {
 	//
 	// THIS IS PERFECTLY FINE AS WELL:
 	rows, err := db.Query("SELECT id, l_name, f_initial FROM t_users WHERE id > ?", 6)
-	errChk(err)
+	util.ErrChk(err)
 	defer rows.Close()
 
 	fmt.Println()
 	for rows.Next() { // for each row, scan the result into the tag object (struct)
 		var tag Tag
 		err := rows.Scan(&tag.Id, &tag.Lname, &tag.Finitial)
-		errChk(err)
+		util.ErrChk(err)
 		fmt.Println(strconv.Itoa(tag.Id) + ": " + tag.Lname + ", " + tag.Finitial)
 	}
 	fmt.Println()
@@ -197,11 +192,11 @@ func dbSingleRowQuery() {
 	driver := "mysql"
 	dsn := dbDsn()
 	db, err := sql.Open(driver, dsn)
-	errChk(err)
+	util.ErrChk(err)
 	defer db.Close()
 
 	err = db.Ping()
-	errChk(err)
+	util.ErrChk(err)
 
 	err = db.QueryRow(
 		"SELECT l_name, f_initial FROM t_users WHERE id = ?", 1).Scan(&LName, &FInitial)
@@ -259,11 +254,11 @@ func LoginEndPoint(w http.ResponseWriter, r *http.Request) {
 	// driver := "mysql"
 	// dsn := dbDsn()
 	// db, err := sql.Open(driver, dsn)
-	// errChk(err)
+	// util.ErrChk(err)
 	// defer db.Close()
 
 	// err = db.Ping()
-	// errChk(err)
+	// util.ErrChk(err)
 
 	// err = db.QueryRow(
 	// 	"SELECT l_name, f_initial FROM t_users WHERE id = ?", 1).Scan(&LName, &FInitial)
@@ -285,7 +280,7 @@ func pepper() string {
 
 func hashPwd(pwd string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(pwd), 14)
-	errChk(err)
+	util.ErrChk(err)
 	return string(bytes), err
 }
 
