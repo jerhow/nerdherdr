@@ -27,6 +27,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
+	r.HandleFunc("/welcome", controllers.Welcome).Methods("GET")
 	r.HandleFunc("/movies", controllers.AllMovies).Methods("GET")
 	r.HandleFunc("/movies", controllers.CreateMovie).Methods("POST")
 	r.HandleFunc("/movies", controllers.UpdateMovie).Methods("PUT")

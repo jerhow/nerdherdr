@@ -53,16 +53,18 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	type PageData struct {
+	var un, pw string
+
+	type pageData struct {
 		PageTitle string
 		BodyTitle string
 		LoginMsg  string
 	}
 
-	var un, pw string
-	data := PageData{
+	data := pageData{
 		PageTitle: "Nerdherdr: Tools for Technical Managers",
-		BodyTitle: "Welcome!",
+		BodyTitle: "Please log in",
+		LoginMsg:  "",
 	}
 
 	un = r.PostFormValue("un")
@@ -74,7 +76,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// fmt.Printf("%+v\n", un)
 		if login.Authenticate(un, pw) {
-			data.LoginMsg = "Valid login!!! :)"
+			// data.LoginMsg = "Valid login!!! :)"
+			http.Redirect(w, r, "welcome", 303)
 		} else {
 			data.LoginMsg = "Invalid login (auth)"
 		}
@@ -82,27 +85,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))
 	tmpl.Execute(w, data)
+}
 
-	// driver := "mysql"
-	// dsn := dbDsn()
-	// db, err := sql.Open(driver, dsn)
-	// util.ErrChk(err)
-	// defer db.Close()
-
-	// err = db.Ping()
-	// util.ErrChk(err)
-
-	// err = db.QueryRow(
-	// 	"SELECT l_name, f_initial FROM t_users WHERE id = ?", 1).Scan(&LName, &FInitial)
-
-	// switch {
-	// case err == sql.ErrNoRows:
-	// 	fmt.Println("No user with that ID")
-	// case err != nil:
-	// 	log.Fatal(err)
-	// default:
-	// 	fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
-	// }
+func Welcome(w http.ResponseWriter, r *http.Request) {
+	type pageData struct {
+		PageTitle string
+		BodyTitle string
+	}
+	data := pageData{
+		PageTitle: "Nerdherdr: Tools for Technical Managers",
+		BodyTitle: "Welcome! You should be logged in now. Next: Sessions",
+	}
+	tmpl := template.Must(template.ParseFiles("templates/welcome.html"))
+	tmpl.Execute(w, data)
 }
 
 // ===========================================================

@@ -1,3 +1,6 @@
+// Package login gathers any helper functions which are only relevant to logging in.
+// Currently this package is oriented around bcrypt hashes, but this could change
+// in the future.
 package login
 
 import (
@@ -6,13 +9,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const BCRYPT_COST int = 14
+
 func Pepper() string {
 	// NOTE: We're not really going to do this in the real world
 	return "MyRandomPepper123"
 }
 
 func HashPwd(pwd string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(pwd), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(pwd), BCRYPT_COST)
 	util.ErrChk(err)
 	return string(bytes), err
 }
