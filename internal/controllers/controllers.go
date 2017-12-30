@@ -6,6 +6,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/jerhow/nerdherdr/internal/login"
+	"github.com/jerhow/nerdherdr/internal/util"
 	"html/template"
 	"net/http"
 	"os"
@@ -91,10 +92,16 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		PageTitle string
 		BodyTitle string
+		LoggedIn  string
 	}
 	data := pageData{
 		PageTitle: "Nerdherdr: Tools for Technical Managers",
 		BodyTitle: "Welcome! You should be logged in now. Next: Sessions",
+	}
+	if util.IsLoggedIn(r) {
+		data.LoggedIn = "Yes"
+	} else {
+		data.LoggedIn = "No"
 	}
 	tmpl := template.Must(template.ParseFiles("templates/welcome.html"))
 	tmpl.Execute(w, data)
