@@ -6,15 +6,16 @@ import (
 	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
 	"github.com/jerhow/nerdherdr/internal/util"
 	"log"
+	"os"
 	"strconv"
 )
 
-const DRIVER string = "mysql"
-const DB_USER string = "jerry"
-const DB_PASS string = "pass"
-const DB_HOST string = "go_mysql_1"
-const DB_PORT string = "3306"
-const DB_NAME string = "nerdherdr01"
+var DRIVER string = os.Getenv("NH_LOCALDEV_DB_DRIVER")
+var DB_USER string = os.Getenv("NH_LOCALDEV_DB_USER")
+var DB_PASS string = os.Getenv("NH_LOCALDEV_DB_PASS")
+var DB_HOST string = os.Getenv("NH_LOCALDEV_DB_HOST")
+var DB_PORT string = os.Getenv("NH_LOCALDEV_DB_PORT")
+var DB_NAME string = os.Getenv("NH_LOCALDEV_DB_NAME")
 
 func Doit(s string) string {
 	return util.Hi(s)
