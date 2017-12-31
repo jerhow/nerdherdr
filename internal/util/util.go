@@ -1,6 +1,7 @@
 package util
 
 import (
+	// "fmt"
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
@@ -31,3 +32,11 @@ func IsLoggedIn(r *http.Request) bool {
 		return true
 	}
 }
+
+// func LoggedInCheck(w http.ResponseWriter, r *http.Request) {
+// 	if !IsLoggedIn(r) {
+// 		// fmt.Println("NOT LOGGED IN, REDIRECTING...")
+// 		// http.Redirect(w, r, "/login", 403) // 403 Forbidden
+// 		http.Error(w, "Forbidden", http.StatusForbidden)
+// 	}
+// }

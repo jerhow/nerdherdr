@@ -5,6 +5,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"html/template"
@@ -39,6 +40,11 @@ func DeleteMovie(w http.ResponseWriter, r *http.Request) {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
+
+	if util.IsLoggedIn(r) {
+		http.Redirect(w, r, "welcome", 303)
+	}
+
 	type PageData struct {
 		PageTitle string
 		BodyTitle string
@@ -54,7 +60,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println(r.Referer())
+
 	var un, pw string
+
+	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	var key = []byte("super-secret-key")
+	var store = sessions.NewCookieStore(key)
+	session, _ := store.Get(r, "cookie-name")
 
 	type pageData struct {
 		PageTitle string
@@ -78,6 +91,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("%+v\n", un)
 		if login.Authenticate(un, pw) {
 			// data.LoginMsg = "Valid login!!! :)"
+			// Set user
+			session.Values["authenticated"] = true
+			session.Save(r, w)
 			http.Redirect(w, r, "welcome", 303)
 		} else {
 			data.LoginMsg = "Invalid login (auth)"
@@ -88,6 +104,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, data)
 }
 
+func Logout(w http.ResponseWriter, r *http.Request) {
+	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	var key = []byte("super-secret-key")
+	var store = sessions.NewCookieStore(key)
+	session, _ := store.Get(r, "cookie-name")
+
+	// Revoke user's authentication
+	session.Values["authenticated"] = false
+	session.Save(r, w)
+	http.Redirect(w, r, "/", 303)
+}
+
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		PageTitle string
@@ -96,15 +124,16 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 	data := pageData{
 		PageTitle: "Nerdherdr: Tools for Technical Managers",
-		BodyTitle: "Welcome! You should be logged in now. Next: Sessions",
+		BodyTitle: "Welcome!",
 	}
+
 	if util.IsLoggedIn(r) {
 		data.LoggedIn = "Yes"
+		tmpl := template.Must(template.ParseFiles("templates/welcome.html"))
+		tmpl.Execute(w, data)
 	} else {
-		data.LoggedIn = "No"
+		http.Error(w, "Forbidden", http.StatusForbidden)
 	}
-	tmpl := template.Must(template.ParseFiles("templates/welcome.html"))
-	tmpl.Execute(w, data)
 }
 
 // ===========================================================

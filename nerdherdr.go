@@ -17,36 +17,28 @@ import (
 var key = []byte("super-secret-key")
 var store = sessions.NewCookieStore(key)
 
-func secret(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "cookie-name")
+// func secret(w http.ResponseWriter, r *http.Request) {
+// 	session, _ := store.Get(r, "cookie-name")
 
-	// Check if user is authenticated
-	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
+// 	// Check if user is authenticated
+// 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+// 		http.Error(w, "Forbidden", http.StatusForbidden)
+// 		return
+// 	}
 
-	fmt.Fprintln(w, "The cake is a lie!")
-}
+// 	fmt.Fprintln(w, "The cake is a lie!")
+// }
 
-func login(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "cookie-name")
+// func login(w http.ResponseWriter, r *http.Request) {
+// 	session, _ := store.Get(r, "cookie-name")
 
-	// Authentication goes here
-	// ...
+// 	// Authentication goes here
+// 	// ...
 
-	// Set user
-	session.Values["authenticated"] = true
-	session.Save(r, w)
-}
-
-func logout(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "cookie-name")
-
-	// Revoke user's authentication
-	session.Values["authenticated"] = false
-	session.Save(r, w)
-}
+// 	// Set user
+// 	session.Values["authenticated"] = true
+// 	session.Save(r, w)
+// }
 
 // Get the Port from the environment so we can run on Heroku
 func GetPort() string {
@@ -62,7 +54,8 @@ func GetPort() string {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")
-	r.HandleFunc("/loginreal", controllers.Login).Methods("POST")
+	r.HandleFunc("/login", controllers.Login).Methods("POST")
+	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 	r.HandleFunc("/welcome", controllers.Welcome).Methods("GET")
 	r.HandleFunc("/movies", controllers.AllMovies).Methods("GET")
 	r.HandleFunc("/movies", controllers.CreateMovie).Methods("POST")
@@ -71,10 +64,6 @@ func main() {
 	r.HandleFunc("/movies/{id}", controllers.FindMovie).Methods("GET")
 	r.HandleFunc("/tmpl1", controllers.Tmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", controllers.Tmpl2).Methods("GET")
-
-	r.HandleFunc("/secret", secret)
-	r.HandleFunc("/login", login)
-	r.HandleFunc("/logout", logout)
 
 	// fmt.Println(db.Doit("Jerry"))
 	// fmt.Println(util.AddTwoInts(1, 2))
