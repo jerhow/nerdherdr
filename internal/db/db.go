@@ -82,10 +82,6 @@ func SetUpEnv() {
 	}
 }
 
-func Doit(s string) string {
-	return util.Hi(s)
-}
-
 func dsn() string {
 	return DB_USER + ":" + DB_PASS + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME
 }

@@ -68,8 +68,6 @@ func main() {
 	r.HandleFunc("/tmpl1", controllers.Tmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", controllers.Tmpl2).Methods("GET")
 
-	// fmt.Println(db.Doit("Jerry"))
-	// fmt.Println(util.AddTwoInts(1, 2))
 	// db.Db1()
 	// db.DbPopulateStruct()
 	// db.DbSingleRowQuery()
