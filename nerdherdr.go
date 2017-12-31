@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/controllers"
-	// "github.com/jerhow/nerdherdr/internal/db"
+	"github.com/jerhow/nerdherdr/internal/db"
 	// loginreal "github.com/jerhow/nerdherdr/internal/login"
 	// "github.com/jerhow/nerdherdr/internal/util"
 	"log"
@@ -52,6 +52,9 @@ func GetPort() string {
 }
 
 func main() {
+
+	db.SetUpEnv()
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")
 	r.HandleFunc("/login", controllers.Login).Methods("POST")

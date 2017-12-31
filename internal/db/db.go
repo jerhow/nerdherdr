@@ -10,12 +10,77 @@ import (
 	"strconv"
 )
 
-var DRIVER string = os.Getenv("NH_LOCALDEV_DB_DRIVER")
-var DB_USER string = os.Getenv("NH_LOCALDEV_DB_USER")
-var DB_PASS string = os.Getenv("NH_LOCALDEV_DB_PASS")
-var DB_HOST string = os.Getenv("NH_LOCALDEV_DB_HOST")
-var DB_PORT string = os.Getenv("NH_LOCALDEV_DB_PORT")
-var DB_NAME string = os.Getenv("NH_LOCALDEV_DB_NAME")
+var DRIVER string
+var DB_USER string
+var DB_PASS string
+var DB_HOST string
+var DB_PORT string
+var DB_NAME string
+
+// Reads ENV variables from the host environment, and sets up our
+// "constants" with the appropriate values for the database and such.
+// Fails out hard if an appropriate ENV var is not found.
+// TODO: Fail more gracefully, and with proper logging.
+// FUTURE: If we need additional host environments (which we likely will),
+// we can probably just nest them in this logic, since they should have a clear
+// order of precedence (look up PROD first, then STAGE, then DEV or DEVLOCAL).
+func SetUpEnv() {
+	var varExists bool
+
+	DRIVER, varExists = os.LookupEnv("NH_PROD_DB_DRIVER")
+	if !varExists {
+		DRIVER, varExists = os.LookupEnv("NH_LOCALDEV_DB_DRIVER")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	DB_USER, varExists = os.LookupEnv("NH_PROD_DB_USER")
+	if !varExists {
+		DB_USER, varExists = os.LookupEnv("NH_LOCALDEV_DB_USER")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	DB_PASS, varExists = os.LookupEnv("NH_PROD_DB_PASS")
+	if !varExists {
+		DB_PASS, varExists = os.LookupEnv("NH_LOCALDEV_DB_PASS")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	DB_HOST, varExists = os.LookupEnv("NH_PROD_DB_HOST")
+	if !varExists {
+		DB_HOST, varExists = os.LookupEnv("NH_LOCALDEV_DB_HOST")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	DB_PORT, varExists = os.LookupEnv("NH_PROD_DB_PORT")
+	if !varExists {
+		DB_PORT, varExists = os.LookupEnv("NH_LOCALDEV_DB_PORT")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	DB_NAME, varExists = os.LookupEnv("NH_PROD_DB_NAME")
+	if !varExists {
+		DB_NAME, varExists = os.LookupEnv("NH_LOCALDEV_DB_NAME")
+		if !varExists {
+			fmt.Println("db.setUpEnvVars: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+}
 
 func Doit(s string) string {
 	return util.Hi(s)
