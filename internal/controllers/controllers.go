@@ -14,6 +14,7 @@ import (
 )
 
 var SESSION_KEY = util.SessionKey()
+var SESSION_COOKIE = util.SessionCookie()
 
 func AllMovies(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "GET /movies (All Movies). Not implemented yet. PORT env var: "+os.Getenv("PORT"))
@@ -69,7 +70,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
-	session, _ := store.Get(r, "cookie-name")
+	session, _ := store.Get(r, SESSION_COOKIE)
 
 	type pageData struct {
 		PageTitle string
@@ -110,7 +111,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
-	session, _ := store.Get(r, "cookie-name")
+	session, _ := store.Get(r, SESSION_COOKIE)
 
 	// Revoke user's authentication
 	session.Values["authenticated"] = false
