@@ -3,42 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	// "github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/controllers"
 	"github.com/jerhow/nerdherdr/internal/db"
-	// loginreal "github.com/jerhow/nerdherdr/internal/login"
-	// "github.com/jerhow/nerdherdr/internal/util"
 	"log"
 	"net/http"
 	"os"
 )
-
-// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-// var sessKey = []byte(util.SessionKey())
-// var store = sessions.NewCookieStore(sessKey)
-
-// func secret(w http.ResponseWriter, r *http.Request) {
-// 	session, _ := store.Get(r, "cookie-name")
-
-// 	// Check if user is authenticated
-// 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-// 		http.Error(w, "Forbidden", http.StatusForbidden)
-// 		return
-// 	}
-
-// 	fmt.Fprintln(w, "The cake is a lie!")
-// }
-
-// func login(w http.ResponseWriter, r *http.Request) {
-// 	session, _ := store.Get(r, "cookie-name")
-
-// 	// Authentication goes here
-// 	// ...
-
-// 	// Set user
-// 	session.Values["authenticated"] = true
-// 	session.Save(r, w)
-// }
 
 // Middleware. Got this from:
 // https://github.com/jonahgeorge/force-ssl-heroku
@@ -84,23 +54,6 @@ func main() {
 	r.HandleFunc("/movies/{id}", controllers.FindMovie).Methods("GET")
 	r.HandleFunc("/tmpl1", controllers.Tmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", controllers.Tmpl2).Methods("GET")
-
-	// db.Db1()
-	// db.DbPopulateStruct()
-	// db.DbSingleRowQuery()
-
-	// fmt.Println("=================")
-	// // fmt.Println(hashIt("wut"))
-	// pwd := "pass"
-	// hash, _ := loginreal.HashPwd(pwd)
-	// fmt.Println("Password:", pwd)
-	// fmt.Println("Hash:    ", hash)
-
-	// // db.WritePwd(hash)
-
-	// match := loginreal.CheckPasswordHash(pwd, hash)
-	// fmt.Println("Match:   ", match)
-	// fmt.Println("=================")
 
 	if err := http.ListenAndServe(getPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)
