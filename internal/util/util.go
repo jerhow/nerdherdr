@@ -39,6 +39,10 @@ func IsLoggedIn(r *http.Request) bool {
 
 // Pass it the ENV variable you want, get back the value.
 // This is environment-sensitive (prod, stage, dev, devlocal).
+// Note the order of precedence in environments:
+// (look up PROD first, then STAGE (future), then DEV (future) or DEVLOCAL)
+// Fails out hard if an appropriate ENV var is not found.
+// TODO: Fail more gracefully, and with proper logging.
 func FetchEnvVar(envVarName string) string {
 	var val string
 	var varExists bool
