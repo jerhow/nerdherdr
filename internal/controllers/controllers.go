@@ -13,8 +13,6 @@ import (
 	"os"
 )
 
-// var SESSION_KEY = util.SessionKey()
-// var SESSION_COOKIE = util.SessionCookie()
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
 

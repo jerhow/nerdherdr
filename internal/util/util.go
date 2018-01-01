@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-// var SESSION_KEY = SessionKey()
-// var SESSION_COOKIE = SessionCookie()
 var SESSION_KEY = FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = FetchEnvVar("SESS_COOKIE")
 
@@ -55,38 +53,4 @@ func FetchEnvVar(envVarName string) string {
 	}
 
 	return val
-}
-
-// Returns the session key from ENV
-func SessionKey() string {
-	var key string
-	var varExists bool
-
-	key, varExists = os.LookupEnv("NH_PROD_SESS_KEY")
-	if !varExists {
-		key, varExists = os.LookupEnv("NH_LOCALDEV_SESS_KEY")
-		if !varExists {
-			fmt.Println("main.SessionKey: No suitable ENV variable found")
-			os.Exit(1)
-		}
-	}
-
-	return key
-}
-
-// Returns the session cookie name from ENV
-func SessionCookie() string {
-	var key string
-	var varExists bool
-
-	key, varExists = os.LookupEnv("NH_PROD_SESS_COOKIE")
-	if !varExists {
-		key, varExists = os.LookupEnv("NH_LOCALDEV_SESS_COOKIE")
-		if !varExists {
-			fmt.Println("main.SessionCookie: No suitable ENV variable found")
-			os.Exit(1)
-		}
-	}
-
-	return key
 }
