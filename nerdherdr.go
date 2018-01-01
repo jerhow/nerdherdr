@@ -40,6 +40,24 @@ import (
 // 	session.Save(r, w)
 // }
 
+// Middleware. Got this from:
+// https://github.com/jonahgeorge/force-ssl-heroku
+// ...but have changed the ENV var it's looking for.
+func forceSslHeroku(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if os.Getenv("NH_GO_ENV") == "production" {
+			if r.Header.Get("x-forwarded-proto") != "https" {
+				sslUrl := "https://" + r.Host + r.RequestURI
+				http.Redirect(w, r, sslUrl, http.StatusTemporaryRedirect)
+				return
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
+
+}
+
 // Get the Port from the environment so we can run on Heroku
 func GetPort() string {
 	var port = os.Getenv("PORT") // There's no way to know this ahead of time on Heroku
@@ -85,7 +103,7 @@ func main() {
 	// fmt.Println("Match:   ", match)
 	// fmt.Println("=================")
 
-	if err := http.ListenAndServe(GetPort(), r); err != nil {
+	if err := http.ListenAndServe(GetPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)
 	}
 }
