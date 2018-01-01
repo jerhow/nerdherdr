@@ -55,11 +55,10 @@ func forceSslHeroku(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
-
 }
 
 // Get the Port from the environment so we can run on Heroku
-func GetPort() string {
+func getPort() string {
 	var port = os.Getenv("PORT") // There's no way to know this ahead of time on Heroku
 	// Set a default port if there is nothing in the environment
 	if port == "" {
@@ -103,7 +102,7 @@ func main() {
 	// fmt.Println("Match:   ", match)
 	// fmt.Println("=================")
 
-	if err := http.ListenAndServe(GetPort(), forceSslHeroku(r)); err != nil {
+	if err := http.ListenAndServe(getPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)
 	}
 }
