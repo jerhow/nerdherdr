@@ -13,8 +13,10 @@ import (
 	"os"
 )
 
-var SESSION_KEY = util.SessionKey()
-var SESSION_COOKIE = util.SessionCookie()
+// var SESSION_KEY = util.SessionKey()
+// var SESSION_COOKIE = util.SessionCookie()
+var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
+var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
 
 func AllMovies(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "GET /movies (All Movies). Not implemented yet. PORT env var: "+os.Getenv("PORT"))
