@@ -1,10 +1,14 @@
 package util
 
 import (
+	"fmt"
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
+	"os"
 )
+
+var SESSION_KEY = SessionKey()
 
 func ErrChk(err error) {
 	if err != nil {
@@ -14,7 +18,7 @@ func ErrChk(err error) {
 
 func IsLoggedIn(r *http.Request) bool {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	var key = []byte("super-secret-key")
+	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, "cookie-name")
 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
@@ -31,3 +35,22 @@ func IsLoggedIn(r *http.Request) bool {
 // 		http.Error(w, "Forbidden", http.StatusForbidden)
 // 	}
 // }
+
+func SessionKey() string {
+	//
+	// NOTE: Session key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	//
+	var key string
+	var varExists bool
+
+	key, varExists = os.LookupEnv("NH_PROD_SESS_KEY")
+	if !varExists {
+		key, varExists = os.LookupEnv("NH_LOCALDEV_SESS_KEY")
+		if !varExists {
+			fmt.Println("main.sessionKey: No suitable ENV variable found")
+			os.Exit(1)
+		}
+	}
+
+	return key
+}

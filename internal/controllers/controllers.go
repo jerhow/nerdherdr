@@ -13,6 +13,8 @@ import (
 	"os"
 )
 
+var SESSION_KEY = util.SessionKey()
+
 func AllMovies(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "GET /movies (All Movies). Not implemented yet. PORT env var: "+os.Getenv("PORT"))
 }
@@ -61,11 +63,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(r.Referer())
-
+	// fmt.Println(SESSION_KEY)
 	var un, pw string
 
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	var key = []byte("super-secret-key")
+	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, "cookie-name")
 
@@ -106,7 +108,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	var key = []byte("super-secret-key")
+	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, "cookie-name")
 

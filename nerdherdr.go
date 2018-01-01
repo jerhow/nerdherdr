@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/sessions"
+	// "github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/controllers"
 	"github.com/jerhow/nerdherdr/internal/db"
 	// loginreal "github.com/jerhow/nerdherdr/internal/login"
@@ -14,8 +14,8 @@ import (
 )
 
 // NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-var key = []byte("super-secret-key")
-var store = sessions.NewCookieStore(key)
+// var sessKey = []byte(util.SessionKey())
+// var store = sessions.NewCookieStore(sessKey)
 
 // func secret(w http.ResponseWriter, r *http.Request) {
 // 	session, _ := store.Get(r, "cookie-name")
@@ -42,7 +42,7 @@ var store = sessions.NewCookieStore(key)
 
 // Get the Port from the environment so we can run on Heroku
 func GetPort() string {
-	var port = os.Getenv("PORT") // There's no way to know this ahead of time
+	var port = os.Getenv("PORT") // There's no way to know this ahead of time on Heroku
 	// Set a default port if there is nothing in the environment
 	if port == "" {
 		port = "3000" // If running locally. In prod, if we don't get a $PORT value from Heroku, we're fucked anyway.
