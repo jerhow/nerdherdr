@@ -49,7 +49,7 @@ func SessionKey() string {
 	if !varExists {
 		key, varExists = os.LookupEnv("NH_LOCALDEV_SESS_KEY")
 		if !varExists {
-			fmt.Println("main.sessionKey: No suitable ENV variable found")
+			fmt.Println("main.SessionKey: No suitable ENV variable found")
 			os.Exit(1)
 		}
 	}
@@ -66,7 +66,7 @@ func SessionCookie() string {
 	if !varExists {
 		key, varExists = os.LookupEnv("NH_LOCALDEV_SESS_COOKIE")
 		if !varExists {
-			fmt.Println("main.sessionKey: No suitable ENV variable found")
+			fmt.Println("main.SessionCookie: No suitable ENV variable found")
 			os.Exit(1)
 		}
 	}
