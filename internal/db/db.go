@@ -6,7 +6,6 @@ import (
 	_ "github.com/go-sql-driver/mysql" // Imports the package solely for its side-effects
 	"github.com/jerhow/nerdherdr/internal/util"
 	"log"
-	// "os"
 	"strconv"
 )
 

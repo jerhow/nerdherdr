@@ -63,11 +63,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println(r.Referer())
-	// fmt.Println(SESSION_KEY)
 	var un, pw string
 
-	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, SESSION_COOKIE)
