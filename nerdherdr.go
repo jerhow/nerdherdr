@@ -61,11 +61,6 @@ func main() {
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
 	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 	r.HandleFunc("/welcome", controllers.Welcome).Methods("GET")
-	r.HandleFunc("/movies", controllers.AllMovies).Methods("GET")
-	r.HandleFunc("/movies", controllers.CreateMovie).Methods("POST")
-	r.HandleFunc("/movies", controllers.UpdateMovie).Methods("PUT")
-	r.HandleFunc("/movies", controllers.DeleteMovie).Methods("DELETE")
-	r.HandleFunc("/movies/{id}", controllers.FindMovie).Methods("GET")
 	r.HandleFunc("/tmpl1", controllers.Tmpl1).Methods("GET")
 	r.HandleFunc("/tmpl2", controllers.Tmpl2).Methods("GET")
 

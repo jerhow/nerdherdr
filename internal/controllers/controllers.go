@@ -4,43 +4,15 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"html/template"
 	"net/http"
-	"os"
 )
 
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
-
-func AllMovies(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "GET /movies (All Movies). Not implemented yet. PORT env var: "+os.Getenv("PORT"))
-}
-
-func FindMovie(w http.ResponseWriter, r *http.Request) {
-	id := r.FormValue("id")
-	fmt.Fprintf(w, "ID: %s", id)
-	// fmt.Fprintln(w, "GET /movies/{id} (Find Movie). Not implemented yet, fool!")
-}
-
-func CreateMovie(w http.ResponseWriter, r *http.Request) {
-	// fmt.Printf("%+v\n", r)
-	id := r.FormValue("id")
-	name := r.PostFormValue("name")
-	fmt.Fprintf(w, "Hello, %s! ID: %s", name, id)
-	// fmt.Fprintln(w, "POST /movies (Create Movie). Not implemented yet.")
-}
-
-func UpdateMovie(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "PUT /movies (Update Movie). Not implemented yet.")
-}
-
-func DeleteMovie(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "DELETE /movies (Delete Movie). Not implemented yet.")
-}
 
 func Index(w http.ResponseWriter, r *http.Request) {
 
