@@ -61,6 +61,7 @@ func main() {
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
 	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 	r.HandleFunc("/welcome", controllers.Welcome).Methods("GET")
+	r.HandleFunc("/test", controllers.Test).Methods("GET")
 
 	if err := http.ListenAndServe(getPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)
