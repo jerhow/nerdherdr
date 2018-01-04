@@ -9,7 +9,7 @@ import (
 	"github.com/jerhow/nerdherdr/internal/util"
 	"html/template"
 	"net/http"
-	// "time"
+	"time"
 )
 
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
@@ -120,7 +120,7 @@ func Test(w http.ResponseWriter, r *http.Request) {
 		PageTitle:     "Nerdherdr: Tools for Technical Managers",
 		BodyTitle:     "Welcome!",
 		LoginMsg:      "No, but that's okay",
-		CopyrightYear: 2018,
+		CopyrightYear: time.Now().Year(),
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/test-header-footer.html", "templates/header.html", "templates/footer.html"))
