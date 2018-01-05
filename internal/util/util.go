@@ -8,10 +8,37 @@ import (
 	"os"
 )
 
-const STATIC_ASSET_URL_BASE string = "https://s3.amazonaws.com/nerdherdr/"
+var STATIC_ASSET_URL_BASE string
 
 var SESSION_KEY = FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = FetchEnvVar("SESS_COOKIE")
+
+// Anything we need to initialize in 'util' should go in here,
+// or at least be kicked off from in here. I know about Golang's
+// package-level 'init' functions, but I want a deliberate level
+// of control here, and I want main.main() to kick this off at startup.
+func SetUpEnv() {
+	// NOTE: The 'localhost' values here refer to the Apache container
+	// I am currently using to serve the static assets. It is meant to
+	// mimic the production stack, which uses an S3 bucket.
+	//
+	// The reason we can't just expose a 'static' route and serve
+	// a similarly-named directory from the app's file system is
+	// that, on Heroku, the dyno and filesystem are ephemeral.
+	// If this were sitting on a server or VPS, that would be possible.
+
+	currentEnv := os.Getenv("NH_GO_ENV")
+	switch currentEnv {
+	case "production":
+		STATIC_ASSET_URL_BASE = "https://s3.amazonaws.com/nerdherdr/"
+	case "stage":
+		STATIC_ASSET_URL_BASE = "https://s3.amazonaws.com/nerdherdr/"
+	case "dev":
+		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+	case "devlocal":
+		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+	}
+}
 
 func ErrChk(err error) {
 	if err != nil {
@@ -45,6 +72,9 @@ func IsLoggedIn(r *http.Request) bool {
 // (look up PROD first, then STAGE (future), then DEV (future) or DEVLOCAL)
 // Fails out hard if an appropriate ENV var is not found.
 // TODO: Fail more gracefully, and with proper logging.
+// ***
+// NOTE: This function is specifically meant for the NH_{ENV}_* variables.
+// For non-prefixed vars, just fetch them normally with os.Getenv("WHATEVER")
 func FetchEnvVar(envVarName string) string {
 	var val string
 	var varExists bool

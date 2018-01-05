@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jerhow/nerdherdr/internal/controllers"
 	"github.com/jerhow/nerdherdr/internal/db"
+	"github.com/jerhow/nerdherdr/internal/util"
 	"log"
 	"net/http"
 	"os"
@@ -54,6 +55,7 @@ func getPort() string {
 
 func main() {
 
+	util.SetUpEnv()
 	db.SetUpEnv()
 
 	r := mux.NewRouter()
