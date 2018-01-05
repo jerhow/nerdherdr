@@ -91,15 +91,17 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		PageTitle     string
-		BodyTitle     string
-		LoggedIn      string
-		CopyrightYear int
+		PageTitle          string
+		BodyTitle          string
+		LoggedIn           string
+		CopyrightYear      int
+		StaticAssetUrlBase string
 	}
 	data := pageData{
-		PageTitle:     "Nerdherdr: Tools for Technical Managers",
-		BodyTitle:     "Welcome!",
-		CopyrightYear: time.Now().Year(),
+		PageTitle:          "Nerdherdr: Tools for Technical Managers",
+		BodyTitle:          "Welcome!",
+		CopyrightYear:      time.Now().Year(),
+		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
 	}
 
 	if util.IsLoggedIn(r) {

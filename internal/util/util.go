@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+const STATIC_ASSET_URL_BASE string = "https://s3.amazonaws.com/nerdherdr/"
+
 var SESSION_KEY = FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = FetchEnvVar("SESS_COOKIE")
 
