@@ -91,18 +91,20 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		PageTitle string
-		BodyTitle string
-		LoggedIn  string
+		PageTitle     string
+		BodyTitle     string
+		LoggedIn      string
+		CopyrightYear int
 	}
 	data := pageData{
-		PageTitle: "Nerdherdr: Tools for Technical Managers",
-		BodyTitle: "Welcome!",
+		PageTitle:     "Nerdherdr: Tools for Technical Managers",
+		BodyTitle:     "Welcome!",
+		CopyrightYear: time.Now().Year(),
 	}
 
 	if util.IsLoggedIn(r) {
 		data.LoggedIn = "Yes"
-		tmpl := template.Must(template.ParseFiles("templates/welcome.html"))
+		tmpl := template.Must(template.ParseFiles("templates/welcome.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
