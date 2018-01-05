@@ -36,9 +36,6 @@ _test/
 # Godeps/
 # vendor/
 
-# TBD
-static/*
-
 # Config (TBD)
 # config/*.json
 
