@@ -1,15 +1,9 @@
-// Package login gathers any helper functions which are only relevant to logging in.
-// Currently this package is oriented around bcrypt hashes, but this could change
-// in the future.
+// Package welcome gathers any helper functions which are only relevant to the 'welcome' view.
 package welcome
 
 import (
 	"github.com/jerhow/nerdherdr/internal/db"
 )
-
-func Pepper() string {
-	return "Hello"
-}
 
 // Takes a userId.
 // Returns a boolean indicating whether results were found, and the individual values.

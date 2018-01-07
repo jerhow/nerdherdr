@@ -1,6 +1,18 @@
 // Package controllers is the place for route handler functions, which people
 // seem to like referring to as controllers.
-// These functions are named in the route declarations for the mux router.
+//
+// My philosophy so far in this project is that these are more like 'view controllers'.
+// Roughly, they are meant to:
+// 1. Field the inbound request
+// 2. Establish the structure of the data for the template
+// 3. Call out to a same-named 'helper' package for any additional work that needs doing,
+//    in order to prepare the result
+// 4. Handle any edge cases or non-standard responses
+// 5. Ultimately respond; either as an HTTP response, or by invoking one or more templates to be rendered.
+// 6. Anything else I am overlooking, or am not yet aware of.
+//
+// Anyway, these functions are named/assigned in the route declarations for the mux router, in main.main()
+//
 package controllers
 
 import (
