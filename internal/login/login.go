@@ -27,7 +27,7 @@ func CheckPasswordHash(pwd string, hash string) bool {
 	return err == nil // 'CompareHashAndPassword' returns nil on success, or an error on failure
 }
 
-func Authenticate(un string, pwdFromUser string) bool {
-	pwdHashFromDb := db.FetchPwdHash(un)
-	return CheckPasswordHash(pwdFromUser, pwdHashFromDb)
+func Authenticate(un string, pwdFromUser string) (bool, int) {
+	pwdHashFromDb, userId := db.FetchPwdHashAndUserId(un)
+	return CheckPasswordHash(pwdFromUser, pwdHashFromDb), userId
 }

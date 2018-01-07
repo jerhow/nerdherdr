@@ -46,15 +46,17 @@ func ErrChk(err error) {
 	}
 }
 
-func IsLoggedIn(r *http.Request) bool {
+func IsLoggedIn(r *http.Request) (bool, int) {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, SESSION_COOKIE)
+	var userId int
 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		return false
+		return false, -1 // not found, provide bogus userId value
 	} else {
-		return true
+		userId = session.Values["userId"].(int)
+		return true, userId
 	}
 }
 

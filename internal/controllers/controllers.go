@@ -17,7 +17,8 @@ var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
 
 func Index(w http.ResponseWriter, r *http.Request) {
 
-	if util.IsLoggedIn(r) {
+	loggedIn, _ := util.IsLoggedIn(r)
+	if loggedIn {
 		http.Redirect(w, r, "welcome", 303)
 	}
 
@@ -37,6 +38,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	var un, pw string
+	// var authenticated bool
+	// var userId int
 
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
@@ -67,10 +70,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		data.LoginMsg = "Invalid login (one or more fields left blank)"
 	} else {
 		// fmt.Printf("%+v\n", un)
-		if login.Authenticate(un, pw) {
+		authenticated, userId := login.Authenticate(un, pw)
+		if authenticated {
 			// data.LoginMsg = "Valid login!!! :)"
 			// Set user
 			session.Values["authenticated"] = true
+			session.Values["userId"] = userId
 			session.Save(r, w)
 			http.Redirect(w, r, "welcome", 303)
 		} else {
@@ -101,6 +106,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		LoggedIn           string
 		CopyrightYear      int
 		StaticAssetUrlBase string
+		UserId             int
 	}
 	data := pageData{
 		PageTitle:          "Nerdherdr: Tools for Technical Managers",
@@ -109,8 +115,10 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
 	}
 
-	if util.IsLoggedIn(r) {
+	loggedIn, userId := util.IsLoggedIn(r)
+	if loggedIn {
 		data.LoggedIn = "Yes"
+		data.UserId = userId
 		tmpl := template.Must(template.ParseFiles("templates/welcome.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {

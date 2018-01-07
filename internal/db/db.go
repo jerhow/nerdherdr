@@ -48,9 +48,11 @@ func WritePwd(pwd string) {
 	util.ErrChk(err2)
 }
 
-func FetchPwdHash(un string) string {
+func FetchPwdHashAndUserId(un string) (string, int) {
 	var pwdHashFromDb string
-	var retVal string = ""
+	var idFromDb int
+	var retHash string = ""
+	var retId int = -1
 
 	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
@@ -59,7 +61,7 @@ func FetchPwdHash(un string) string {
 	err = dbh.Ping()
 	util.ErrChk(err)
 
-	err = dbh.QueryRow("SELECT pw FROM t_users WHERE un = ?", un).Scan(&pwdHashFromDb)
+	err = dbh.QueryRow("SELECT id, pw FROM t_users WHERE un = ?", un).Scan(&idFromDb, &pwdHashFromDb)
 
 	switch {
 	case err == sql.ErrNoRows:
@@ -69,10 +71,11 @@ func FetchPwdHash(un string) string {
 	default:
 		// fmt.Printf("\nUSER: %s, %s\n", LName, FInitial)
 		// fmt.Println("Something happened")
-		retVal = pwdHashFromDb
+		retHash = pwdHashFromDb
+		retId = idFromDb
 	}
 
-	return retVal
+	return retHash, retId
 }
 
 func Db1() {
