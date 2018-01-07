@@ -41,6 +41,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
 	session, _ := store.Get(r, SESSION_COOKIE)
+	session.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   3600, // 1 hour
+		HttpOnly: true,
+	}
 
 	type pageData struct {
 		PageTitle string
