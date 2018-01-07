@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
+	"github.com/jerhow/nerdherdr/internal/welcome"
 	"html/template"
 	"net/http"
 	"time"
@@ -101,12 +102,18 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		PageTitle          string
-		BodyTitle          string
-		LoggedIn           string
-		CopyrightYear      int
-		StaticAssetUrlBase string
-		UserId             int
+		PageTitle             string
+		BodyTitle             string
+		LoggedIn              string
+		CopyrightYear         int
+		StaticAssetUrlBase    string
+		UserId                int
+		UserProfileMatchFound bool
+		Lname                 string
+		Fname                 string
+		MI                    string
+		Title                 string
+		Company               string
 	}
 	data := pageData{
 		PageTitle:          "Nerdherdr: Tools for Technical Managers",
@@ -116,10 +123,27 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loggedIn, userId := util.IsLoggedIn(r)
+
+	// Fetch user-specific info for user profile
+	if loggedIn {
+		matchFound, lname, fname, mi, title, company := welcome.UserProfileInfo(userId)
+		if matchFound {
+			data.UserProfileMatchFound = true
+			data.Lname = lname
+			data.Fname = fname
+			data.MI = mi
+			data.Title = title
+			data.Company = company
+		} else {
+			data.UserProfileMatchFound = false
+		}
+	}
+
 	if loggedIn {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
-		tmpl := template.Must(template.ParseFiles("templates/welcome.html", "templates/header.html", "templates/footer.html"))
+		tmpl := template.Must(template.ParseFiles(
+			"templates/welcome.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)

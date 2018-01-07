@@ -158,6 +158,39 @@ func DbPopulateStruct() {
 	fmt.Println()
 }
 
+// Takes a userId
+// Returns a boolean indicating whether results were found, and the individual values
+func FetchUserProfileInfo(userId int) (bool, string, string, string, string, string) {
+
+	var matchFound bool = true
+	var lname, fname, mi, title, company string
+
+	dbh, err := sql.Open(DRIVER, dsn())
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	query := `
+		SELECT lname, fname, mi, title, company
+		FROM t_users AS u 
+			INNER JOIN t_user_profile AS UP
+				ON u.user_profile_id = UP.id
+		WHERE
+			u.id = ?;`
+
+	err = dbh.QueryRow(query, userId).Scan(&lname, &fname, &mi, &title, &company)
+	util.ErrChk(err)
+
+	if err == sql.ErrNoRows {
+		matchFound = false
+		fmt.Println("No record with that ID")
+	}
+
+	return matchFound, lname, fname, mi, title, company
+}
+
 func DbSingleRowQuery() {
 	fmt.Println("sup from dbSingleRowQuery()")
 	var LName, FInitial string
