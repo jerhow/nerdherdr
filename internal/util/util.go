@@ -37,6 +37,8 @@ func SetUpEnv() {
 		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
 	case "devlocal":
 		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+	default:
+		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
 	}
 }
 
