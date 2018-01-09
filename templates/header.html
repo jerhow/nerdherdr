@@ -17,8 +17,10 @@ body {
 <link rel="stylesheet" type="text/css" href="{{ .StaticAssetUrlBase }}base.css" media="all">
 </head>
 <body>
-<div style="border-bottom: 1px solid #bfbfbf;">
-    <div style="font-size: 1.2em; font-weight: bold;">Nerdherdr</div>
-    <div>Tools for Technical Managers</div>
-</div>
+    {{if .DisplayBranding}}
+    <div style="border-bottom: 1px solid #bfbfbf;">
+        <div style="font-size: 1.2em; font-weight: bold;">Nerdherdr</div>
+        <div>Tools for Technical Managers</div>
+    </div>
+    {{end}}
 {{end}}

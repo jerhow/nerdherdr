@@ -17,6 +17,7 @@ package controllers
 
 import (
 	"github.com/gorilla/sessions"
+	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"github.com/jerhow/nerdherdr/internal/welcome"
@@ -126,12 +127,14 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		MI                    string
 		Title                 string
 		Company               string
+		DisplayBranding       bool
 	}
 	data := pageData{
 		PageTitle:          "Nerdherdr: Tools for Technical Managers",
 		BodyTitle:          "Welcome!",
 		CopyrightYear:      time.Now().Year(),
 		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
+		DisplayBranding:    config.DISPLAY_BRANDING,
 	}
 
 	loggedIn, userId := util.IsLoggedIn(r)
