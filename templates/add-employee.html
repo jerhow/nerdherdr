@@ -1,0 +1,73 @@
+{{template "header" .}}
+
+<div style="margin-top: 10px; font-size: .8em;">
+<a href="/">Home</a> | <a href="logout">Logout</a>
+</div>
+
+<h4>Add an employee:</h4>
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            First Name:
+        </td>
+        <td>
+            <input type="text" id="fname" name="fname">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Last Name:
+        </td>
+        <td>
+            <input type="text" id="lname" name="lname">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            M.I:
+        </td>
+        <td>
+            <input type="text" id="mi" name="mi">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Title:
+        </td>
+        <td>
+            <input type="text" id="title" name="title">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Department:
+        </td>
+        <td>
+            <input type="text" id="dept" name="dept">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Team:
+        </td>
+        <td>
+            <input type="text" id="team" name="team">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Hire Date:
+        </td>
+        <td>
+            <input type="text" id="hire_date" name="hire_date">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: right;">
+            <input type="submit" id="btn_submit" name="btn_submit" value="Submit" />
+        </td>
+    </tr>
+</table>
+
+{{template "footer" .}}

@@ -165,6 +165,31 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func AddEmployee(w http.ResponseWriter, r *http.Request) {
+	type pageData struct {
+		PageTitle          string
+		CopyrightYear      int
+		StaticAssetUrlBase string
+		DisplayBranding    bool
+	}
+	data := pageData{
+		PageTitle:          "Nerdherdr: Tools for Technical Managers",
+		CopyrightYear:      time.Now().Year(),
+		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
+		DisplayBranding:    config.DISPLAY_BRANDING,
+	}
+
+	loggedIn, _ := util.IsLoggedIn(r)
+
+	if loggedIn {
+		tmpl := template.Must(template.ParseFiles(
+			"templates/add-employee.html", "templates/header.html", "templates/footer.html"))
+		tmpl.Execute(w, data)
+	} else {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+	}
+}
+
 func Test(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		PageTitle     string
