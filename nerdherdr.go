@@ -57,6 +57,7 @@ func main() {
 
 	util.SetUpEnv()
 	db.SetUpEnv()
+	db.AddEmployee("User3", "Test", "", "Backend Engineer V", "Tech", "2016-06-01")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")

@@ -158,6 +158,35 @@ func DbPopulateStruct() {
 	fmt.Println()
 }
 
+// Takes the relevant values for the INSERT
+// Returns a boolean indicating success|failure
+func AddEmployee(
+	lname string, fname string, mi string, title string, dept string, hire_date string,
+) bool {
+
+	dbh, err := sql.Open(DRIVER, dsn())
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	sql := `
+		INSERT INTO t_employees 
+		(lname, fname, mi, title, dept, hire_date)
+		VALUES 
+		(?, ?, ?, ?, ?, ?);`
+
+	stmtIns, err := dbh.Prepare(sql)
+	util.ErrChk(err)
+	defer stmtIns.Close()
+
+	_, err2 := stmtIns.Exec(lname, fname, mi, title, dept, hire_date)
+	util.ErrChk(err2)
+
+	return true
+}
+
 // Takes a userId
 // Returns a boolean indicating whether results were found, and the individual values
 func FetchUserProfileInfo(userId int) (bool, string, string, string, string, string) {
