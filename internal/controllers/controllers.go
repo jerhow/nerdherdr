@@ -38,15 +38,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type PageData struct {
-		PageTitle string
 		BodyTitle string
 		LoginMsg  string
+		Common    util.TemplateCommon
 	}
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))
 	data := PageData{
-		PageTitle: "Nerdherdr: Tools for Technical Managers",
 		BodyTitle: "Welcome!",
 		LoginMsg:  "",
+		Common:    util.TmplCommon,
 	}
 	tmpl.Execute(w, data)
 }
