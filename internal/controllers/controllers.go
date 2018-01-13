@@ -66,15 +66,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type pageData struct {
-		PageTitle string
 		BodyTitle string
 		LoginMsg  string
+		Common    util.TemplateCommon
 	}
 
 	data := pageData{
-		PageTitle: "Nerdherdr: Tools for Technical Managers",
 		BodyTitle: "Please log in",
 		LoginMsg:  "",
+		Common:    util.TmplCommon,
 	}
 
 	un = r.PostFormValue("un")
