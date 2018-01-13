@@ -3,9 +3,11 @@ package util
 import (
 	"fmt"
 	"github.com/gorilla/sessions"
+	"github.com/jerhow/nerdherdr/internal/config"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 var STATIC_ASSET_URL_BASE string
@@ -14,20 +16,20 @@ var SESSION_KEY = FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = FetchEnvVar("SESS_COOKIE")
 
 type TemplateCommon struct {
-	Value1 string
-	Value2 int
+	PageTitle          string
+	CopyrightYear      int
+	StaticAssetUrlBase string
+	DisplayBranding    bool
 }
 
-var TmplCommon = TemplateCommon{
-	Value1: "WUT",
-	Value2: 42,
-}
+var TmplCommon TemplateCommon
 
 // Anything we need to initialize in 'util' should go in here,
-// or at least be kicked off from in here. I know about Golang's
-// package-level 'init' functions, but I want a deliberate level
-// of control here, and I want main.main() to kick this off at startup.
-func SetUpEnv() {
+// or at least be kicked off from in here
+func Setup() {
+
+	// Work out the appropriate URL base for static assets
+	//
 	// NOTE: The 'localhost' values here refer to the Apache container
 	// I am currently using to serve the static assets. It is meant to
 	// mimic the production stack, which uses an S3 bucket.
@@ -36,7 +38,6 @@ func SetUpEnv() {
 	// a similarly-named directory from the app's file system is
 	// that, on Heroku, the dyno and filesystem are ephemeral.
 	// If this were sitting on a server or VPS, that would be possible.
-
 	currentEnv := os.Getenv("NH_GO_ENV")
 	switch currentEnv {
 	case "production":
@@ -50,6 +51,13 @@ func SetUpEnv() {
 	default:
 		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
 	}
+
+	// Initialize the common template struct
+	// Expects STATIC_ASSET_URL_BASE to be set already
+	TmplCommon.PageTitle = "Nerdherdr: Tools for Technical Managers"
+	TmplCommon.CopyrightYear = time.Now().Year()
+	TmplCommon.StaticAssetUrlBase = STATIC_ASSET_URL_BASE
+	TmplCommon.DisplayBranding = config.DISPLAY_BRANDING
 }
 
 func ErrChk(err error) {

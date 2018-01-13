@@ -55,7 +55,7 @@ func getPort() string {
 
 func main() {
 
-	util.SetUpEnv()
+	util.Setup()
 	db.SetUpEnv()
 
 	r := mux.NewRouter()

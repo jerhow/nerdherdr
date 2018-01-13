@@ -6,7 +6,7 @@
 <!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge"> -->
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 <meta name="robots" content="noindex, nofollow">
-<title>{{.PageTitle}}</title>
+<title>{{.Common.PageTitle}}</title>
 <!-- <style type="text/css">
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -14,10 +14,10 @@ body {
     height: 100%;
 }
 </style> -->
-<link rel="stylesheet" type="text/css" href="{{ .StaticAssetUrlBase }}base.css" media="all">
+<link rel="stylesheet" type="text/css" href="{{ .Common.StaticAssetUrlBase }}base.css" media="all">
 </head>
 <body>
-    {{if .DisplayBranding}}
+    {{if .Common.DisplayBranding}}
     <div style="border-bottom: 1px solid #bfbfbf;">
         <div style="font-size: 1.2em; font-weight: bold;">Nerdherdr</div>
         <div>Tools for Technical Managers</div>

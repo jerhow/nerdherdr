@@ -16,7 +16,7 @@
 package controllers
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/login"
@@ -116,11 +116,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		PageTitle             string
 		BodyTitle             string
 		LoggedIn              string
-		CopyrightYear         int
-		StaticAssetUrlBase    string
 		UserId                int
 		UserProfileMatchFound bool
 		Lname                 string
@@ -128,19 +125,14 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		MI                    string
 		Title                 string
 		Company               string
-		DisplayBranding       bool
 		Common                util.TemplateCommon
 	}
 	data := pageData{
-		PageTitle:          "Nerdherdr: Tools for Technical Managers",
-		BodyTitle:          "Welcome!",
-		CopyrightYear:      time.Now().Year(),
-		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
-		DisplayBranding:    config.DISPLAY_BRANDING,
-		Common:             util.TmplCommon,
+		BodyTitle: "Welcome!",
+		Common:    util.TmplCommon,
 	}
 
-	fmt.Println(data)
+	// fmt.Printf("%+v\n", data)
 
 	loggedIn, userId := util.IsLoggedIn(r)
 
