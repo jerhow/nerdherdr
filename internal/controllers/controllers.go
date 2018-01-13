@@ -18,7 +18,6 @@ package controllers
 import (
 	// "fmt"
 	"github.com/gorilla/sessions"
-	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"github.com/jerhow/nerdherdr/internal/welcome"
@@ -164,16 +163,10 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 func AddEmployee(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		PageTitle          string
-		CopyrightYear      int
-		StaticAssetUrlBase string
-		DisplayBranding    bool
+		Common util.TemplateCommon
 	}
 	data := pageData{
-		PageTitle:          "Nerdherdr: Tools for Technical Managers",
-		CopyrightYear:      time.Now().Year(),
-		StaticAssetUrlBase: util.STATIC_ASSET_URL_BASE,
-		DisplayBranding:    config.DISPLAY_BRANDING,
+		Common: util.TmplCommon,
 	}
 
 	loggedIn, _ := util.IsLoggedIn(r)
