@@ -13,6 +13,16 @@ var STATIC_ASSET_URL_BASE string
 var SESSION_KEY = FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = FetchEnvVar("SESS_COOKIE")
 
+type TemplateCommon struct {
+	Value1 string
+	Value2 int
+}
+
+var TmplCommon = TemplateCommon{
+	Value1: "WUT",
+	Value2: 42,
+}
+
 // Anything we need to initialize in 'util' should go in here,
 // or at least be kicked off from in here. I know about Golang's
 // package-level 'init' functions, but I want a deliberate level
