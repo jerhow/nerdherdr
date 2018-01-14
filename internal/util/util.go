@@ -41,20 +41,20 @@ func Setup() {
 	currentEnv := os.Getenv("NH_GO_ENV")
 	switch currentEnv {
 	case "production":
-		STATIC_ASSET_URL_BASE = "https://s3.amazonaws.com/nerdherdr/"
+		STATIC_ASSET_URL_BASE = config.STATIC_ASSET_URL_BASE_PROD
 	case "stage":
-		STATIC_ASSET_URL_BASE = "https://s3.amazonaws.com/nerdherdr/"
+		STATIC_ASSET_URL_BASE = config.STATIC_ASSET_URL_BASE_STAGE
 	case "dev":
-		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+		STATIC_ASSET_URL_BASE = config.STATIC_ASSET_URL_BASE_DEV
 	case "devlocal":
-		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+		STATIC_ASSET_URL_BASE = config.STATIC_ASSET_URL_BASE_LOCAL
 	default:
-		STATIC_ASSET_URL_BASE = "http://localhost:8080/"
+		STATIC_ASSET_URL_BASE = config.STATIC_ASSET_URL_BASE_DEFAULT
 	}
 
 	// Initialize the common template struct
 	// Expects STATIC_ASSET_URL_BASE to be set already
-	TmplCommon.PageTitle = "Nerdherdr: Tools for Technical Managers"
+	TmplCommon.PageTitle = config.PAGE_TITLE
 	TmplCommon.CopyrightYear = time.Now().Year()
 	TmplCommon.StaticAssetUrlBase = STATIC_ASSET_URL_BASE
 	TmplCommon.DisplayBranding = config.DISPLAY_BRANDING
