@@ -173,7 +173,11 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 
 	if loggedIn {
 		tmpl := template.Must(template.ParseFiles(
-			"templates/add-employee.html", "templates/header.html", "templates/footer.html"))
+			"templates/add-employee.html",
+			"templates/header.html",
+			"templates/add-employee-header-inject.html",
+			"templates/header-end.html",
+			"templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
