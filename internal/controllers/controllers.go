@@ -154,7 +154,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
 		tmpl := template.Must(template.ParseFiles(
-			"templates/welcome.html", "templates/header.html", "templates/footer.html"))
+			"templates/welcome.html", "templates/header-end.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
