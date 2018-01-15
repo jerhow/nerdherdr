@@ -48,6 +48,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	tmpl := template.Must(template.ParseFiles(
 		"templates/index.html",
+		"templates/index-header-inject.html",
 		"templates/header-end.html",
 		"templates/header.html",
 		"templates/footer.html"))

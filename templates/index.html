@@ -1,4 +1,5 @@
 {{template "header" .}}
+{{template "index-header-inject" .}}
 {{template "header-end" .}}
 
 <br />
@@ -23,7 +24,7 @@
         <tr>
             <td colspan="2" align="right">
                 <br />
-                <input type="submit" value="Submit" />
+                <input id="btnSubmit" type="submit" value="Submit" />
             </td>
         </tr>
         <tr>
@@ -34,5 +35,11 @@
         </tr>
     </table>
 </form>
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSubmit").zinoButton();
+});
+</script>
 
 {{template "footer" .}}
