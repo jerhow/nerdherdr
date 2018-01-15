@@ -20,6 +20,7 @@ type TemplateCommon struct {
 	CopyrightYear      int
 	StaticAssetUrlBase string
 	DisplayBranding    bool
+	MastheadTagline    string
 }
 
 var TmplCommon TemplateCommon
@@ -58,6 +59,7 @@ func Setup() {
 	TmplCommon.CopyrightYear = time.Now().Year()
 	TmplCommon.StaticAssetUrlBase = STATIC_ASSET_URL_BASE
 	TmplCommon.DisplayBranding = config.DISPLAY_BRANDING
+	TmplCommon.MastheadTagline = config.MASTHEAD_TAGLINE
 }
 
 func ErrChk(err error) {
