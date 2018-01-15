@@ -30,7 +30,6 @@ var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
 
 func Index(w http.ResponseWriter, r *http.Request) {
-
 	loggedIn, _ := util.IsLoggedIn(r)
 	if loggedIn {
 		http.Redirect(w, r, "welcome", 303)
@@ -41,12 +40,17 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		LoginMsg  string
 		Common    util.TemplateCommon
 	}
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
 	data := PageData{
 		BodyTitle: "Welcome!",
 		LoginMsg:  "",
 		Common:    util.TmplCommon,
 	}
+
+	tmpl := template.Must(template.ParseFiles(
+		"templates/index.html",
+		"templates/header-end.html",
+		"templates/header.html",
+		"templates/footer.html"))
 	tmpl.Execute(w, data)
 }
 
