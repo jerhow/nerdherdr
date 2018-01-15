@@ -76,7 +76,11 @@
 </form>
 
 <script type="text/javascript">
-$( "#hire_date" ).datepicker();
+$(function () {
+    $("#hire_date").zinoCalendar({
+        months: 1
+    });
+});
 </script>
 
 {{template "footer" .}}
