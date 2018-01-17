@@ -1,3 +1,8 @@
+// Package util is the place for utility functions,
+// common variables, constants, data structures, etc
+// which are used across multiple parts of the application.
+// Note the relationship with the 'config' package, which is
+// strictly for hard-coded, common values.
 package util
 
 import (

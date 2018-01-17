@@ -1,4 +1,4 @@
-// Package welcome gathers any helper functions which are only relevant to the 'welcome' view.
+// Package welcome gathers any helper functions which are only relevant to the 'welcome' view
 package welcome
 
 import (
