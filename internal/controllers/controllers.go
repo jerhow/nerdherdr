@@ -16,7 +16,7 @@
 package controllers
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/login"
