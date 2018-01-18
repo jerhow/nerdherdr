@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 <meta name="robots" content="noindex, nofollow">
-<title>{{.Common.PageTitle}}</title>
+<title>{{if .Common.DisplayBranding}}{{.Common.PageTitle}}{{else}}Dev Mgmt Tools{{end}}</title>
 <link rel="stylesheet" type="text/css" href="{{ .Common.StaticAssetUrlBase }}base.css" media="all">
 <script src="{{ .Common.StaticAssetUrlBase }}jquery-3.2.1.min.js"></script>
 {{end}}
