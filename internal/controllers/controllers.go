@@ -158,7 +158,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if loggedIn {
-		data.EmpRows = db.FetchEmployeeList()
+		data.EmpRows = db.FetchEmployeeList(userId)
 
 		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
 		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())

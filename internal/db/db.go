@@ -112,9 +112,7 @@ type EmpRow struct {
 	Hire_date string
 }
 
-// POC for now
-// Will parameterize this later
-func FetchEmployeeList() []EmpRow {
+func FetchEmployeeList(userId int) []EmpRow {
 
 	EmpRows := make([]EmpRow, 0)
 
@@ -137,9 +135,11 @@ func FetchEmployeeList() []EmpRow {
 		date_format(hire_date, '%c/%e/%Y') as hire_date
 	FROM 
 		t_employees
+	WHERE
+		userId = ?
 	ORDER BY
 		id;`
-	rows, err := dbh.Query(sql)
+	rows, err := dbh.Query(sql, userId)
 	util.ErrChk(err)
 	defer rows.Close()
 
