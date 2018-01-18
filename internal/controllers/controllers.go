@@ -16,8 +16,9 @@
 package controllers
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/gorilla/sessions"
+	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"github.com/jerhow/nerdherdr/internal/welcome"
@@ -130,6 +131,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		Title                 string
 		Company               string
 		Common                util.TemplateCommon
+		EmpRows               []db.EmpRow
 	}
 	data := pageData{
 		BodyTitle: "Welcome!",
@@ -153,6 +155,16 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		} else {
 			data.UserProfileMatchFound = false
 		}
+	}
+
+	if loggedIn {
+		data.EmpRows = db.FetchEmployeeList()
+
+		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
+
+		// fmt.Printf("Type: %T \n", data.EmpRows)
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
 	}
 
 	if loggedIn {

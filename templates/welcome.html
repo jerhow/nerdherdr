@@ -32,6 +32,33 @@
 	{{end}}
 </div>
 
+<div style="font-size: 1.05em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
+
+<table border="1" cellpadding="2" cellspacing="0">
+	<tr style="background-color: #e0e0e0; font-weight: bold;">
+		<td>ID</td>
+		<td>Last Name</td>
+		<td>First Name</td>
+		<td>M.I.</td>
+		<td>Title</td>
+		<td>Dept</td>
+		<td>Team</td>
+		<td>Hire Date</td>
+	</tr>
+	{{range .EmpRows}}
+	<tr>
+		<td>{{.Id}}</td>
+		<td>{{.Lname}}</td>
+		<td>{{.Fname}}</td>
+		<td>{{.Mi}}</td>
+		<td>{{.Title}}</td>
+		<td>{{.Dept}}</td>
+		<td>{{.Team}}</td>
+		<td>{{.Hire_date}}</td>
+	</tr>
+	{{end}}
+</table>
+
 <p>
 	<a href="add-employee">Add an employee</a>
 </p>

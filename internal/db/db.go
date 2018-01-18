@@ -101,6 +101,60 @@ func Db1() {
 	// defer insert.Close()
 }
 
+type EmpRow struct {
+	Id        int
+	Lname     string
+	Fname     string
+	Mi        string
+	Title     string
+	Dept      string
+	Team      string
+	Hire_date string
+}
+
+// POC for now
+// Will parameterize this later
+func FetchEmployeeList() []EmpRow {
+
+	EmpRows := make([]EmpRow, 0)
+
+	dbh, err := sql.Open(DRIVER, dsn())
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	sql := `
+	SELECT 
+		id,
+		lname,
+		fname,
+		mi,
+		title,
+		dept,
+		team,
+		date_format(hire_date, '%c/%e/%Y') as hire_date
+	FROM 
+		t_employees
+	ORDER BY
+		id;`
+	rows, err := dbh.Query(sql)
+	util.ErrChk(err)
+	defer rows.Close()
+
+	for rows.Next() { // for each row, scan the result into the EmpRow struct
+		var row EmpRow
+		err := rows.Scan(&row.Id, &row.Lname, &row.Fname, &row.Mi,
+			&row.Title, &row.Dept, &row.Team, &row.Hire_date)
+		util.ErrChk(err)
+		// then append the struct to the slice, which we will pass into the template
+		EmpRows = append(EmpRows, row)
+	}
+
+	return EmpRows
+}
+
 func DbPopulateStruct() {
 	fmt.Println("sup from dbPopulateStruct()")
 
