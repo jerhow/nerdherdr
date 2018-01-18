@@ -16,8 +16,10 @@
 package controllers
 
 import (
+	"fmt"
 	// "fmt"
 	"github.com/gorilla/sessions"
+	"github.com/jerhow/nerdherdr/internal/addemployee"
 	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
@@ -60,6 +62,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var un, pw string
 	// var authenticated bool
 	// var userId int
+
+	fmt.Printf("%#v", r)
 
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
@@ -105,6 +109,40 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))
 	tmpl.Execute(w, data)
+}
+
+func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
+	var fname, lname, mi, title, dept, team, hireDate string
+	var result bool = false
+
+	loggedIn, userId := util.IsLoggedIn(r)
+	if !loggedIn {
+		// bounce out
+	}
+
+	fmt.Printf("%#v", r)
+
+	fname = r.PostFormValue("fname")
+	lname = r.PostFormValue("lname")
+	mi = r.PostFormValue("mi")
+	title = r.PostFormValue("title")
+	dept = r.PostFormValue("dept")
+	team = r.PostFormValue("team")
+	hireDate = r.PostFormValue("hire_date")
+
+	fname = "Maggie"
+
+	// obviously must check for empty values, validate, sanity check, etc
+	result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	if result {
+		fmt.Println("Validate()")
+	}
+
+	// attempt to write to DB
+	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
+	if result {
+		fmt.Println("PostToDb()")
+	}
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
@@ -181,7 +219,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func AddEmployee(w http.ResponseWriter, r *http.Request) {
+func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		Common util.TemplateCommon
 	}
