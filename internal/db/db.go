@@ -101,6 +101,7 @@ func Db1() {
 	// defer insert.Close()
 }
 
+// We use this in EmployeeList()
 type EmpRow struct {
 	Id        int
 	Lname     string
@@ -112,7 +113,7 @@ type EmpRow struct {
 	Hire_date string
 }
 
-func FetchEmployeeList(userId int) []EmpRow {
+func EmployeeList(userId int) []EmpRow {
 
 	EmpRows := make([]EmpRow, 0)
 

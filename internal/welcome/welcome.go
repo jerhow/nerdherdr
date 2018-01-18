@@ -14,3 +14,10 @@ func UserProfileInfo(userId int) (bool, string, string, string, string, string) 
 	// lname, fname, mi, title, company string := db.FetchUserProfileInfo(userId)
 	return db.FetchUserProfileInfo(userId)
 }
+
+// Takes a userId, returns a slice of db.EmpRow structs.
+// This is another function which seems pointless, but I prefer for organizational reasons
+// (I'd rather not call into the 'db' package directly from a controller if possible)
+func FetchEmployeeList(userId int) []db.EmpRow {
+	return db.EmployeeList(userId)
+}
