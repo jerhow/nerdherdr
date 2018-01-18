@@ -5,7 +5,7 @@
 // be here (those should live in the ENV config variables).
 package config
 
-const DISPLAY_BRANDING bool = true
+const DISPLAY_BRANDING bool = false
 
 // "Tools for Technical Managers"
 // "Guiding the Human Side of Technology"
