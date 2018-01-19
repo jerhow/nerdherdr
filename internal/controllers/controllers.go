@@ -130,8 +130,6 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 	team = r.PostFormValue("team")
 	hireDate = r.PostFormValue("hire_date")
 
-	fname = "Maggie"
-
 	// obviously must check for empty values, validate, sanity check, etc
 	result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
 	if result {
