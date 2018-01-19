@@ -215,9 +215,7 @@ func DbPopulateStruct() {
 
 // Takes the relevant values for the INSERT
 // Returns a boolean indicating success|failure
-func AddEmployee(
-	lname string, fname string, mi string, title string, dept string, hire_date string,
-) bool {
+func AddEmployee(lname, fname, mi, title, dept, team, hire_date string, userId int) bool {
 
 	dbh, err := sql.Open(DRIVER, dsn())
 	util.ErrChk(err)
@@ -228,15 +226,15 @@ func AddEmployee(
 
 	sql := `
 		INSERT INTO t_employees 
-		(lname, fname, mi, title, dept, hire_date)
+		(userId, lname, fname, mi, title, dept, team, hire_date)
 		VALUES 
-		(?, ?, ?, ?, ?, ?);`
+		(?, ?, ?, ?, ?, ?, ?, ?);`
 
 	stmtIns, err := dbh.Prepare(sql)
 	util.ErrChk(err)
 	defer stmtIns.Close()
 
-	_, err2 := stmtIns.Exec(lname, fname, mi, title, dept, hire_date)
+	_, err2 := stmtIns.Exec(userId, lname, fname, mi, title, dept, team, hire_date)
 	util.ErrChk(err2)
 
 	return true

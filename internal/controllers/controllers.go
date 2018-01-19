@@ -120,7 +120,7 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 		// bounce out
 	}
 
-	fmt.Printf("%#v", r)
+	// fmt.Printf("%#v", r)
 
 	fname = r.PostFormValue("fname")
 	lname = r.PostFormValue("lname")
@@ -131,15 +131,16 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 	hireDate = r.PostFormValue("hire_date")
 
 	// obviously must check for empty values, validate, sanity check, etc
-	result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	result = addemployee.Validate()
 	if result {
-		fmt.Println("Validate()")
+		fmt.Println("Validate() call completed")
 	}
 
 	// attempt to write to DB
 	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
 	if result {
-		fmt.Println("PostToDb()")
+		fmt.Println("PostToDb() call completed successfully")
 	}
 }
 
