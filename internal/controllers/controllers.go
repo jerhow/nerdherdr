@@ -17,7 +17,7 @@ package controllers
 
 import (
 	"fmt"
-	// "fmt"
+	// "net/url"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/addemployee"
 	"github.com/jerhow/nerdherdr/internal/db"
@@ -63,7 +63,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// var authenticated bool
 	// var userId int
 
-	fmt.Printf("%#v", r)
+	// fmt.Printf("%#v", r)
 
 	var key = []byte(SESSION_KEY)
 	var store = sessions.NewCookieStore(key)
@@ -141,6 +141,7 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
 	if result {
 		fmt.Println("PostToDb() call completed successfully")
+		http.Redirect(w, r, "welcome?um=success", 303)
 	}
 }
 
@@ -169,13 +170,19 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		Company               string
 		Common                util.TemplateCommon
 		EmpRows               []db.EmpRow
+		UserMsg               string
 	}
 	data := pageData{
 		BodyTitle: "Welcome!",
 		Common:    util.TmplCommon,
+		UserMsg:   "",
 	}
 
-	// fmt.Printf("%+v\n", data)
+	// A message back to the user
+	userMsg := r.URL.Query().Get("um")
+	if userMsg == "success" {
+		data.UserMsg = "Employee added successfully!"
+	}
 
 	loggedIn, userId := util.IsLoggedIn(r)
 
