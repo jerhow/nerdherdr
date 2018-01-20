@@ -201,18 +201,15 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if loggedIn {
-		data.EmpRows = welcome.FetchEmployeeList(userId)
-
-		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
-		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
-
-		// fmt.Printf("Type: %T \n", data.EmpRows)
-		// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
-	}
-
-	if loggedIn {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
+
+		data.EmpRows = welcome.FetchEmployeeList(userId)
+		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
+		// fmt.Printf("Type: %T \n", data.EmpRows)
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
+
 		tmpl := template.Must(template.ParseFiles(
 			"templates/welcome.html",
 			"templates/header-end.html",
