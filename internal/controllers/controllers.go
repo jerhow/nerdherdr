@@ -170,6 +170,8 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		Common                util.TemplateCommon
 		EmpRows               []db.EmpRow
 		UserMsg               string
+		NewEmpListOrderBy     string
+		EmpListOrderByArrow   string
 	}
 	data := pageData{
 		BodyTitle: "Welcome!",
@@ -204,7 +206,17 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
 
-		data.EmpRows = welcome.FetchEmployeeList(userId)
+		sortBy := r.URL.Query().Get("sb")
+		orderBy := r.URL.Query().Get("ob")
+		if orderBy == "0" {
+			data.NewEmpListOrderBy = "1"
+			// data.EmpListOrderByArrow = "&#8593;"
+		} else {
+			data.NewEmpListOrderBy = "0"
+			// data.EmpListOrderByArrow = "&#8595;"
+		}
+
+		data.EmpRows = welcome.FetchEmployeeList(userId, sortBy, orderBy)
 		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
 		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
 		// fmt.Printf("Type: %T \n", data.EmpRows)

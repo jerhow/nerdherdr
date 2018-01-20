@@ -113,7 +113,10 @@ type EmpRow struct {
 	Hire_date string
 }
 
-func EmployeeList(userId int) []EmpRow {
+// Expects the user's id, and sortBy and orderBy values
+// Returns a slice of db.EmpRow structs
+// NOTE: Assumes that sortBy and orderBy have been sanity-checked
+func EmployeeList(userId int, sortBy string, orderBy string) []EmpRow {
 
 	EmpRows := make([]EmpRow, 0)
 
@@ -138,8 +141,10 @@ func EmployeeList(userId int) []EmpRow {
 		t_employees
 	WHERE
 		userId = ?
-	ORDER BY
-		id;`
+	ORDER BY ` + sortBy + ` ` + orderBy + `;`
+
+	fmt.Println(sql)
+
 	rows, err := dbh.Query(sql, userId)
 	util.ErrChk(err)
 	defer rows.Close()

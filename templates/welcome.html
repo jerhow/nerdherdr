@@ -38,14 +38,14 @@
 
 <table border="1" cellpadding="2" cellspacing="0">
 	<tr style="background-color: #e0e0e0; font-weight: bold;">
-		<td>ID</td>
-		<td>Last Name</td>
-		<td>First Name</td>
-		<td>M.I.</td>
-		<td>Title</td>
-		<td>Dept</td>
-		<td>Team</td>
-		<td>Hire Date</td>
+		<td><a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a></td>
+		<td><a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}">Last Name</a></td>
+		<td><a href="welcome?sb=2&ob={{.NewEmpListOrderBy}}">First Name</a></td>
+		<td><a href="welcome?sb=3&ob={{.NewEmpListOrderBy}}">M.I.</a></td>
+		<td><a href="welcome?sb=4&ob={{.NewEmpListOrderBy}}">Title</a></td>
+		<td><a href="welcome?sb=5&ob={{.NewEmpListOrderBy}}">Dept</a></td>
+		<td><a href="welcome?sb=6&ob={{.NewEmpListOrderBy}}">Team</a></td>
+		<td><a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a></td>
 	</tr>
 	{{range .EmpRows}}
 	<tr>
