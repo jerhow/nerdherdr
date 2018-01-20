@@ -26,7 +26,6 @@ import (
 	"github.com/jerhow/nerdherdr/internal/welcome"
 	"html/template"
 	"net/http"
-	"time"
 )
 
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
@@ -246,25 +245,4 @@ func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
 	}
-}
-
-func Test(w http.ResponseWriter, r *http.Request) {
-	type pageData struct {
-		PageTitle     string
-		BodyTitle     string
-		LoginMsg      string
-		CopyrightYear int
-	}
-	data := pageData{
-		PageTitle:     "Nerdherdr: Tools for Technical Managers",
-		BodyTitle:     "Welcome!",
-		LoginMsg:      "No, but that's okay",
-		CopyrightYear: time.Now().Year(),
-	}
-
-	tmpl := template.Must(template.ParseFiles(
-		"templates/test-header-footer.html",
-		"templates/header.html",
-		"templates/footer.html"))
-	tmpl.Execute(w, data)
 }
