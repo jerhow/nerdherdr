@@ -136,14 +136,14 @@ func EmployeeList(userId int, sortBy string, orderBy string) []EmpRow {
 		title,
 		dept,
 		team,
-		date_format(hire_date, '%c/%e/%Y') as hire_date
+		date_format(hire_date, '%c/%e/%Y') as date_of_hire
 	FROM 
 		t_employees
 	WHERE
 		userId = ?
 	ORDER BY ` + sortBy + ` ` + orderBy + `;`
 
-	fmt.Println(sql)
+	// fmt.Println(sql)
 
 	rows, err := dbh.Query(sql, userId)
 	util.ErrChk(err)
