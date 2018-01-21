@@ -19,8 +19,7 @@ func UserProfileInfo(userId int) (bool, string, string, string, string, string) 
 // Takes a userId, returns a slice of db.EmpRow structs.
 // This is another function which seems pointless, but I prefer for organizational reasons
 // (I'd rather not call into the 'db' package directly from a controller if possible)
-func FetchEmployeeList(userId int, sort string, order string) []db.EmpRow {
-	sortBy, orderBy := parseEmpListSortAndOrderQsParams(sort, order)
+func FetchEmployeeList(userId int, sortBy string, orderBy string) []db.EmpRow {
 	return db.EmployeeList(userId, sortBy, orderBy)
 }
 
@@ -29,7 +28,7 @@ func FetchEmployeeList(userId int, sort string, order string) []db.EmpRow {
 // which are appropriate to be used in the actual query.
 // If no values, or garbage values, are passed in on the query string,
 // we return safe default values.
-func parseEmpListSortAndOrderQsParams(sort string, order string) (string, string) {
+func ParseEmpListSortAndOrderQsParams(sort string, order string) (string, string) {
 	var sortBy string = ""
 	var orderBy string = ""
 	var found bool = false

@@ -17,3 +17,8 @@ const STATIC_ASSET_URL_BASE_STAGE string = "https://s3.amazonaws.com/nerdherdr/"
 const STATIC_ASSET_URL_BASE_DEV string = "http://localhost:8080/"
 const STATIC_ASSET_URL_BASE_LOCAL string = "http://localhost:8080/"
 const STATIC_ASSET_URL_BASE_DEFAULT string = "http://localhost:8080/"
+
+const HTML_ARROW_01_UP string = "&#8593;"
+const HTML_ARROW_01_DN string = "&#8595;"
+const HTML_ARROW_01_RT string = "&#8594;"
+const HTML_ARROW_01_LF string = "&#8592;"

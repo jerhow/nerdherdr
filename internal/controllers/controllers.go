@@ -20,6 +20,7 @@ import (
 	// "net/url"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/addemployee"
+	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
@@ -158,25 +159,41 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		BodyTitle             string
-		LoggedIn              string
-		UserId                int
-		UserProfileMatchFound bool
-		Lname                 string
-		Fname                 string
-		MI                    string
-		Title                 string
-		Company               string
-		Common                util.TemplateCommon
-		EmpRows               []db.EmpRow
-		UserMsg               string
-		NewEmpListOrderBy     string
-		EmpListOrderByArrow   string
+		BodyTitle              string
+		LoggedIn               string
+		UserId                 int
+		UserProfileMatchFound  bool
+		Lname                  string
+		Fname                  string
+		MI                     string
+		Title                  string
+		Company                string
+		Common                 util.TemplateCommon
+		EmpRows                []db.EmpRow
+		UserMsg                string
+		EmpListSortBy          string
+		NewEmpListOrderBy      string
+		EmpListArrow_id        template.HTML
+		EmpListArrow_lname     template.HTML
+		EmpListArrow_fname     template.HTML
+		EmpListArrow_mi        template.HTML
+		EmpListArrow_title     template.HTML
+		EmpListArrow_dept      template.HTML
+		EmpListArrow_team      template.HTML
+		EmpListArrow_hire_date template.HTML
 	}
 	data := pageData{
-		BodyTitle: "Welcome!",
-		Common:    util.TmplCommon,
-		UserMsg:   "",
+		BodyTitle:              "Welcome!",
+		Common:                 util.TmplCommon,
+		UserMsg:                "",
+		EmpListArrow_id:        template.HTML(""),
+		EmpListArrow_lname:     template.HTML(""),
+		EmpListArrow_fname:     template.HTML(""),
+		EmpListArrow_mi:        template.HTML(""),
+		EmpListArrow_title:     template.HTML(""),
+		EmpListArrow_dept:      template.HTML(""),
+		EmpListArrow_team:      template.HTML(""),
+		EmpListArrow_hire_date: template.HTML(""),
 	}
 
 	// A message back to the user
@@ -206,14 +223,37 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
 
-		sortBy := r.URL.Query().Get("sb")
-		orderBy := r.URL.Query().Get("ob")
-		if orderBy == "0" {
+		sortByQs := r.URL.Query().Get("sb")
+		orderByQs := r.URL.Query().Get("ob")
+
+		sortBy, orderBy := welcome.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
+		data.EmpListSortBy = sortBy
+		var arrow template.HTML
+		if orderByQs == "0" || orderByQs == "" {
 			data.NewEmpListOrderBy = "1"
-			// data.EmpListOrderByArrow = "&#8593;"
+			arrow = template.HTML(config.HTML_ARROW_01_UP)
 		} else {
 			data.NewEmpListOrderBy = "0"
-			// data.EmpListOrderByArrow = "&#8595;"
+			arrow = template.HTML(config.HTML_ARROW_01_DN)
+		}
+
+		switch sortBy {
+		case "id":
+			data.EmpListArrow_id = arrow
+		case "lname":
+			data.EmpListArrow_lname = arrow
+		case "fname":
+			data.EmpListArrow_fname = arrow
+		case "mi":
+			data.EmpListArrow_mi = arrow
+		case "title":
+			data.EmpListArrow_title = arrow
+		case "dept":
+			data.EmpListArrow_dept = arrow
+		case "team":
+			data.EmpListArrow_team = arrow
+		case "hire_date":
+			data.EmpListArrow_hire_date = arrow
 		}
 
 		data.EmpRows = welcome.FetchEmployeeList(userId, sortBy, orderBy)

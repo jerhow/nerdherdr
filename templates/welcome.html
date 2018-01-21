@@ -38,15 +38,40 @@
 
 <table border="1" cellpadding="2" cellspacing="0">
 	<tr style="background-color: #e0e0e0; font-weight: bold;">
-		<td><a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a></td>
-		<td><a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}">Last Name</a></td>
-		<td><a href="welcome?sb=2&ob={{.NewEmpListOrderBy}}">First Name</a></td>
-		<td><a href="welcome?sb=3&ob={{.NewEmpListOrderBy}}">M.I.</a></td>
-		<td><a href="welcome?sb=4&ob={{.NewEmpListOrderBy}}">Title</a></td>
-		<td><a href="welcome?sb=5&ob={{.NewEmpListOrderBy}}">Dept</a></td>
-		<td><a href="welcome?sb=6&ob={{.NewEmpListOrderBy}}">Team</a></td>
-		<td><a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a></td>
+		<td>
+			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a>
+			<span class="arrow">{{ .EmpListArrow_id }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}">Last Name</a>
+			<span class="arrow">{{ .EmpListArrow_lname }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=2&ob={{.NewEmpListOrderBy}}">First Name</a>
+			<span class="arrow">{{ .EmpListArrow_fname }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=3&ob={{.NewEmpListOrderBy}}">M.I.</a>
+			<span class="arrow">{{ .EmpListArrow_mi }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=4&ob={{.NewEmpListOrderBy}}">Title</a>
+			<span class="arrow">{{ .EmpListArrow_title }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=5&ob={{.NewEmpListOrderBy}}">Dept</a>
+			<span class="arrow">{{ .EmpListArrow_dept }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=6&ob={{.NewEmpListOrderBy}}">Team</a>
+			<span class="arrow">{{ .EmpListArrow_team }}</span>
+		</td>
+		<td>
+			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a>
+			<span class="arrow">{{ .EmpListArrow_hire_date }}</span>
+		</td>
 	</tr>
+
 	{{range .EmpRows}}
 	<tr>
 		<td>{{.Id}}</td>
