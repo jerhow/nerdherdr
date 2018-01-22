@@ -1,25 +1,19 @@
-{{template "header" .}}
 
-{{template "add-employee-header-inject" .}}
-
-{{template "header-end" .}}
-
-<div style="margin-top: 10px; font-size: .8em;">
+<!-- <div style="margin-top: 10px; font-size: .8em;">
 <a href="/">Home</a> | <a href="logout">Logout</a>
-</div>
+</div> -->
 
-<h4 style="margin-top: 40px;">Add an employee:</h4>
+<!-- <h4>Add an employee:</h4> -->
 
 <form id="frm_add" action="/add-employee" method="post">
-
-    <table width="550" border="0" cellpadding="0" cellspacing="5">
+    <table width="325" border="0" cellpadding="0" cellspacing="5">
         <tr>
             <td style="width: 100px;">
                 First Name
             </td>
             <td>
                 <input type="text" id="fname" name="fname" style="width: 200px;" placeholder="First Name" />
-                <span id="msg_fname" class="msg"></span>
+                <div id="msg_fname" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -28,7 +22,7 @@
             </td>
             <td>
                 <input type="text" id="lname" name="lname" style="width: 200px;" placeholder="Last Name" />
-                <span id="msg_lname" class="msg"></span>
+                <div id="msg_lname" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -37,7 +31,7 @@
             </td>
             <td>
                 <input type="text" id="mi" name="mi" style="width: 25px;" placeholder="M.I." />
-                <span id="msg_mi" class="msg"></span>
+                <div id="msg_mi" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -46,7 +40,7 @@
             </td>
             <td>
                 <input type="text" id="title" name="title" style="width: 200px;" placeholder="Title" />
-                <span id="msg_title" class="msg"></span>
+                <div id="msg_title" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -55,7 +49,7 @@
             </td>
             <td>
                 <input type="text" id="dept" name="dept" style="width: 200px;" placeholder="Dept" />
-                <span id="msg_dept" class="msg"></span>
+                <div id="msg_dept" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -64,7 +58,7 @@
             </td>
             <td>
                 <input type="text" id="team" name="team" style="width: 200px;" placeholder="Team" />
-                <span id="msg_team" class="msg"></span>
+                <div id="msg_team" class="msg"></div>
             </td>
         </tr>
         <tr>
@@ -72,18 +66,18 @@
                 Hire Date
             </td>
             <td>
-                <input type="text" id="hire_date" name="hire_date" style="width: 150px;" placeholder="Hire Date" />
-                <span id="msg_hire_date" class="msg"></span>
+                <input type="text" id="hire_date" name="hire_date" style="width: 150px; z-index: 1000;" placeholder="Hire Date" />
+                <div id="msg_hire_date" class="msg"></div>
             </td>
         </tr>
         <tr>
             <td colspan="1" align="left">
-                <div style="margin-top: 10px;">
+                <div style="margin-top: 30px;">
                     <input type="button" id="btn_submit" name="btn_submit" value="SUBMIT" />
                 </div>
             </td>
             <td colspan="1" align="left">
-                <div style="margin-top: 10px; margin-left: 140px;">
+                <div style="margin-top: 30px; margin-left: 140px;">
                     <input type="button" id="btn_cancel" name="btn_cancel" value="Cancel" />
                 </div>
             </td>
@@ -91,4 +85,6 @@
     </table>
 </form>
 
-{{template "footer" .}}
+<script>
+addEmployeeFormInit();
+</script>

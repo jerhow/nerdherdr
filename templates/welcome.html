@@ -1,5 +1,6 @@
 {{template "header" .}}
 {{template "welcome-header-inject" .}}
+{{template "add-employee-header-inject" .}}
 {{template "header-end" .}}
 
 <div style="margin-top: 10px; font-size: .8em;">
@@ -35,10 +36,10 @@
 
 <div style="padding-top: 15px; font-style: italic; color: green;">{{.UserMsg}}</div>
 
-<div style="font-size: 1.05em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
+<div style="font-size: 1em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
 
 <table border="1" cellpadding="2" cellspacing="0">
-	<tr style="background-color: #e0e0e0; font-weight: bold;">
+	<tr style="background-color: #e0e0e0; font-size: .9em; font-weight: bold;">
 		<td>
 			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a>
 			<span class="arrow">{{ .EmpListArrow_id }}</span>
@@ -74,7 +75,7 @@
 	</tr>
 
 	{{range .EmpRows}}
-	<tr>
+	<tr style="font-size: .8em;">
 		<td>{{.Id}}</td>
 		<td>{{.Lname}}</td>
 		<td>{{.Fname}}</td>
@@ -87,13 +88,13 @@
 	{{end}}
 </table>
 
-<p>
+<!-- <p>
 	<a href="add-employee">Add an employee</a>
-</p>
+</p> -->
 
-<div id="example_1" title="Example 1" style="display: none">
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus volutpat odio, et lobortis sapien convallis vitae.</p><p>Nullam sed magna eu lectus ornare bibendum. Vestibulum vestibulum scelerisque aliquam. Mauris imperdiet malesuada erat id fringilla.</p>
-</div>
-<input type="button" id="btn_add_employee" value="Add an employee" />
+<p>
+	<input type="button" id="btn_add_employee" value="Add an employee" />
+</p>
+<div id="add_emp_modal" title="Add an employee" style="display: none; z-index: 999;"></div>
 
 {{template "footer" .}}

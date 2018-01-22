@@ -6,36 +6,38 @@
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script>
 
 <script>
-$(document).ready(function() {
+
+function addEmployeeFormInit() {
 
     $("#hire_date").zinoCalendar({
 	    months: 1
 	});
 
 	$("#btn_cancel").click(function() {
-		window.location.replace("welcome");
+		// window.location.replace("welcome");
+		$("#add_emp_modal").zinoOverlay("close");
 	});
 
 	$("#btn_submit").click(formSubmit);
+}
 
-
-});
+var ARROW_UP = "&#8593;";
 
 var formFieldInfo = {
 	"fname": {
 		"required": true,
-		"requiredMsg": "First Name field required",
+		"requiredMsg": ARROW_UP + " First Name field required",
 		"maxLength": 100,
-		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (100)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
 	},
 	"lname": {
 		"required": true,
-		"requiredMsg": "Last Name field required",
+		"requiredMsg": ARROW_UP + " Last Name field required",
 		"maxLength": 10,
-		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (100)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
@@ -44,16 +46,16 @@ var formFieldInfo = {
 		"required": false,
 		"requiredMsg": null,
 		"maxLength": 2,
-		"maxLengthMsg": "Field exceeds maximum length (2)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (2)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
 	},
 	"title": {
 		"required": true,
-		"requiredMsg": "Title field required",
+		"requiredMsg": ARROW_UP + " Title field required",
 		"maxLength": 100,
-		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (100)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
@@ -62,7 +64,7 @@ var formFieldInfo = {
 		"required": false,
 		"requiredMsg": null,
 		"maxLength": 100,
-		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (100)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
@@ -71,16 +73,16 @@ var formFieldInfo = {
 		"required": false,
 		"requiredMsg": null,
 		"maxLength": 100,
-		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (100)",
 		"regexCheck": false,
 		"regex": null,
 		"regexMsg": null
 	},
 	"hire_date": {
 		"required": true,
-		"requiredMsg": "Hire Date field required",
+		"requiredMsg": ARROW_UP + " Hire Date field required",
 		"maxLength": 10,
-		"maxLengthMsg": "Field exceeds maximum length (10)",
+		"maxLengthMsg": ARROW_UP + " Field exceeds maximum length (10)",
 		"regexCheck": true,
 		"regex": /\d{4}\-\d{2}\-\d{2}/,
 		"regexMsg": "Invalid format, expecting YYYY-MM-DD"
@@ -92,6 +94,7 @@ function formSubmit() {
 	if(validate()) {
 		// console.log("Form would submit at this point.");
 		$("#frm_add").submit();
+		$("#add_emp_modal").zinoOverlay("close");
 	}
 }
 
@@ -131,7 +134,7 @@ function validate() {
 }
 
 function clearFieldMessages() {
-	$("span[id^='msg_']").html("");
+	$("div[id^='msg_']").html("");
 }
 
 // 1. Set the focus to 'field'
@@ -148,7 +151,7 @@ function formDidntValidate(field, msg) {
 	font-size: .8em;
 	/*font-style: italic;*/
 	color: red;
-	margin-left: 10px;
+	margin-left: 4px;
 }
 </style>
 

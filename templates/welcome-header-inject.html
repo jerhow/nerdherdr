@@ -1,6 +1,6 @@
 {{define "welcome-header-inject"}}
 
-<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css">
+<!-- <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css"> -->
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.button.css">
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.resizable.css">
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.overlay.css">
@@ -10,25 +10,37 @@
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.resizable.min.js"></script>
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.button.min.js"></script>
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.overlay.min.js"></script>
-<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script>
+<!-- <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script> -->
 
 <script>
-$( document ).ready(function() {
-    $("#example_1").zinoOverlay({
-        width: 300,
-        height: 240,
+$(document).ready(function() {
+    
+    $("#add_emp_modal").zinoOverlay({
+        height: 315,
+        width: 350,
+        minHeight: 315,
+        minWidth: 350,
         draggable: true,
         resizable: true,
         autoOpen: false,
+        buttons: null,
+        beforeOpen: function (inst) {
+            $.get("add-employee").done(function (data) {
+                $("#zui-overlay-content-" + inst.uid).html(data);
+            });
+        }/*,
         buttons: {
-            "Close": function (button) {
+            "Submit": function (button) {
+                $(this).zinoOverlay("close");
+            },
+            "Cancel": function (button) {
                 $(this).zinoOverlay("close");
             }
-        }
+        }*/
     });
 
     $("#btn_add_employee").click(function () {
-        $("#example_1").zinoOverlay("open");
+        $("#add_emp_modal").zinoOverlay("open");
     });
 
     $(":input[type='button']").zinoButton();
