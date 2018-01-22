@@ -141,7 +141,10 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
 	if result {
 		fmt.Println("PostToDb() call completed successfully")
-		http.Redirect(w, r, "welcome?um=success", 303)
+		// NOTE: These sb and ob values will sort the list by ID DESC,
+		// which I think is useful so that the employee you just entered is
+		// right at the top of the list when you land back at /welcome
+		http.Redirect(w, r, "welcome?um=success&sb=0&ob=1", 303)
 	}
 }
 
