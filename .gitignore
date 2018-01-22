@@ -31,6 +31,7 @@ Dump*.sql
 # Folders
 _obj/
 _test/
+_db_dumps/
 
 # NOTE: These are commented out because Heroku needs them to build the app
 # Godeps/
