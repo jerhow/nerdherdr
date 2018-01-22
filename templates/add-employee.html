@@ -12,13 +12,14 @@
 
 <form id="frm_add" action="/add-employee" method="post">
 
-    <table width="350" border="0" cellpadding="0" cellspacing="5">
+    <table width="550" border="0" cellpadding="0" cellspacing="5">
         <tr>
             <td style="width: 100px;">
                 First Name
             </td>
             <td>
                 <input type="text" id="fname" name="fname" style="width: 200px;" placeholder="First Name" />
+                <span id="msg_fname" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -27,6 +28,7 @@
             </td>
             <td>
                 <input type="text" id="lname" name="lname" style="width: 200px;" placeholder="Last Name" />
+                <span id="msg_lname" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -35,6 +37,7 @@
             </td>
             <td>
                 <input type="text" id="mi" name="mi" style="width: 25px;" placeholder="M.I." />
+                <span id="msg_mi" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -43,6 +46,7 @@
             </td>
             <td>
                 <input type="text" id="title" name="title" style="width: 200px;" placeholder="Title" />
+                <span id="msg_title" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -51,6 +55,7 @@
             </td>
             <td>
                 <input type="text" id="dept" name="dept" style="width: 200px;" placeholder="Dept" />
+                <span id="msg_dept" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -59,6 +64,7 @@
             </td>
             <td>
                 <input type="text" id="team" name="team" style="width: 200px;" placeholder="Team" />
+                <span id="msg_team" class="msg"></span>
             </td>
         </tr>
         <tr>
@@ -67,16 +73,17 @@
             </td>
             <td>
                 <input type="text" id="hire_date" name="hire_date" style="width: 150px;" placeholder="Hire Date" />
+                <span id="msg_hire_date" class="msg"></span>
             </td>
         </tr>
         <tr>
             <td colspan="1" align="left">
                 <div style="margin-top: 10px;">
-                    <input type="submit" id="btn_submit" name="btn_submit" value="SUBMIT" />
+                    <input type="button" id="btn_submit" name="btn_submit" value="SUBMIT" />
                 </div>
             </td>
-            <td colspan="1" align="right">
-                <div style="margin-top: 10px;">
+            <td colspan="1" align="left">
+                <div style="margin-top: 10px; margin-left: 140px;">
                     <input type="button" id="btn_cancel" name="btn_cancel" value="Cancel" />
                 </div>
             </td>

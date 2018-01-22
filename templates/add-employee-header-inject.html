@@ -1,4 +1,5 @@
 {{define "add-employee-header-inject"}}
+
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css">
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.calendar.css">
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.calendar.min.js"></script>
@@ -15,7 +16,140 @@ $(document).ready(function() {
 		window.location.replace("welcome");
 	});
 
+	$("#btn_submit").click(formSubmit);
+
 
 });
+
+var formFieldInfo = {
+	"fname": {
+		"required": true,
+		"requiredMsg": "First Name field required",
+		"maxLength": 100,
+		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"lname": {
+		"required": true,
+		"requiredMsg": "Last Name field required",
+		"maxLength": 10,
+		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"mi": {
+		"required": false,
+		"requiredMsg": null,
+		"maxLength": 2,
+		"maxLengthMsg": "Field exceeds maximum length (2)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"title": {
+		"required": true,
+		"requiredMsg": "Title field required",
+		"maxLength": 100,
+		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"dept": {
+		"required": false,
+		"requiredMsg": null,
+		"maxLength": 100,
+		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"team": {
+		"required": false,
+		"requiredMsg": null,
+		"maxLength": 100,
+		"maxLengthMsg": "Field exceeds maximum length (100)",
+		"regexCheck": false,
+		"regex": null,
+		"regexMsg": null
+	},
+	"hire_date": {
+		"required": true,
+		"requiredMsg": "Hire Date field required",
+		"maxLength": 10,
+		"maxLengthMsg": "Field exceeds maximum length (10)",
+		"regexCheck": true,
+		"regex": /\d{4}\-\d{2}\-\d{2}/,
+		"regexMsg": "Invalid format, expecting YYYY-MM-DD"
+	},
+};
+
+function formSubmit() {
+
+	if(validate()) {
+		// console.log("Form would submit at this point.");
+		$("#frm_add").submit();
+	}
+}
+
+function validate() {
+
+	clearFieldMessages();
+
+	// Required field checks
+	for(field in formFieldInfo) {
+		if(formFieldInfo[field]["required"]) {
+			if( $.trim($("#" + field).val()) === "" ) {
+				formDidntValidate(field, formFieldInfo[field]["requiredMsg"]);
+				return false;
+			}
+		}
+	}
+
+	// Field length checks
+	for(field in formFieldInfo) {
+		if( $.trim($("#" + field).val().length) > formFieldInfo[field]["maxLength"]) {
+			formDidntValidate(field, formFieldInfo[field]["maxLengthMsg"]);
+			return false;
+		}
+	}
+
+	// Regex checks
+	for(field in formFieldInfo) {
+		if(formFieldInfo[field]["regexCheck"]) {
+			if(!formFieldInfo[field]["regex"].test($("#" + field).val())) {
+				formDidntValidate(field, formFieldInfo[field]["regexMsg"]);
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+function clearFieldMessages() {
+	$("span[id^='msg_']").html("");
+}
+
+// 1. Set the focus to 'field'
+// 2. Write 'msg' to an element next to the field
+function formDidntValidate(field, msg) {
+	$(field).focus();
+	$("#msg_" + field).html(msg);
+}
+
 </script>
+
+<style type="text/css">
+.msg {
+	font-size: .8em;
+	/*font-style: italic;*/
+	color: red;
+	margin-left: 10px;
+}
+</style>
+
 {{end}}
