@@ -267,6 +267,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 		tmpl := template.Must(template.ParseFiles(
 			"templates/welcome.html",
+			"templates/welcome-header-inject.html",
 			"templates/header-end.html",
 			"templates/header.html",
 			"templates/footer.html"))

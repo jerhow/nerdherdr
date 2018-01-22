@@ -1,7 +1,36 @@
 {{define "welcome-header-inject"}}
+
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css">
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.button.css">
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.resizable.css">
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.overlay.css">
+
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.position.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.draggable.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.resizable.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.button.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.overlay.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script>
+
 <script>
 $( document ).ready(function() {
-	
+    $("#example_1").zinoOverlay({
+        width: 300,
+        height: 240,
+        draggable: true,
+        resizable: true,
+        autoOpen: false,
+        buttons: {
+            "Close": function (button) {
+                $(this).zinoOverlay("close");
+            }
+        }
+    });
+    $("#button_1").click(function () {
+        $("#example_1").zinoOverlay("open");
+    });
+    $(":input[type='button']").zinoButton();
 });
 </script>
+
 {{end}}

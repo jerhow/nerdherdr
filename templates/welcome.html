@@ -1,4 +1,5 @@
 {{template "header" .}}
+{{template "welcome-header-inject" .}}
 {{template "header-end" .}}
 
 <div style="margin-top: 10px; font-size: .8em;">
@@ -89,5 +90,10 @@
 <p>
 	<a href="add-employee">Add an employee</a>
 </p>
+
+<div id="example_1" title="Example 1" style="display: none">
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus volutpat odio, et lobortis sapien convallis vitae.</p><p>Nullam sed magna eu lectus ornare bibendum. Vestibulum vestibulum scelerisque aliquam. Mauris imperdiet malesuada erat id fringilla.</p>
+</div>
+<input type="button" id="button_1" value="Open window" />
 
 {{template "footer" .}}
