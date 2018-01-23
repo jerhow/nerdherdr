@@ -44,6 +44,16 @@ $(document).ready(function() {
     });
 
     $(":input[type='button']").zinoButton();
+
+    if($("#user_msg").html() !== "") {
+    	window.setTimeout(
+    		function() {
+    			$("#user_msg").delay(5).html("&nbsp;"); // A space holds the height of the div
+    		},
+    		5000
+    	);
+    }
+
 });
 </script>
 

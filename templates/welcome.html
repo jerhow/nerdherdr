@@ -34,7 +34,7 @@
 	{{end}}
 </div>
 
-<div style="padding-top: 15px; font-style: italic; color: green;">{{.UserMsg}}</div>
+<!-- <div id="user_msg" style="padding-top: 15px; font-style: italic; color: green;">{{.UserMsg}}</div> -->
 
 <div style="font-size: 1em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
 
@@ -94,6 +94,8 @@
 
 <p>
 	<input type="button" id="btn_add_employee" value="Add an employee" />
+
+	<span id="user_msg" style="padding-top: 15px; padding-left: 25px; font-size: .9em; font-style: italic; color: green;">{{.UserMsg}}</span>
 </p>
 <div id="add_emp_modal" title="Add an employee" style="display: none; z-index: 999;"></div>
 
