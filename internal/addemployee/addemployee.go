@@ -7,7 +7,7 @@ import (
 
 // func Validate(lname, fname, mi, title, dept, team, hireDate string) bool {
 func Validate() bool {
-	fmt.Println("Hello from Validate()")
+	fmt.Println("Hello from Validate(). This is a stub.")
 	return true
 }
 

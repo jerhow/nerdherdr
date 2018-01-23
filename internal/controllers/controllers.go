@@ -27,6 +27,8 @@ import (
 	"github.com/jerhow/nerdherdr/internal/welcome"
 	"html/template"
 	"net/http"
+	"regexp"
+	"strings"
 )
 
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
@@ -111,43 +113,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, data)
 }
 
-func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
-	var fname, lname, mi, title, dept, team, hireDate string
-	var result bool = false
-
-	loggedIn, userId := util.IsLoggedIn(r)
-	if !loggedIn {
-		// bounce out
-	}
-
-	// fmt.Printf("%#v", r)
-
-	fname = r.PostFormValue("fname")
-	lname = r.PostFormValue("lname")
-	mi = r.PostFormValue("mi")
-	title = r.PostFormValue("title")
-	dept = r.PostFormValue("dept")
-	team = r.PostFormValue("team")
-	hireDate = r.PostFormValue("hire_date")
-
-	// obviously must check for empty values, validate, sanity check, etc
-	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
-	result = addemployee.Validate()
-	if result {
-		fmt.Println("Validate() call completed")
-	}
-
-	// attempt to write to DB
-	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
-	if result {
-		fmt.Println("PostToDb() call completed successfully")
-		// NOTE: These sb and ob values will sort the list by ID DESC,
-		// which I think is useful so that the employee you just entered is
-		// right at the top of the list when you land back at /welcome
-		http.Redirect(w, r, "welcome?um=success&sb=0&ob=1", 303)
-	}
-}
-
 func Logout(w http.ResponseWriter, r *http.Request) {
 	// NOTE: Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	var key = []byte(SESSION_KEY)
@@ -173,7 +138,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		Company                string
 		Common                 util.TemplateCommon
 		EmpRows                []db.EmpRow
-		UserMsg                string
+		UserMsg                template.HTML
 		EmpListSortBy          string
 		NewEmpListOrderBy      string
 		EmpListArrow_id        template.HTML
@@ -188,7 +153,7 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	data := pageData{
 		BodyTitle:              "Welcome!",
 		Common:                 util.TmplCommon,
-		UserMsg:                "",
+		UserMsg:                template.HTML(""),
 		EmpListArrow_id:        template.HTML("&nbsp;&nbsp;"),
 		EmpListArrow_lname:     template.HTML("&nbsp;&nbsp;"),
 		EmpListArrow_fname:     template.HTML("&nbsp;&nbsp;"),
@@ -200,9 +165,19 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// A message back to the user
+	// NOTE: We're injecting a <span> from the server-side, so that we can
+	// control the presentation a bit more. For example, green text for success,
+	// red for error states, etc
 	userMsg := r.URL.Query().Get("um")
-	if userMsg == "success" {
-		data.UserMsg = "Employee added successfully!"
+	if userMsg == "add_success" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: green;">Employee added successfully</span>`)
+	} else if userMsg == "delete_success" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: green;">Employee(s) deleted successfully</span>`)
+	} else if userMsg == "delete_error" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: red;">Error: Employee(s) may not have been deleted successfully</span>`)
 	}
 
 	loggedIn, userId := util.IsLoggedIn(r)
@@ -278,6 +253,41 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func Welcome_POST(w http.ResponseWriter, r *http.Request) {
+
+	loggedIn, userId := util.IsLoggedIn(r)
+	if !loggedIn {
+		// bounce out
+	}
+
+	// Read the POST keys, looking for 'del_' + empId (ex: 'del_42'),
+	// which indicate the delete check boxes. We should end up with a
+	// slice of emp IDs as strings, which we can then pass along for processing.
+	var str string
+	empIds := make([]string, 0)
+	re := regexp.MustCompile("^del_\\d+$") // Note that you have to escape the escapes
+	r.ParseForm()                          // populates r.Form
+	for key, _ := range r.Form {
+		if re.MatchString(key) {
+			str = strings.Split(key, "_")[1]
+			empIds = append(empIds, str)
+		}
+	}
+
+	// fmt.Println(empIds)
+	result := welcome.DeleteEmployees(userId, empIds)
+	userMsg := ""
+	if !result {
+		userMsg = "delete_error"
+	} else {
+		userMsg = "delete_success"
+	}
+
+	url := "welcome?um=" + userMsg + "&sb=0&ob=1"
+
+	http.Redirect(w, r, url, 303)
+}
+
 func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		Common util.TemplateCommon
@@ -294,5 +304,42 @@ func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
+	}
+}
+
+func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
+	var fname, lname, mi, title, dept, team, hireDate string
+	var result bool = false
+
+	loggedIn, userId := util.IsLoggedIn(r)
+	if !loggedIn {
+		// bounce out
+	}
+
+	// fmt.Printf("%#v", r)
+
+	fname = r.PostFormValue("fname")
+	lname = r.PostFormValue("lname")
+	mi = r.PostFormValue("mi")
+	title = r.PostFormValue("title")
+	dept = r.PostFormValue("dept")
+	team = r.PostFormValue("team")
+	hireDate = r.PostFormValue("hire_date")
+
+	// obviously must check for empty values, validate, sanity check, etc
+	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	result = addemployee.Validate()
+	if result {
+		fmt.Println("Validate() call completed")
+	}
+
+	// attempt to write to DB
+	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
+	if result {
+		fmt.Println("PostToDb() call completed successfully")
+		// NOTE: These sb and ob values will sort the list by ID DESC,
+		// which I think is useful so that the employee you just entered is
+		// right at the top of the list when you land back at /welcome
+		http.Redirect(w, r, "welcome?um=add_success&sb=0&ob=1", 303)
 	}
 }

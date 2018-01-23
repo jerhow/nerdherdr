@@ -38,6 +38,7 @@
 
 <div style="font-size: 1em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
 
+<form id="frm_emps" name="frm_emps" action="/welcome" method="post">
 <table width="800" border="1" cellpadding="2" cellspacing="0">
 	<tr style="background-color: #e0e0e0; font-size: .9em; font-weight: bold;">
 		<td>
@@ -72,7 +73,7 @@
 			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a>
 			<span class="arrow">{{ .EmpListArrow_hire_date }}</span>
 		</td>
-		<td>
+		<td align="center">
 			<span style="font-size: .8em; color: red; font-style: italic;">Delete</span>
 		</td>
 	</tr>
@@ -91,6 +92,7 @@
 	</tr>
 	{{end}}
 </table>
+</form>
 
 <table width="800" border="0" cellpadding="2" cellspacing="0" style="margin-top: 5px;">
 	<tr>
@@ -99,7 +101,8 @@
 		</td>
 		<td>
 			<span id="user_msg" 
-				style="padding-top: 15px; padding-left: 25px; font-size: .9em; font-style: italic; color: green;">{{.UserMsg}}</span>
+				style="padding-top: 15px; padding-left: 25px; font-size: .9em; font-style: italic;">{{.UserMsg}}</span>
+				
 		</td>
 		<td align="right">
 			<input type="button" id="btn_delete" value="Delete"/>
@@ -116,5 +119,7 @@
 </p> -->
 
 <div id="add_emp_modal" title="Add an employee" style="display: none; z-index: 999;"></div>
+<div id="del_conf_modal" title="Delete Employee(s)" 
+	style="display: none">This will delete the selected employees.<br />Are you sure you want to do this?</div>
 
 {{template "footer" .}}

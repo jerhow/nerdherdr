@@ -218,6 +218,50 @@ func DbPopulateStruct() {
 	fmt.Println()
 }
 
+func DeleteEmployees(userId int, empIds []string) bool {
+
+	dbh, err := sql.Open(DRIVER, dsn())
+	util.ErrChk(err)
+	defer dbh.Close()
+
+	err = dbh.Ping()
+	util.ErrChk(err)
+
+	// Build the IN clause manually
+	// NOTE: At face value, this may seem insecure, however,
+	// the 'Welcome_POST' controller ensures that we only
+	// get valid emp IDs in here, and the userId comes straight
+	// from the user session. Nothing else ever gets into this function
+	// via the controller, and nothing else calls this function.
+	// The reason for this manual query building is that I don't
+	// see a way that we can pass an array of values to stmtIns.Exec()
+	// and have them map to placeholder parameters.
+	// See: https://golang.org/pkg/database/sql/#DB.Exec
+	// If I find a better way to do this type of batch update (I'd rather
+	// not send them as individual DELETE queries), I'll revisit this.
+	lastEmpIdIdx := len(empIds) - 1
+	inClauseValues := ""
+	for idx, empId := range empIds {
+		inClauseValues = inClauseValues + empId
+		if idx < lastEmpIdIdx {
+			inClauseValues = inClauseValues + ", "
+		}
+		idx += 1
+	}
+
+	sql := "DELETE FROM t_employees WHERE userId = ? AND id IN (" + inClauseValues + ");"
+	// fmt.Println(sql)
+
+	stmtIns, err := dbh.Prepare(sql)
+	util.ErrChk(err)
+	defer stmtIns.Close()
+
+	_, err2 := stmtIns.Exec(userId)
+	util.ErrChk(err2)
+
+	return true
+}
+
 // Takes the relevant values for the INSERT
 // Returns a boolean indicating success|failure
 func AddEmployee(lname, fname, mi, title, dept, team, hire_date string, userId int) bool {

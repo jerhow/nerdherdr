@@ -23,6 +23,14 @@ func FetchEmployeeList(userId int, sortBy string, orderBy string) []db.EmpRow {
 	return db.EmployeeList(userId, sortBy, orderBy)
 }
 
+func DeleteEmployees(userId int, empIds []string) bool {
+	var result bool = false
+	if len(empIds) > 0 {
+		result = db.DeleteEmployees(userId, empIds)
+	}
+	return result
+}
+
 // Takes the raw 'sort' and 'order' string values which the controller got
 // off of the query string, sanity-checks the values, and returns string values
 // which are appropriate to be used in the actual query.

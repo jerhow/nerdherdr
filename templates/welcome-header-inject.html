@@ -39,13 +39,38 @@ $(document).ready(function() {
         }
     });
 
-    $("#btn_add_employee").click(function () {
+    $("#del_conf_modal").zinoOverlay({
+        modal: true,
+        width: 320,
+        height: 140,
+        autoOpen: false,
+        buttons: {
+            "Yes": function(button) {
+                $("#frm_emps").submit();
+                $(this).zinoOverlay("close");
+            },
+            "No": function(button) {
+                $(this).zinoOverlay("close");
+            }
+        },
+        toolbar: {
+            minimize: true,
+            maximize: false,
+            close: true
+        }
+    });
+
+    $("#btn_add_employee").click(function() {
         $("#add_emp_modal").zinoOverlay("open");
     });
 
     $(":input[type='button']").zinoButton();
 
     $("#btn_delete").hide(); // Hide by default
+
+    $("#btn_delete").click(function() {
+        deleteAction();
+    });
 
     // Show/hide delete button depending on whether one or more delete checkboxes are checked
     $("input[id^='del_']").click(toggleDeleteButton);
@@ -61,6 +86,10 @@ $(document).ready(function() {
     }
 
 });
+
+function deleteAction() {
+    $("#del_conf_modal").zinoOverlay("open");
+}
 
 function toggleDeleteButton() {
     if(anyCheckboxesChecked() === true) {
