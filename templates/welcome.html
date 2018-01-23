@@ -38,7 +38,7 @@
 
 <div style="font-size: 1em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
 
-<table border="1" cellpadding="2" cellspacing="0">
+<table width="800" border="1" cellpadding="2" cellspacing="0">
 	<tr style="background-color: #e0e0e0; font-size: .9em; font-weight: bold;">
 		<td>
 			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a>
@@ -72,6 +72,9 @@
 			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a>
 			<span class="arrow">{{ .EmpListArrow_hire_date }}</span>
 		</td>
+		<td>
+			<span style="font-size: .8em; color: red; font-style: italic;">Delete</span>
+		</td>
 	</tr>
 
 	{{range .EmpRows}}
@@ -84,19 +87,34 @@
 		<td>{{.Dept}}</td>
 		<td>{{.Team}}</td>
 		<td style="text-align: right;">{{.Hire_date}}</td>
+		<td style="text-align: center;"><input type="checkbox" id="del_{{.Id}}" name="del_{{.Id}}"></td>
 	</tr>
 	{{end}}
+</table>
+
+<table width="800" border="0" cellpadding="2" cellspacing="0" style="margin-top: 5px;">
+	<tr>
+		<td align="left">
+			<input type="button" id="btn_add_employee" value="Add an employee" />
+		</td>
+		<td>
+			<span id="user_msg" 
+				style="padding-top: 15px; padding-left: 25px; font-size: .9em; font-style: italic; color: green;">{{.UserMsg}}</span>
+		</td>
+		<td align="right">
+			<input type="button" id="btn_delete" value="Delete"/>
+		</td>
+	</tr>
 </table>
 
 <!-- <p>
 	<a href="add-employee">Add an employee</a>
 </p> -->
 
-<p>
-	<input type="button" id="btn_add_employee" value="Add an employee" />
+<!-- <p>
+	
+</p> -->
 
-	<span id="user_msg" style="padding-top: 15px; padding-left: 25px; font-size: .9em; font-style: italic; color: green;">{{.UserMsg}}</span>
-</p>
 <div id="add_emp_modal" title="Add an employee" style="display: none; z-index: 999;"></div>
 
 {{template "footer" .}}

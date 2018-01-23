@@ -45,6 +45,12 @@ $(document).ready(function() {
 
     $(":input[type='button']").zinoButton();
 
+    $("#btn_delete").hide(); // Hide by default
+
+    // Show/hide delete button depending on whether one or more delete checkboxes are checked
+    $("input[id^='del_']").click(toggleDeleteButton);
+
+    // User confirmation/message
     if($("#user_msg").html() !== "") {
     	window.setTimeout(
     		function() {
@@ -55,6 +61,28 @@ $(document).ready(function() {
     }
 
 });
+
+function toggleDeleteButton() {
+    if(anyCheckboxesChecked() === true) {
+        $("#btn_delete").show();
+    }
+    else {
+        $("#btn_delete").hide();
+    }
+}
+
+function anyCheckboxesChecked() {
+    var result = false;
+
+    $("input[id^='del_']").each(function() {
+        if($(this).prop('checked') === true) {
+            result = true;
+        }
+    });
+
+    return result;
+}
+
 </script>
 
 <style type="text/css">
