@@ -13,6 +13,11 @@ function addEmployeeFormInit() {
 	    months: 1
 	});
 
+	// $("#hire_date").blur(function() {
+	// 	// document.activeElement.id
+	// 	$(this).zinoCalendar("close");
+	// });
+
 	$("#btn_cancel").click(function() {
 		// window.location.replace("welcome");
 		$("#add_emp_modal").zinoOverlay("close");
@@ -153,6 +158,12 @@ function formDidntValidate(field, msg) {
 	color: red;
 	margin-left: 4px;
 }
+
+/* wildcard for prefix */
+div[id^='zui-calendar-container-'] {
+	z-index: 10000;
+}
+
 </style>
 
 {{end}}
