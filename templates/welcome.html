@@ -41,10 +41,10 @@
 <form id="frm_emps" name="frm_emps" action="/welcome" method="post">
 <table width="800" border="1" cellpadding="2" cellspacing="0">
 	<tr style="background-color: #e0e0e0;">
-		<td>
+		<!-- <td>
 			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}" class="col_head_link">ID</a>
 			<span class="arrow">{{ .EmpListArrow_id }}</span>
-		</td>
+		</td> -->
 		<td>
 			<a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}" class="col_head_link">Last Name</a>
 			<span class="arrow">{{ .EmpListArrow_lname }}</span>
@@ -80,7 +80,7 @@
 
 	{{range .EmpRows}}
 	<tr style="font-size: .8em;">
-		<td>{{.Id}}</td>
+		<!-- <td>{{.Id}}</td> -->
 		<td>{{.Lname}}</td>
 		<td>{{.Fname}}</td>
 		<td>{{.Mi}}</td>
