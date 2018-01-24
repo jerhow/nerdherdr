@@ -14,6 +14,13 @@
 
 <script>
 $(document).ready(function() {
+
+	// NOTE: We need to pass these values into /add-employee, so that 
+	// we can preserve the current sorting by submitting these values 
+	// on the /add-employee form POST and subsequent redirect back to /welcome
+	var sortByQs = $("#hdn_sb").val();
+	var orderByQs = $("#hdn_ob").val();
+	var addEmpUrl = "add-employee?sb=" + sortByQs + "&ob=" + orderByQs;
     
     $("#add_emp_modal").zinoOverlay({
     	modal: true,
@@ -31,7 +38,7 @@ $(document).ready(function() {
         	close: false
         },
         beforeOpen: function(inst) {
-            $.get("add-employee").done(function (data) {
+            $.get(addEmpUrl).done(function (data) {
                 $("#zui-overlay-content-" + inst.uid).html(data);
             });
         },

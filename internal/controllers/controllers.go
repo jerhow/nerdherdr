@@ -205,8 +205,10 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 		sortByQs := r.URL.Query().Get("sb")
 		orderByQs := r.URL.Query().Get("ob")
-		data.SortByQs = sortByQs   // For the hidden form field only
-		data.OrderByQs = orderByQs // For the hidden form field only
+
+		// For the hidden form fields only
+		data.SortByQs = sortByQs
+		data.OrderByQs = orderByQs
 
 		sortBy, orderBy := welcome.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
 		data.EmpListSortBy = sortBy
@@ -298,11 +300,20 @@ func Welcome_POST(w http.ResponseWriter, r *http.Request) {
 
 func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		Common util.TemplateCommon
+		Common    util.TemplateCommon
+		SortByQs  string
+		OrderByQs string
 	}
 	data := pageData{
 		Common: util.TmplCommon,
 	}
+
+	sortByQs := r.URL.Query().Get("sb")
+	orderByQs := r.URL.Query().Get("ob")
+
+	// For the hidden form fields only
+	data.SortByQs = sortByQs
+	data.OrderByQs = orderByQs
 
 	loggedIn, _ := util.IsLoggedIn(r)
 
@@ -334,6 +345,10 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 	team = r.PostFormValue("team")
 	hireDate = r.PostFormValue("hire_date")
 
+	// From the hidden form fields, for the query string
+	sortByQs := r.PostFormValue("hdn_sb")
+	orderByQs := r.PostFormValue("hdn_ob")
+
 	// obviously must check for empty values, validate, sanity check, etc
 	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
 	result = addemployee.Validate()
@@ -348,6 +363,7 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 		// NOTE: These sb and ob values will sort the list by ID DESC,
 		// which I think is useful so that the employee you just entered is
 		// right at the top of the list when you land back at /welcome
-		http.Redirect(w, r, "welcome?um=add_success&sb=0&ob=1", 303)
+		url := "welcome?um=add_success&sb=" + sortByQs + "&ob=" + orderByQs
+		http.Redirect(w, r, url, 303)
 	}
 }
