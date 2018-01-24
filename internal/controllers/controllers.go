@@ -125,7 +125,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 303)
 }
 
-func Welcome(w http.ResponseWriter, r *http.Request) {
+func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		BodyTitle              string
 		LoggedIn               string
