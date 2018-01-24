@@ -3,3 +3,25 @@ body {
     font-size: 100%;
     height: 100%;
 }
+
+/* unvisited link */
+a:link {
+    color: blue;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: blue;
+}
+
+/* mouse over link */
+a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+} 

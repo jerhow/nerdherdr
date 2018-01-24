@@ -40,41 +40,41 @@
 
 <form id="frm_emps" name="frm_emps" action="/welcome" method="post">
 <table width="800" border="1" cellpadding="2" cellspacing="0">
-	<tr style="background-color: #e0e0e0; font-size: .9em; font-weight: bold;">
+	<tr style="background-color: #e0e0e0;">
 		<td>
-			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}">ID</a>
+			<a href="welcome?sb=0&ob={{.NewEmpListOrderBy}}" class="col_head_link">ID</a>
 			<span class="arrow">{{ .EmpListArrow_id }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}">Last Name</a>
+			<a href="welcome?sb=1&ob={{.NewEmpListOrderBy}}" class="col_head_link">Last Name</a>
 			<span class="arrow">{{ .EmpListArrow_lname }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=2&ob={{.NewEmpListOrderBy}}">First Name</a>
+			<a href="welcome?sb=2&ob={{.NewEmpListOrderBy}}" class="col_head_link">First Name</a>
 			<span class="arrow">{{ .EmpListArrow_fname }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=3&ob={{.NewEmpListOrderBy}}">M.I.</a>
+			<a href="welcome?sb=3&ob={{.NewEmpListOrderBy}}" class="col_head_link">M.I.</a>
 			<span class="arrow">{{ .EmpListArrow_mi }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=4&ob={{.NewEmpListOrderBy}}">Title</a>
+			<a href="welcome?sb=4&ob={{.NewEmpListOrderBy}}" class="col_head_link">Title</a>
 			<span class="arrow">{{ .EmpListArrow_title }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=5&ob={{.NewEmpListOrderBy}}">Dept</a>
+			<a href="welcome?sb=5&ob={{.NewEmpListOrderBy}}" class="col_head_link">Dept</a>
 			<span class="arrow">{{ .EmpListArrow_dept }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=6&ob={{.NewEmpListOrderBy}}">Team</a>
+			<a href="welcome?sb=6&ob={{.NewEmpListOrderBy}}" class="col_head_link">Team</a>
 			<span class="arrow">{{ .EmpListArrow_team }}</span>
 		</td>
 		<td>
-			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}">Hire Date</a>
+			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}" class="col_head_link">Hire Date</a>
 			<span class="arrow">{{ .EmpListArrow_hire_date }}</span>
 		</td>
 		<td align="center">
-			<span style="font-size: .8em; color: red; font-style: italic;">Delete</span>
+			<span class="col_head_link" style="font-size: .9em; color: red;">Delete</span>
 		</td>
 	</tr>
 
