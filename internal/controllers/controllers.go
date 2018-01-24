@@ -149,6 +149,8 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		EmpListArrow_dept      template.HTML
 		EmpListArrow_team      template.HTML
 		EmpListArrow_hire_date template.HTML
+		SortByQs               string
+		OrderByQs              string
 	}
 	data := pageData{
 		BodyTitle:              "Welcome!",
@@ -203,6 +205,8 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 		sortByQs := r.URL.Query().Get("sb")
 		orderByQs := r.URL.Query().Get("ob")
+		data.SortByQs = sortByQs   // For the hidden form field only
+		data.OrderByQs = orderByQs // For the hidden form field only
 
 		sortBy, orderBy := welcome.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
 		data.EmpListSortBy = sortBy
