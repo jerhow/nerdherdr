@@ -278,6 +278,10 @@ func Welcome_POST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// From the hidden form fields, for the query string
+	sortByQs := r.PostFormValue("hdn_sb")
+	orderByQs := r.PostFormValue("hdn_ob")
+
 	// fmt.Println(empIds)
 	result := welcome.DeleteEmployees(userId, empIds)
 	userMsg := ""
@@ -287,7 +291,7 @@ func Welcome_POST(w http.ResponseWriter, r *http.Request) {
 		userMsg = "delete_success"
 	}
 
-	url := "welcome?um=" + userMsg + "&sb=0&ob=1"
+	url := "welcome?um=" + userMsg + "&sb=" + sortByQs + "&ob=" + orderByQs
 
 	http.Redirect(w, r, url, 303)
 }
