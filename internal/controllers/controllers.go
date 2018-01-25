@@ -43,12 +43,20 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	type PageData struct {
 		BodyTitle string
 		LoginMsg  string
+		UserMsg   template.HTML
 		Common    util.TemplateCommon
 	}
 	data := PageData{
 		BodyTitle: "Welcome!",
 		LoginMsg:  "",
+		UserMsg:   template.HTML(""),
 		Common:    util.TmplCommon,
+	}
+
+	userMsg := r.URL.Query().Get("um")
+	if userMsg == "nosession" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: red;">Session expired. Please log in again.</span>`)
 	}
 
 	tmpl := template.Must(template.ParseFiles(
@@ -72,7 +80,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, SESSION_COOKIE)
 	session.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   3600, // 1 hour
+		MaxAge:   15, // 3600 sec == 1 hr
 		HttpOnly: true,
 	}
 
@@ -255,7 +263,9 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 			"templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		url := "/?um=nosession"
+		http.Redirect(w, r, url, 303)
+		// http.Error(w, "Forbidden", http.StatusForbidden)
 	}
 }
 

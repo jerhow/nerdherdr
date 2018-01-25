@@ -2,7 +2,9 @@
 {{template "index-header-inject" .}}
 {{template "header-end" .}}
 
-<br />
+<div class="break" style="height: 15px;"></div>
+<div style="font-size: .9em; font-style: italic;">{{.UserMsg}}</div>
+<div class="break" style="height: 15px;"></div>
 <form action="/login" method="post">
     <table>
         <tr>

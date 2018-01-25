@@ -33,7 +33,8 @@ HR {
    background: #001f3f;
 }
 
+/*  Can be used to make a vertical spacer. 
+	Just set a 'height=10px' or whatever on the actual div or other element. */
 .break {
   display: block;
 }
-
