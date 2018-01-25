@@ -43,10 +43,10 @@ _db_dumps/
 # My compiled binaries
 nerdherdr
 
-go-heroku-notes.txt
-
-# For quickly keeping track of things
+# Keeping track of things
 nextsteps.txt
+go-heroku-notes.txt
+bugs.txt
 
 # For quick experiments
 scratch.*
