@@ -11,4 +11,46 @@
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css">
 <script src="{{ .Common.StaticAssetUrlBase }}jquery-3.2.1.min.js"></script>
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script>
+
+<!-- Menu-specific stuff -->
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/blue/zino.menu.css">
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.datasource.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.menu.min.js"></script>
+
+<script>
+$(function () {
+
+	var menuDataSource = zino.DataSource({
+        data: [
+            {"id": 100, "parent_id": 0, "text": "Home", "url": "/"},
+
+            {"id": 200, "parent_id": 0, "text": "My Stuff", "url": "#"},
+            {"id": 210, "parent_id": 200, "text": "Team-Level", "url": "#"},
+            {"id": 220, "parent_id": 200, "text": "Project-Level", "url": "#"},
+            {"id": 230, "parent_id": 200, "text": "Tasks/Reminders", "url": "#"},
+            {"id": 240, "parent_id": 200, "text": "Calendar/Events", "url": "#"},
+
+            {"id": 300, "parent_id": 0, "text": "Teams", "url": "#"},
+			{"id": 310, "parent_id": 300, "text": "Individual Contributors", "url": "#"},
+			{"id": 320, "parent_id": 300, "text": "1:1s", "url": "#"},
+			{"id": 330, "parent_id": 300, "text": "Goals/Milestones", "url": "#"},
+			{"id": 340, "parent_id": 300, "text": "Career/Professional Growth", "url": "#"},
+			{"id": 350, "parent_id": 300, "text": "Employee Reviews", "url": "#"},
+			{"id": 360, "parent_id": 300, "text": "Attendance", "url": "#"},
+			{"id": 370, "parent_id": 300, "text": "Individual Profiles", "url": "#"},
+
+			{"id": 400, "parent_id": 0, "text": "Me", "url": "#"},
+			{"id": 410, "parent_id": 400, "text": "Account", "url": "#"},
+			{"id": 420, "parent_id": 400, "text": "Settings", "url": "#"},
+			{"id": 430, "parent_id": 400, "text": "Logout", "url": "logout"},
+			
+		]
+    });
+
+    $("#nav_menu").zinoMenu({
+        dataSource: menuDataSource
+	});
+});
+</script>
+
 {{end}}

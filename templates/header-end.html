@@ -1,10 +1,20 @@
 {{define "header-end"}}
 </head>
 <body>
-    {{if .Common.DisplayBranding}}
-    <div style="border-bottom: 1px solid #bfbfbf;">
-        <div style="font-size: 1.2em; font-weight: bold;">Nerdherdr</div>
-        <div>{{.Common.MastheadTagline}}</div>
-    </div>
-    {{end}}
+
+{{if .Common.DisplayBranding}}
+<div style="margin-bottom: 0px; border-bottom: 1px solid #001f3f; margin-left: 2px; margin-right: 1px;">
+    <div style="font-size: 1.2em; font-weight: bold;">Nerdherdr</div>
+    <div>{{.Common.MastheadTagline}}</div>
+</div>
+{{end}}
+
+<div id="nav_menu"></div>
+
+<div id="outer_content_container" style="margin-left: 5px; margin-right: 5px;">
+
+<!-- <div style="margin-top: 10px; font-size: .8em;">
+<a href="/">Home</a> | <a href="logout">Logout</a>
+</div> -->
+
 {{end}}
