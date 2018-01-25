@@ -7,6 +7,8 @@ package config
 
 const DISPLAY_BRANDING bool = true
 
+const SESSION_LENGTH int = 3600 // 1 hour
+
 // "Tools for Technical Managers"
 // "Guiding the Human Side of Technology"
 const PAGE_TITLE string = "Nerdherdr: Guiding the Human Side of Technology"

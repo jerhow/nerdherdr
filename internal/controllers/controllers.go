@@ -80,7 +80,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, SESSION_COOKIE)
 	session.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   15, // 3600 sec == 1 hr
+		MaxAge:   config.SESSION_LENGTH,
 		HttpOnly: true,
 	}
 
