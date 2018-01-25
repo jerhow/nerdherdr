@@ -263,8 +263,7 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 			"templates/footer.html"))
 		tmpl.Execute(w, data)
 	} else {
-		url := "/?um=nosession"
-		http.Redirect(w, r, url, 303)
+		util.NoSession(w, r)
 		// http.Error(w, "Forbidden", http.StatusForbidden)
 	}
 }

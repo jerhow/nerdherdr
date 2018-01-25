@@ -87,6 +87,12 @@ func IsLoggedIn(r *http.Request) (bool, int) {
 	}
 }
 
+func NoSession(w http.ResponseWriter, r *http.Request) {
+	url := "/?um=nosession"
+	httpStatusCode := 303
+	http.Redirect(w, r, url, httpStatusCode)
+}
+
 // func LoggedInCheck(w http.ResponseWriter, r *http.Request) {
 // 	if !IsLoggedIn(r) {
 // 		// fmt.Println("NOT LOGGED IN, REDIRECTING...")
