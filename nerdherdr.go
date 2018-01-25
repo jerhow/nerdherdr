@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/controllers"
 	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/util"
@@ -47,7 +48,7 @@ func getPort() string {
 	var port = os.Getenv("PORT") // There's no way to know this ahead of time on Heroku
 	// Set a default port if there is nothing in the environment
 	if port == "" {
-		port = "3000" // If running locally. In prod, if we don't get a $PORT value from Heroku, we're fucked anyway.
+		port = config.LOCAL_PORT // If running locally. In prod, if we don't get a $PORT value from Heroku, we're fucked anyway.
 		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
 	}
 	return ":" + port

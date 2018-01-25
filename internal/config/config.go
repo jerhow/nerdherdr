@@ -5,8 +5,8 @@
 // be here (those should live in the ENV config variables).
 package config
 
+const LOCAL_PORT string = "3000"
 const DISPLAY_BRANDING bool = true
-
 const SESSION_LENGTH int = 3600 // 1 hour
 
 // "Tools for Technical Managers"
