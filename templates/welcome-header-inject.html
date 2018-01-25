@@ -1,6 +1,5 @@
 {{define "welcome-header-inject"}}
 
-<!-- <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.core.css"> -->
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.button.css">
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.resizable.css">
 <link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.overlay.css">
@@ -10,7 +9,6 @@
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.resizable.min.js"></script>
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.button.min.js"></script>
 <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.overlay.min.js"></script>
-<!-- <script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino-1.5.custom.min.js"></script> -->
 
 <script>
 $(document).ready(function() {
@@ -21,7 +19,7 @@ $(document).ready(function() {
 	var sortByQs = $("#hdn_sb").val();
 	var orderByQs = $("#hdn_ob").val();
 	var addEmpUrl = "add-employee?sb=" + sortByQs + "&ob=" + orderByQs;
-    
+
     $("#add_emp_modal").zinoOverlay({
     	modal: true,
         height: 335,
@@ -74,8 +72,6 @@ $(document).ready(function() {
 
     $(":input[type='button']").zinoButton();
 
-    $("#btn_delete").hide(); // Hide by default
-
     $("#btn_delete").click(function() {
         deleteAction();
     });
@@ -123,6 +119,7 @@ function anyCheckboxesChecked() {
 </script>
 
 <style type="text/css">
+
 /* wildcard for prefix */
 div[id^='zui-overlay-header-'] {
 	z-index: 9000;
