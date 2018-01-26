@@ -26,6 +26,7 @@ type TemplateCommon struct {
 	StaticAssetUrlBase string
 	DisplayBranding    bool
 	MastheadTagline    string
+	ShowNav            bool
 }
 
 var TmplCommon TemplateCommon
@@ -65,6 +66,8 @@ func Setup() {
 	TmplCommon.StaticAssetUrlBase = STATIC_ASSET_URL_BASE
 	TmplCommon.DisplayBranding = config.DISPLAY_BRANDING
 	TmplCommon.MastheadTagline = config.MASTHEAD_TAGLINE
+	TmplCommon.ShowNav = config.SHOW_NAV
+	// NOTE: You can override 'TmplCommon.ShowNav' to turn off the nav on a case-by-case basis
 }
 
 func ErrChk(err error) {

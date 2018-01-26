@@ -53,6 +53,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		Common:    util.TmplCommon,
 	}
 
+	data.Common.ShowNav = false // Overriding the default value
+
 	userMsg := r.URL.Query().Get("um")
 	if userMsg == "nosession" {
 		data.UserMsg = template.HTML(`<span id="user_msg_content" 
