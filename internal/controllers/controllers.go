@@ -59,6 +59,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	if userMsg == "nosession" {
 		data.UserMsg = template.HTML(`<span id="user_msg_content" 
 			style="color: red;">Session expired. Please log in again.</span>`)
+	} else if userMsg == "noauth" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: red;">Invalid login. Please try again.</span>`)
 	}
 
 	tmpl := template.Must(template.ParseFiles(
@@ -115,7 +118,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			session.Save(r, w)
 			http.Redirect(w, r, "welcome", 303)
 		} else {
-			data.LoginMsg = "Invalid login (auth)"
+			// data.LoginMsg = "Invalid login (auth)"
+			http.Redirect(w, r, "/?um=noauth", 303)
 		}
 	}
 
