@@ -69,6 +69,9 @@
 			<a href="welcome?sb=7&ob={{.NewEmpListOrderBy}}" class="col_head_link">Hire Date</a>
 			<span class="arrow">{{ .EmpListArrow_hire_date }}</span>
 		</td>
+		<td align="center" class="col_head_link" style="font-size: .9em; color: green;">
+			Do stuff
+		</td>
 		<td align="center">
 			<span class="col_head_link" style="font-size: .9em; color: red;">Delete</span>
 		</td>
@@ -84,6 +87,7 @@
 		<td>{{.Dept}}</td>
 		<td>{{.Team}}</td>
 		<td style="text-align: right;">{{.Hire_date}}</td>
+		<td><a href="#">&#8594; Go &#8594;</a></td>
 		<td style="text-align: center;"><input type="checkbox" id="del_{{.Id}}" name="del_{{.Id}}"></td>
 	</tr>
 	{{end}}
