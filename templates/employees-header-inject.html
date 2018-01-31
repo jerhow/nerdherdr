@@ -1,0 +1,134 @@
+{{define "employees-header-inject"}}
+
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.button.css">
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.resizable.css">
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.overlay.css">
+
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.position.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.draggable.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.resizable.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.button.min.js"></script>
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.overlay.min.js"></script>
+
+<script>
+$(document).ready(function() {
+
+	// NOTE: We need to pass these values into /add-employee, so that 
+	// we can preserve the current sorting by submitting these values 
+	// on the /add-employee form POST and subsequent redirect back to /welcome
+	var sortByQs = $("#hdn_sb").val();
+	var orderByQs = $("#hdn_ob").val();
+	var addEmpUrl = "add-employee?sb=" + sortByQs + "&ob=" + orderByQs;
+
+    $("#add_emp_modal").zinoOverlay({
+    	modal: true,
+        height: 335,
+        width: 350,
+        minHeight: 315,
+        minWidth: 350,
+        draggable: true,
+        resizable: true,
+        autoOpen: false,
+        buttons: null,
+        toolbar: {
+        	minimize: false, 
+        	maximize: false, 
+        	close: false
+        },
+        beforeOpen: function(inst) {
+            $.get(addEmpUrl).done(function (data) {
+                $("#zui-overlay-content-" + inst.uid).html(data);
+            });
+        },
+        beforeClose: function(inst) {
+        	$("#hire_date").zinoCalendar("close");
+        }
+    });
+
+    $("#del_conf_modal").zinoOverlay({
+        modal: true,
+        width: 320,
+        height: 140,
+        autoOpen: false,
+        buttons: {
+            "Yes": function(button) {
+                $("#frm_emps").submit();
+                $(this).zinoOverlay("close");
+            },
+            "No": function(button) {
+                $(this).zinoOverlay("close");
+            }
+        },
+        toolbar: {
+            minimize: true,
+            maximize: false,
+            close: true
+        }
+    });
+
+    $("#btn_add_employee").click(function() {
+        $("#add_emp_modal").zinoOverlay("open");
+    });
+
+    $(":input[type='button']").zinoButton();
+
+    $("#btn_delete").click(function() {
+        deleteAction();
+    });
+
+    // Show/hide delete button depending on whether one or more delete checkboxes are checked
+    $("input[id^='del_']").click(toggleDeleteButton);
+
+    // User confirmation/message
+    if($("#user_msg").html() !== "") {
+    	window.setTimeout(
+    		function() {
+    			$("#user_msg").delay(5).html("&nbsp;"); // A space holds the height of the div
+    		},
+    		5000
+    	);
+    }
+
+});
+
+function deleteAction() {
+    $("#del_conf_modal").zinoOverlay("open");
+}
+
+function toggleDeleteButton() {
+    if(anyCheckboxesChecked() === true) {
+        $("#btn_delete").show();
+    }
+    else {
+        $("#btn_delete").hide();
+    }
+}
+
+function anyCheckboxesChecked() {
+    var result = false;
+
+    $("input[id^='del_']").each(function() {
+        if($(this).prop('checked') === true) {
+            result = true;
+        }
+    });
+
+    return result;
+}
+
+</script>
+
+<style type="text/css">
+
+/* wildcard for prefix */
+div[id^='zui-overlay-header-'] {
+	z-index: 9000;
+}
+
+.col_head_link {
+	font-size: .9em;
+	font-weight: bold;
+}
+</style>
+
+{{end}}

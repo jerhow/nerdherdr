@@ -22,6 +22,7 @@ import (
 	"github.com/jerhow/nerdherdr/internal/addemployee"
 	"github.com/jerhow/nerdherdr/internal/config"
 	"github.com/jerhow/nerdherdr/internal/db"
+	"github.com/jerhow/nerdherdr/internal/employees"
 	"github.com/jerhow/nerdherdr/internal/login"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"github.com/jerhow/nerdherdr/internal/welcome"
@@ -224,7 +225,7 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 		data.SortByQs = sortByQs
 		data.OrderByQs = orderByQs
 
-		sortBy, orderBy := welcome.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
+		sortBy, orderBy := employees.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
 		data.EmpListSortBy = sortBy
 		var arrow template.HTML
 		if orderByQs == "0" || orderByQs == "" {
@@ -254,7 +255,7 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 			data.EmpListArrow_hire_date = arrow
 		}
 
-		data.EmpRows = welcome.FetchEmployeeList(userId, sortBy, orderBy)
+		data.EmpRows = employees.FetchEmployeeList(userId, sortBy, orderBy)
 		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
 		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
 		// fmt.Printf("Type: %T \n", data.EmpRows)
@@ -300,7 +301,7 @@ func Welcome_POST(w http.ResponseWriter, r *http.Request) {
 	orderByQs := r.PostFormValue("hdn_ob")
 
 	// fmt.Println(empIds)
-	result := welcome.DeleteEmployees(userId, empIds)
+	result := employees.DeleteEmployees(userId, empIds)
 	userMsg := ""
 	if !result {
 		userMsg = "delete_error"
@@ -308,7 +309,7 @@ func Welcome_POST(w http.ResponseWriter, r *http.Request) {
 		userMsg = "delete_success"
 	}
 
-	url := "welcome?um=" + userMsg + "&sb=" + sortByQs + "&ob=" + orderByQs
+	url := "employees?um=" + userMsg + "&sb=" + sortByQs + "&ob=" + orderByQs
 
 	http.Redirect(w, r, url, 303)
 }
@@ -378,7 +379,181 @@ func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
 		// NOTE: These sb and ob values will sort the list by ID DESC,
 		// which I think is useful so that the employee you just entered is
 		// right at the top of the list when you land back at /welcome
-		url := "welcome?um=add_success&sb=" + sortByQs + "&ob=" + orderByQs
+		url := "employees?um=add_success&sb=" + sortByQs + "&ob=" + orderByQs
 		http.Redirect(w, r, url, 303)
 	}
+}
+
+func Employees_GET(w http.ResponseWriter, r *http.Request) {
+	type pageData struct {
+		BodyTitle              string
+		LoggedIn               string
+		UserId                 int
+		UserProfileMatchFound  bool
+		Lname                  string
+		Fname                  string
+		MI                     string
+		Title                  string
+		Company                string
+		Common                 util.TemplateCommon
+		EmpRows                []db.EmpRow
+		UserMsg                template.HTML
+		EmpListSortBy          string
+		NewEmpListOrderBy      string
+		EmpListArrow_id        template.HTML
+		EmpListArrow_lname     template.HTML
+		EmpListArrow_fname     template.HTML
+		EmpListArrow_mi        template.HTML
+		EmpListArrow_title     template.HTML
+		EmpListArrow_dept      template.HTML
+		EmpListArrow_team      template.HTML
+		EmpListArrow_hire_date template.HTML
+		SortByQs               string
+		OrderByQs              string
+	}
+	data := pageData{
+		BodyTitle:              "Welcome!",
+		Common:                 util.TmplCommon,
+		UserMsg:                template.HTML(""),
+		EmpListArrow_id:        template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_lname:     template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_fname:     template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_mi:        template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_title:     template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_dept:      template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_team:      template.HTML("&nbsp;&nbsp;"),
+		EmpListArrow_hire_date: template.HTML("&nbsp;&nbsp;"),
+	}
+
+	// A message back to the user
+	// NOTE: We're injecting a <span> from the server-side, so that we can
+	// control the presentation a bit more. For example, green text for success,
+	// red for error states, etc
+	userMsg := r.URL.Query().Get("um")
+	if userMsg == "add_success" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: green;">Employee added successfully</span>`)
+	} else if userMsg == "delete_success" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: green;">Employee(s) deleted successfully</span>`)
+	} else if userMsg == "delete_error" {
+		data.UserMsg = template.HTML(`<span id="user_msg_content" 
+			style="color: red;">Error: Employee(s) may not have been deleted successfully</span>`)
+	}
+
+	loggedIn, userId := util.IsLoggedIn(r)
+
+	// Fetch user-specific info for user profile
+	if loggedIn {
+		matchFound, lname, fname, mi, title, company := welcome.UserProfileInfo(userId)
+		if matchFound {
+			data.UserProfileMatchFound = true
+			data.Lname = lname
+			data.Fname = fname
+			data.MI = mi
+			data.Title = title
+			data.Company = company
+		} else {
+			data.UserProfileMatchFound = false
+		}
+	}
+
+	if loggedIn {
+		data.LoggedIn = "Yes"
+		data.UserId = userId
+
+		sortByQs := r.URL.Query().Get("sb")
+		orderByQs := r.URL.Query().Get("ob")
+
+		// For the hidden form fields only
+		data.SortByQs = sortByQs
+		data.OrderByQs = orderByQs
+
+		sortBy, orderBy := employees.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
+		data.EmpListSortBy = sortBy
+		var arrow template.HTML
+		if orderByQs == "0" || orderByQs == "" {
+			data.NewEmpListOrderBy = "1"
+			arrow = template.HTML(config.HTML_ARROW_01_UP)
+		} else {
+			data.NewEmpListOrderBy = "0"
+			arrow = template.HTML(config.HTML_ARROW_01_DN)
+		}
+
+		switch sortBy {
+		case "id":
+			data.EmpListArrow_id = arrow
+		case "lname":
+			data.EmpListArrow_lname = arrow
+		case "fname":
+			data.EmpListArrow_fname = arrow
+		case "mi":
+			data.EmpListArrow_mi = arrow
+		case "title":
+			data.EmpListArrow_title = arrow
+		case "dept":
+			data.EmpListArrow_dept = arrow
+		case "team":
+			data.EmpListArrow_team = arrow
+		case "hire_date":
+			data.EmpListArrow_hire_date = arrow
+		}
+
+		data.EmpRows = employees.FetchEmployeeList(userId, sortBy, orderBy)
+		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
+		// fmt.Printf("Type: %T \n", data.EmpRows)
+		// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
+
+		tmpl := template.Must(template.ParseFiles(
+			"templates/employees.html",
+			"templates/header.html",
+			"templates/employees-header-inject.html",
+			"templates/add-employee-header-inject.html",
+			"templates/header-end.html",
+			"templates/footer.html"))
+		tmpl.Execute(w, data)
+	} else {
+		util.NoSession(w, r)
+		// http.Error(w, "Forbidden", http.StatusForbidden)
+	}
+}
+
+func Employees_POST(w http.ResponseWriter, r *http.Request) {
+
+	loggedIn, userId := util.IsLoggedIn(r)
+	if !loggedIn {
+		// bounce out
+	}
+
+	// Read the POST keys, looking for 'del_' + empId (ex: 'del_42'),
+	// which indicate the delete check boxes. We should end up with a
+	// slice of emp IDs as strings, which we can then pass along for processing.
+	var str string
+	empIds := make([]string, 0)
+	re := regexp.MustCompile("^del_\\d+$") // Note that you have to escape the escapes
+	r.ParseForm()                          // populates r.Form
+	for key, _ := range r.Form {
+		if re.MatchString(key) {
+			str = strings.Split(key, "_")[1]
+			empIds = append(empIds, str)
+		}
+	}
+
+	// From the hidden form fields, for the query string
+	sortByQs := r.PostFormValue("hdn_sb")
+	orderByQs := r.PostFormValue("hdn_ob")
+
+	// fmt.Println(empIds)
+	result := employees.DeleteEmployees(userId, empIds)
+	userMsg := ""
+	if !result {
+		userMsg = "delete_error"
+	} else {
+		userMsg = "delete_success"
+	}
+
+	url := "employees?um=" + userMsg + "&sb=" + sortByQs + "&ob=" + orderByQs
+
+	http.Redirect(w, r, url, 303)
 }
