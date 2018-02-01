@@ -3,34 +3,8 @@
 {{template "add-employee-header-inject" .}}
 {{template "header-end" .}}
 
-<!-- <div class="break" style="height: 25px;"></div>
-<div>
-    {{.BodyTitle}}
-</div> -->
+
 <div class="break" style="height: 25px;"></div>
-
-<div>
-	{{if .UserProfileMatchFound}}
-		<!-- <div style="font-size: 1em; font-weight: bold;">User Profile:</div> -->
-		<div>
-			<span style="font-size: .9em; font-weight: bold;">Name: </span>
-			<span>{{ .Lname }}, {{ .Fname }} {{ .MI }}<span>
-		</div>
-		<div>
-			<span style="font-size: .9em; font-weight: bold;">Company: </span>
-			<span>{{ .Company }}<span>
-		</div>
-		<div>
-			<span style="font-size: .9em; font-weight: bold;">Title: </span>
-			<span>{{ .Title }}<span>
-		</div>
-	{{end}}
-	{{if not .UserProfileMatchFound}}
-		<div>User Profile not found :/</div>
-	{{end}}
-</div>
-
-<!-- <div id="user_msg" style="padding-top: 15px; font-style: italic; color: green;">{{.UserMsg}}</div> -->
 
 <div style="font-size: 1em; font-weight: bold; margin-top: 20px;">Your Employees:</div>
 
