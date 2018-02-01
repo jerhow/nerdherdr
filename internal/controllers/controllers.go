@@ -152,33 +152,12 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 		Title                 string
 		Company               string
 		Common                util.TemplateCommon
-		// EmpRows                []db.EmpRow
-		UserMsg template.HTML
-		// EmpListSortBy          string
-		// NewEmpListOrderBy      string
-		// EmpListArrow_id        template.HTML
-		// EmpListArrow_lname     template.HTML
-		// EmpListArrow_fname     template.HTML
-		// EmpListArrow_mi        template.HTML
-		// EmpListArrow_title     template.HTML
-		// EmpListArrow_dept      template.HTML
-		// EmpListArrow_team      template.HTML
-		// EmpListArrow_hire_date template.HTML
-		// SortByQs               string
-		// OrderByQs              string
+		UserMsg               template.HTML
 	}
 	data := pageData{
 		BodyTitle: "Welcome!",
 		Common:    util.TmplCommon,
 		UserMsg:   template.HTML(""),
-		// EmpListArrow_id:        template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_lname:     template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_fname:     template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_mi:        template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_title:     template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_dept:      template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_team:      template.HTML("&nbsp;&nbsp;"),
-		// EmpListArrow_hire_date: template.HTML("&nbsp;&nbsp;"),
 	}
 
 	// If you want to do a message to the user, you could follow this pattern:
