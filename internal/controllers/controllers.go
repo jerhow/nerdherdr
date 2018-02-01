@@ -142,60 +142,48 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
-		BodyTitle              string
-		LoggedIn               string
-		UserId                 int
-		UserProfileMatchFound  bool
-		Lname                  string
-		Fname                  string
-		MI                     string
-		Title                  string
-		Company                string
-		Common                 util.TemplateCommon
-		EmpRows                []db.EmpRow
-		UserMsg                template.HTML
-		EmpListSortBy          string
-		NewEmpListOrderBy      string
-		EmpListArrow_id        template.HTML
-		EmpListArrow_lname     template.HTML
-		EmpListArrow_fname     template.HTML
-		EmpListArrow_mi        template.HTML
-		EmpListArrow_title     template.HTML
-		EmpListArrow_dept      template.HTML
-		EmpListArrow_team      template.HTML
-		EmpListArrow_hire_date template.HTML
-		SortByQs               string
-		OrderByQs              string
+		BodyTitle             string
+		LoggedIn              string
+		UserId                int
+		UserProfileMatchFound bool
+		Lname                 string
+		Fname                 string
+		MI                    string
+		Title                 string
+		Company               string
+		Common                util.TemplateCommon
+		// EmpRows                []db.EmpRow
+		UserMsg template.HTML
+		// EmpListSortBy          string
+		// NewEmpListOrderBy      string
+		// EmpListArrow_id        template.HTML
+		// EmpListArrow_lname     template.HTML
+		// EmpListArrow_fname     template.HTML
+		// EmpListArrow_mi        template.HTML
+		// EmpListArrow_title     template.HTML
+		// EmpListArrow_dept      template.HTML
+		// EmpListArrow_team      template.HTML
+		// EmpListArrow_hire_date template.HTML
+		// SortByQs               string
+		// OrderByQs              string
 	}
 	data := pageData{
-		BodyTitle:              "Welcome!",
-		Common:                 util.TmplCommon,
-		UserMsg:                template.HTML(""),
-		EmpListArrow_id:        template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_lname:     template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_fname:     template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_mi:        template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_title:     template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_dept:      template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_team:      template.HTML("&nbsp;&nbsp;"),
-		EmpListArrow_hire_date: template.HTML("&nbsp;&nbsp;"),
+		BodyTitle: "Welcome!",
+		Common:    util.TmplCommon,
+		UserMsg:   template.HTML(""),
+		// EmpListArrow_id:        template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_lname:     template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_fname:     template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_mi:        template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_title:     template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_dept:      template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_team:      template.HTML("&nbsp;&nbsp;"),
+		// EmpListArrow_hire_date: template.HTML("&nbsp;&nbsp;"),
 	}
 
-	// A message back to the user
-	// NOTE: We're injecting a <span> from the server-side, so that we can
-	// control the presentation a bit more. For example, green text for success,
-	// red for error states, etc
-	userMsg := r.URL.Query().Get("um")
-	if userMsg == "add_success" {
-		data.UserMsg = template.HTML(`<span id="user_msg_content" 
-			style="color: green;">Employee added successfully</span>`)
-	} else if userMsg == "delete_success" {
-		data.UserMsg = template.HTML(`<span id="user_msg_content" 
-			style="color: green;">Employee(s) deleted successfully</span>`)
-	} else if userMsg == "delete_error" {
-		data.UserMsg = template.HTML(`<span id="user_msg_content" 
-			style="color: red;">Error: Employee(s) may not have been deleted successfully</span>`)
-	}
+	// If you want to do a message to the user, you could follow this pattern:
+	// data.UserMsg = template.HTML(`<span id="user_msg_content"
+	// 		style="color: green;">Employee added successfully</span>`)
 
 	loggedIn, userId := util.IsLoggedIn(r)
 
@@ -217,49 +205,6 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 	if loggedIn {
 		data.LoggedIn = "Yes"
 		data.UserId = userId
-
-		sortByQs := r.URL.Query().Get("sb")
-		orderByQs := r.URL.Query().Get("ob")
-
-		// For the hidden form fields only
-		data.SortByQs = sortByQs
-		data.OrderByQs = orderByQs
-
-		sortBy, orderBy := employees.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
-		data.EmpListSortBy = sortBy
-		var arrow template.HTML
-		if orderByQs == "0" || orderByQs == "" {
-			data.NewEmpListOrderBy = "1"
-			arrow = template.HTML(config.HTML_ARROW_01_UP)
-		} else {
-			data.NewEmpListOrderBy = "0"
-			arrow = template.HTML(config.HTML_ARROW_01_DN)
-		}
-
-		switch sortBy {
-		case "id":
-			data.EmpListArrow_id = arrow
-		case "lname":
-			data.EmpListArrow_lname = arrow
-		case "fname":
-			data.EmpListArrow_fname = arrow
-		case "mi":
-			data.EmpListArrow_mi = arrow
-		case "title":
-			data.EmpListArrow_title = arrow
-		case "dept":
-			data.EmpListArrow_dept = arrow
-		case "team":
-			data.EmpListArrow_team = arrow
-		case "hire_date":
-			data.EmpListArrow_hire_date = arrow
-		}
-
-		data.EmpRows = employees.FetchEmployeeList(userId, sortBy, orderBy)
-		// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
-		// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
-		// fmt.Printf("Type: %T \n", data.EmpRows)
-		// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
 
 		tmpl := template.Must(template.ParseFiles(
 			"templates/welcome.html",
