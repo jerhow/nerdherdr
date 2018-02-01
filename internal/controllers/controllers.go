@@ -199,45 +199,6 @@ func Welcome_GET(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Welcome_POST(w http.ResponseWriter, r *http.Request) {
-
-	loggedIn, userId := util.IsLoggedIn(r)
-	if !loggedIn {
-		// bounce out
-	}
-
-	// Read the POST keys, looking for 'del_' + empId (ex: 'del_42'),
-	// which indicate the delete check boxes. We should end up with a
-	// slice of emp IDs as strings, which we can then pass along for processing.
-	var str string
-	empIds := make([]string, 0)
-	re := regexp.MustCompile("^del_\\d+$") // Note that you have to escape the escapes
-	r.ParseForm()                          // populates r.Form
-	for key, _ := range r.Form {
-		if re.MatchString(key) {
-			str = strings.Split(key, "_")[1]
-			empIds = append(empIds, str)
-		}
-	}
-
-	// From the hidden form fields, for the query string
-	sortByQs := r.PostFormValue("hdn_sb")
-	orderByQs := r.PostFormValue("hdn_ob")
-
-	// fmt.Println(empIds)
-	result := employees.DeleteEmployees(userId, empIds)
-	userMsg := ""
-	if !result {
-		userMsg = "delete_error"
-	} else {
-		userMsg = "delete_success"
-	}
-
-	url := "employees?um=" + userMsg + "&sb=" + sortByQs + "&ob=" + orderByQs
-
-	http.Redirect(w, r, url, 303)
-}
-
 func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 	type pageData struct {
 		Common    util.TemplateCommon

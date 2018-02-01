@@ -64,7 +64,6 @@ func main() {
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
 	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 	r.HandleFunc("/welcome", controllers.Welcome_GET).Methods("GET")
-	r.HandleFunc("/welcome", controllers.Welcome_POST).Methods("POST")
 	r.HandleFunc("/add-employee", controllers.AddEmployee_GET).Methods("GET")
 	r.HandleFunc("/add-employee", controllers.AddEmployee_POST).Methods("POST")
 	r.HandleFunc("/employees", controllers.Employees_GET).Methods("GET")
