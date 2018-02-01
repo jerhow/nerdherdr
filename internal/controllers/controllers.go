@@ -313,12 +313,6 @@ func Employees_GET(w http.ResponseWriter, r *http.Request) {
 		BodyTitle              string
 		LoggedIn               string
 		UserId                 int
-		UserProfileMatchFound  bool
-		Lname                  string
-		Fname                  string
-		MI                     string
-		Title                  string
-		Company                string
 		Common                 util.TemplateCommon
 		EmpRows                []db.EmpRow
 		UserMsg                template.HTML
@@ -366,21 +360,6 @@ func Employees_GET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loggedIn, userId := util.IsLoggedIn(r)
-
-	// Fetch user-specific info for user profile
-	if loggedIn {
-		matchFound, lname, fname, mi, title, company := welcome.UserProfileInfo(userId)
-		if matchFound {
-			data.UserProfileMatchFound = true
-			data.Lname = lname
-			data.Fname = fname
-			data.MI = mi
-			data.Title = title
-			data.Company = company
-		} else {
-			data.UserProfileMatchFound = false
-		}
-	}
 
 	if loggedIn {
 		data.LoggedIn = "Yes"
