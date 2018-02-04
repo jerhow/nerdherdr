@@ -68,6 +68,7 @@ func main() {
 	r.HandleFunc("/add-employee", controllers.AddEmployee_POST).Methods("POST")
 	r.HandleFunc("/employees", controllers.Employees_GET).Methods("GET")
 	r.HandleFunc("/employees", controllers.Employees_POST).Methods("POST")
+	r.HandleFunc("/1on1s", controllers.OneOnOnes_GET).Methods("GET")
 
 	if err := http.ListenAndServe(getPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)

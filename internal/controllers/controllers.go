@@ -421,3 +421,32 @@ func Employees_POST(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, url, 303)
 }
+
+func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("Hi :)")
+
+	type pageData struct {
+		Common util.TemplateCommon
+	}
+	data := pageData{
+		Common: util.TmplCommon,
+	}
+
+	// In case you need it
+	// someOsParam := r.URL.Query().Get("someOsParam")
+
+	loggedIn, _ := util.IsLoggedIn(r)
+
+	if loggedIn {
+		tmpl := template.Must(template.ParseFiles(
+			"templates/oneonones.html",
+			"templates/header.html",
+			"templates/oneonones-header-inject.html",
+			"templates/header-end.html",
+			"templates/footer.html"))
+		tmpl.Execute(w, data)
+	} else {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+	}
+}
