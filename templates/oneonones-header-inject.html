@@ -1,6 +1,31 @@
 {{define "oneonones-header-inject"}}
+
+<link rel="stylesheet" href="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/themes/silver/zino.combobox.css">
+<script src="{{ .Common.StaticAssetUrlBase }}zino-ui/1.5/zino.combobox.min.js"></script>
+
 <script type="text/javascript">
-	var ARROW_UP = "&#8593;";
+$(function () {
+    var ds = zino.DataSource({
+        data: [
+            {name: "Alabama"}, {name: "Alaska"}, {name: "Arizona"}, {name: "Arkansas"}, {name: "California"},
+            {name: "Colorado"}, {name: "Connecticut"}, {name: "Delaware"}, {name: "District of Columbia"}, {name: "Florida"},
+            {name: "Georgia"}, {name: "Hawaii"}, {name: "Idaho"}, {name: "Illinois"}, {name: "Indiana"},
+            {name: "Iowa"}, {name: "Kansas"}, {name: "Kentucky"}, {name: "Louisiana"}, {name: "Maine"},
+            {name: "Maryland"}, {name: "Massachusetts"}, {name: "Michigan"}, {name: "Minnesota"}, {name: "Missouri"},
+            {name: "Montana"}, {name: "Nebraska"}, {name: "Nevada"}, {name: "New Hampshire"}, {name: "New Jersey"},
+            {name: "New Mexico"}, {name: "New York"}, {name: "North Carolina"}, {name: "North Dakota"}, {name: "Ohio"},
+            {name: "Oklahoma"}, {name: "Oregon"}, {name: "Pennsylvania"}, {name: "Rhode Island"}, {name: "South Carolina"},
+            {name: "South Dakota"}, {name: "Tennessee"}, {name: "Texas"}, {name: "Utah"}, {name: "Vermont"},
+            {name: "Virginia"}, {name: "Washington"}, {name: "West Virginia"}, {name: "Wisconsin"}, {name: "Wyoming"}
+        ],
+        fields: ["name"]
+    });
+    $("#combo").zinoCombobox({
+        dataSource: ds,
+        multiple: true,
+        autocomplete: true
+    });
+});
 </script>
-<!-- View-specific header content goes here -->
+
 {{end}}
