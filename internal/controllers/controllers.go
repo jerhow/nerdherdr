@@ -30,6 +30,7 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
+	// "strconv"
 	"strings"
 )
 
@@ -428,8 +429,10 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hi :)")
 
 	type pageData struct {
-		Common  util.TemplateCommon
-		EmpRows []db.EmpRow
+		Common     util.TemplateCommon
+		EmpRowsStr string
+		EmpRowsDDL template.JS
+		// EmpRows []db.EmpRow
 	}
 	data := pageData{
 		Common: util.TmplCommon,
@@ -440,8 +443,17 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 
 	loggedIn, userId := util.IsLoggedIn(r)
 
-	data.EmpRows = oneonones.FetchEmployeeList(userId, "lname", "ASC")
-	fmt.Println(data.EmpRows)
+	empRows := oneonones.FetchEmployeeList(userId, "lname", "ASC")
+	empRowsStr := ""
+	lastRowIdx := len(empRows) - 1
+	for idx, row := range empRows {
+		empRowsStr += "{name: '" + row.Lname + ", " + row.Fname + "'}"
+		if idx < lastRowIdx {
+			empRowsStr = empRowsStr + ", "
+		}
+	}
+
+	data.EmpRowsDDL = template.JS(empRowsStr)
 
 	if loggedIn {
 		tmpl := template.Must(template.ParseFiles(
