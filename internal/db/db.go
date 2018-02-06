@@ -246,7 +246,6 @@ func DeleteEmployees(userId int, empIds []string) bool {
 		if idx < lastEmpIdIdx {
 			inClauseValues = inClauseValues + ", "
 		}
-		idx += 1
 	}
 
 	sql := "DELETE FROM t_employees WHERE userId = ? AND id IN (" + inClauseValues + ");"
