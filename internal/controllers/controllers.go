@@ -432,7 +432,6 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 		Common     util.TemplateCommon
 		EmpRowsStr string
 		EmpRowsDDL template.JS
-		// EmpRows []db.EmpRow
 	}
 	data := pageData{
 		Common: util.TmplCommon,
@@ -444,16 +443,15 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	loggedIn, userId := util.IsLoggedIn(r)
 
 	empRows := oneonones.FetchEmployeeList(userId, "lname", "ASC")
-	empRowsStr := ""
-	lastRowIdx := len(empRows) - 1
-	for idx, row := range empRows {
-		empRowsStr += "{name: '" + row.Lname + ", " + row.Fname + "'}"
-		if idx < lastRowIdx {
-			empRowsStr = empRowsStr + ", "
-		}
+	tempStr := ""
+	empRowsStrings := make([]string, 0)
+	// empRowsStrings := []string{} // Also valid
+	for _, row := range empRows {
+		tempStr = "{name: '" + row.Lname + ", " + row.Fname + "'}"
+		empRowsStrings = append(empRowsStrings, tempStr)
 	}
 
-	data.EmpRowsDDL = template.JS(empRowsStr)
+	data.EmpRowsDDL = template.JS(strings.Join(empRowsStrings, ", "))
 
 	if loggedIn {
 		tmpl := template.Must(template.ParseFiles(
