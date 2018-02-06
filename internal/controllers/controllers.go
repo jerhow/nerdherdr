@@ -24,6 +24,7 @@ import (
 	"github.com/jerhow/nerdherdr/internal/db"
 	"github.com/jerhow/nerdherdr/internal/employees"
 	"github.com/jerhow/nerdherdr/internal/login"
+	"github.com/jerhow/nerdherdr/internal/oneonones"
 	"github.com/jerhow/nerdherdr/internal/util"
 	"github.com/jerhow/nerdherdr/internal/welcome"
 	"html/template"
@@ -427,7 +428,8 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hi :)")
 
 	type pageData struct {
-		Common util.TemplateCommon
+		Common  util.TemplateCommon
+		EmpRows []db.EmpRow
 	}
 	data := pageData{
 		Common: util.TmplCommon,
@@ -436,7 +438,10 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	// In case you need it
 	// someOsParam := r.URL.Query().Get("someOsParam")
 
-	loggedIn, _ := util.IsLoggedIn(r)
+	loggedIn, userId := util.IsLoggedIn(r)
+
+	data.EmpRows = oneonones.FetchEmployeeList(userId, "lname", "ASC")
+	fmt.Println(data.EmpRows)
 
 	if loggedIn {
 		tmpl := template.Must(template.ParseFiles(
