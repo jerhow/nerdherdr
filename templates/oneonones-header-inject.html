@@ -4,10 +4,42 @@
 $(function () {
     var empRows = [ {{.EmpRowsDDL}} ];
 	empRows.sort();
-	$('input[type=list]').w2field('list', { items: empRows });
+	$('input[type=list]').w2field(
+		'list', 
+		{
+			items: empRows,
+			match: 'contains'
+		}
+	);
 
 	var empIdMap = { {{ .EmpIdMap }} };
+
+	$("#ddl_empl").change(function() {
+		// var val = $(this).data('selected');
+		// var id = val.id;
+		// console.log(id + " - " + val);
+		var selected = $(this).val();
+		var id = empIdMap[selected];
+		console.log(id + " - " + selected);
+		// console.log($(this).val());
+
+		oneoneones.displayExistingList(selected);
+	});
 });
+
+var oneoneones = {
+	displayExistingList: function(selected) {
+		console.log("***" + selected + "***");
+		if(selected === '') {
+			$("#existing_list").hide();
+		}
+		else {
+			$("#existing_list").show();
+		}
+		// // $("#existing_list").css('display', 'inline');
+		// $("#existing_list").show();
+	}
+};
 </script>
 
 <style>
@@ -20,6 +52,9 @@ $(function () {
     margin-left: 20px;
 }
 
+#existing_list {
+	display: none;
+}
 
 </style>
 
