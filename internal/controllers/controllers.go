@@ -447,7 +447,7 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	empRowsStrings := make([]string, 0)
 	// empRowsStrings := []string{} // Also valid
 	for _, row := range empRows {
-		tempStr = "{name: '" + row.Lname + ", " + row.Fname + "'}"
+		tempStr = "'" + row.Lname + ", " + row.Fname + "'"
 		empRowsStrings = append(empRowsStrings, tempStr)
 	}
 
