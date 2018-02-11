@@ -14,7 +14,27 @@ $(function () {
         multiple: true,
         autocomplete: true
     });
+
+
+    // w2ui test code
+    var people = ['George Washington', 'John Adams', 'Thomas Jefferson', 'James Buchanan', 'James Madison', 'Abraham Lincoln', 'James Monroe', 'Andrew Johnson', 'John Adams', 'Ulysses Grant', 'Andrew Jackson', 'Rutherford Hayes', 'Martin Van Buren', 'James Garfield', 'William Harrison', 'Chester Arthur', 'John Tyler', 'Grover Cleveland', 'James Polk', 'Benjamin Harrison', 'Zachary Taylor', 'Grover Cleveland', 'Millard Fillmore', 'William McKinley', 'Franklin Pierce', 'Theodore Roosevelt', 'John Kennedy', 'William Howard', 'Lyndon Johnson', 'Woodrow Wilson', 'Richard Nixon', 'Warren Harding', 'Gerald Ford', 'Calvin Coolidge', 'James Carter', 'Herbert Hoover', 'Ronald Reagan', 'Franklin Roosevelt', 'George Bush', 'Harry Truman', 'William Clinton', 'Dwight Eisenhower', 'George W. Bush', 'Barack Obama'];
+	people.sort();
+	$('input[type=list]').w2field('list', { items: people });
+
 });
 </script>
+
+<style>
+
+/*w2ui test code*/
+.w2ui-field input {
+    width: 200px;
+}
+.w2ui-field > div > span {
+    margin-left: 20px;
+}
+
+
+</style>
 
 {{end}}
