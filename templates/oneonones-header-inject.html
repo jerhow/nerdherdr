@@ -5,6 +5,8 @@ $(function () {
     var empRows = [ {{.EmpRowsDDL}} ];
 	empRows.sort();
 	$('input[type=list]').w2field('list', { items: empRows });
+
+	var empIdMap = { {{ .EmpIdMap }} };
 });
 </script>
 

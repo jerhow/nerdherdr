@@ -30,7 +30,7 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	// "strconv"
+	"strconv"
 	"strings"
 )
 
@@ -432,6 +432,7 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 		Common     util.TemplateCommon
 		EmpRowsStr string
 		EmpRowsDDL template.JS
+		EmpIdMap   template.JS
 	}
 	data := pageData{
 		Common: util.TmplCommon,
@@ -446,12 +447,26 @@ func OneOnOnes_GET(w http.ResponseWriter, r *http.Request) {
 	tempStr := ""
 	empRowsStrings := make([]string, 0)
 	// empRowsStrings := []string{} // Also valid
+
+	empIdMapStrings := make([]string, 0)
+	tempKey := ""
+	tempVal := ""
+
 	for _, row := range empRows {
+
+		// Constructs the data for the DDL
 		tempStr = "'" + row.Lname + ", " + row.Fname + "'"
 		empRowsStrings = append(empRowsStrings, tempStr)
+
+		// Constructs the data to tie the DDL values back to an EmpId
+		tempKey = "'" + row.Lname + ", " + row.Fname + "'"
+		tempVal = "'" + strconv.Itoa(row.Id) + "'"
+		tempStr = tempKey + ": " + tempVal
+		empIdMapStrings = append(empIdMapStrings, tempStr)
 	}
 
 	data.EmpRowsDDL = template.JS(strings.Join(empRowsStrings, ", "))
+	data.EmpIdMap = template.JS(strings.Join(empIdMapStrings, ", "))
 
 	if loggedIn {
 		tmpl := template.Must(template.ParseFiles(
