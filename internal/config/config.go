@@ -8,7 +8,7 @@ package config
 const LOCAL_PORT string = "3000"
 const DISPLAY_BRANDING bool = true
 const SESSION_LENGTH int = 3600 // 1 hour
-const SHOW_NAV bool = false
+const SHOW_NAV bool = true
 
 // "Tools for Technical Managers"
 // "Guiding the Human Side of Technology"
