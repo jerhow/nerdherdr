@@ -25,3 +25,5 @@ const HTML_ARROW_01_UP string = "&#8593;"
 const HTML_ARROW_01_DN string = "&#8595;"
 const HTML_ARROW_01_RT string = "&#8594;"
 const HTML_ARROW_01_LF string = "&#8592;"
+
+const PATH_ROOT string = "rest"

@@ -18,6 +18,7 @@ package controllers
 import (
 	"fmt"
 	// "net/url"
+	"encoding/json"
 	"github.com/gorilla/sessions"
 	"github.com/jerhow/nerdherdr/internal/addemployee"
 	"github.com/jerhow/nerdherdr/internal/config"
@@ -36,6 +37,31 @@ import (
 
 var SESSION_KEY = util.FetchEnvVar("SESS_KEY")
 var SESSION_COOKIE = util.FetchEnvVar("SESS_COOKIE")
+
+func ApiIndex(w http.ResponseWriter, r *http.Request) {
+
+	type PageData struct {
+		BodyTitle string
+		LoginMsg  string
+		UserMsg   template.HTML
+		Common    util.TemplateCommon
+	}
+	data := PageData{
+		BodyTitle: "Welcome!",
+		LoginMsg:  "",
+		UserMsg:   template.HTML(""),
+		Common:    util.TmplCommon,
+	}
+
+	dataJson, err := json.Marshal(data)
+	if err != nil {
+		fmt.Fprintf(w, "Error: %s", err)
+	}
+
+	// w.Header().Set("HTTP/1.0 200 OK")
+	w.Header().Set("content-type", "application/json")
+	w.Write(dataJson)
+}
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	loggedIn, _ := util.IsLoggedIn(r)
