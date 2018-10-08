@@ -72,10 +72,10 @@ func ApiIndex(w http.ResponseWriter, r *http.Request) {
 func ApiEmployees_GET(w http.ResponseWriter, r *http.Request) {
 
 	userId := 1 // yeah yeah yeah
-	// sortByQs := r.URL.Query().Get("sb")
-	// orderByQs := r.URL.Query().Get("ob")
-	sortByQs := "1"
-	orderByQs := "0"
+	sortByQs := r.URL.Query().Get("sb")
+	orderByQs := r.URL.Query().Get("ob")
+	// sortByQs := "1"
+	// orderByQs := "0"
 
 	sortBy, orderBy := employees.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
 
