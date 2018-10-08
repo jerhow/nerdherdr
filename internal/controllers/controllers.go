@@ -69,6 +69,41 @@ func ApiIndex(w http.ResponseWriter, r *http.Request) {
 	w.Write(dataJson)
 }
 
+func ApiEmployees_GET(w http.ResponseWriter, r *http.Request) {
+
+	userId := 1 // yeah yeah yeah
+	// sortByQs := r.URL.Query().Get("sb")
+	// orderByQs := r.URL.Query().Get("ob")
+	sortByQs := "1"
+	orderByQs := "0"
+
+	sortBy, orderBy := employees.ParseEmpListSortAndOrderQsParams(sortByQs, orderByQs)
+
+	var empRows []db.EmpRow
+
+	empRows = employees.FetchEmployeeList(userId, sortBy, orderBy)
+	// fmt.Printf("Type: %T \n", db.FetchEmployeeList())
+	// fmt.Printf("db.FetchEmployeeList() = %#v \n", db.FetchEmployeeList())
+	// fmt.Printf("Type: %T \n", data.EmpRows)
+	// fmt.Printf("db.FetchEmployeeList() = %#v \n", data.EmpRows)
+	// =====================================================================================
+
+	dataJson, err := json.Marshal(empRows)
+	if err != nil {
+		fmt.Fprintf(w, "Error: %s", err)
+	}
+
+	// Set whatever HTTP headers and status we need, and write (dispatch) the output
+	// NOTE: The order of w.Header().Set() and w.WriteHeader() seems to matter.
+	// Any w.Header().Set() calls AFTER w.WriteHeader() don't seem to get applied.
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Language", "en")
+	w.Header().Set("Cache-Control", "no-store, no-cache")
+	w.Header().Set("Location", "https://www.nerdherdr.com")
+	w.WriteHeader(http.StatusOK)
+	w.Write(dataJson)
+}
+
 func Index(w http.ResponseWriter, r *http.Request) {
 	loggedIn, _ := util.IsLoggedIn(r)
 	if loggedIn {

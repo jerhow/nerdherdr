@@ -71,6 +71,7 @@ func main() {
 	r.HandleFunc("/1on1s", controllers.OneOnOnes_GET).Methods("GET")
 
 	r.HandleFunc("/"+config.PATH_ROOT, controllers.ApiIndex).Methods("GET")
+	r.HandleFunc("/"+config.PATH_ROOT+"/employees", controllers.ApiEmployees_GET).Methods("GET")
 
 	if err := http.ListenAndServe(getPort(), forceSslHeroku(r)); err != nil {
 		log.Fatal(err)
