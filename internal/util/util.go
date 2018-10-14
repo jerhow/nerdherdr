@@ -71,10 +71,10 @@ func Setup() {
 }
 
 func SetCommonHttpHeaders(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Language", "en")
-	w.Header().Set("Cache-Control", "no-store, no-cache")
-	w.Header().Set("Location", "https://www.nerdherdr.com")
+	w.Header().Set("Content-Type", config.HTTP_RESP_CONTENT_TYPE)
+	w.Header().Set("Content-Language", config.HTTP_RESP_CONTENT_LANGUAGE)
+	w.Header().Set("Cache-Control", config.HTTP_RESP_CACHE_CONTROL)
+	w.Header().Set("Location", config.HTTP_RESP_LOCATION)
 }
 
 func ErrChk(err error) {

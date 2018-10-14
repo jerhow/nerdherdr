@@ -27,3 +27,12 @@ const HTML_ARROW_01_RT string = "&#8594;"
 const HTML_ARROW_01_LF string = "&#8592;"
 
 const PATH_ROOT string = "rest"
+
+// w.Header().Set("Content-Type", "application/json")
+// w.Header().Set("Content-Language", "en")
+// w.Header().Set("Cache-Control", "no-store, no-cache")
+// w.Header().Set("Location", "https://www.nerdherdr.com")
+const HTTP_RESP_CONTENT_TYPE string = "application/json"
+const HTTP_RESP_CONTENT_LANGUAGE string = "en"
+const HTTP_RESP_CACHE_CONTROL string = "no-store, no-cache"
+const HTTP_RESP_LOCATION string = "https://www.nerdherdr.com"
