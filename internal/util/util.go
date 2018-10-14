@@ -70,6 +70,13 @@ func Setup() {
 	// NOTE: You can override 'TmplCommon.ShowNav' to turn off the nav on a case-by-case basis
 }
 
+func SetCommonHttpHeaders(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Language", "en")
+	w.Header().Set("Cache-Control", "no-store, no-cache")
+	w.Header().Set("Location", "https://www.nerdherdr.com")
+}
+
 func ErrChk(err error) {
 	if err != nil {
 		log.Fatal(err) // panic(err.Error)
