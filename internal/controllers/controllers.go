@@ -70,7 +70,6 @@ func ApiIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func ApiEmployees_GET(w http.ResponseWriter, r *http.Request) {
-
 	userId := 1 // yeah yeah yeah
 	sortByQs := r.URL.Query().Get("sb")
 	orderByQs := r.URL.Query().Get("ob")
@@ -102,6 +101,101 @@ func ApiEmployees_GET(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Location", "https://www.nerdherdr.com")
 	w.WriteHeader(http.StatusOK)
 	w.Write(dataJson)
+}
+
+func ApiAddEmployee_POST(w http.ResponseWriter, r *http.Request) {
+	var fname, lname, mi, title, dept, team, hireDate string
+	var validateResult bool = false
+	var dbWriteResult bool = false
+
+	userId := 1 // yeah yeah yeah
+
+	type Payload struct {
+		Msg string
+	}
+	payload := Payload{
+		Msg: "",
+	}
+
+	fname = r.PostFormValue("fname")
+	lname = r.PostFormValue("lname")
+	mi = r.PostFormValue("mi")
+	title = r.PostFormValue("title")
+	dept = r.PostFormValue("dept")
+	team = r.PostFormValue("team")
+	hireDate = r.PostFormValue("hire_date")
+
+	// Check for empty values, validate, sanity check, etc
+	// validateResult = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	validateResult = addemployee.Validate()
+	if validateResult {
+		fmt.Println("Validate() call completed")
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Language", "en")
+	w.Header().Set("Cache-Control", "no-store, no-cache")
+	w.Header().Set("Location", "https://www.nerdherdr.com")
+
+	// attempt to write to DB
+	dbWriteResult = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
+	if dbWriteResult {
+		fmt.Println("PostToDb() call completed successfully")
+		payload.Msg = "Looks like everything got written okay"
+		w.WriteHeader(http.StatusOK)
+	} else {
+		payload.Msg = "Hmm, something didn't go quite right this time"
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	payloadJson, err := json.Marshal(payload)
+	if err != nil {
+		fmt.Fprintf(w, "Error: %s", err)
+	}
+
+	w.Write(payloadJson)
+}
+
+func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
+	var fname, lname, mi, title, dept, team, hireDate string
+	var result bool = false
+
+	loggedIn, userId := util.IsLoggedIn(r)
+	if !loggedIn {
+		// bounce out
+	}
+
+	// fmt.Printf("%#v", r)
+
+	fname = r.PostFormValue("fname")
+	lname = r.PostFormValue("lname")
+	mi = r.PostFormValue("mi")
+	title = r.PostFormValue("title")
+	dept = r.PostFormValue("dept")
+	team = r.PostFormValue("team")
+	hireDate = r.PostFormValue("hire_date")
+
+	// From the hidden form fields, for the query string
+	sortByQs := r.PostFormValue("hdn_sb")
+	orderByQs := r.PostFormValue("hdn_ob")
+
+	// obviously must check for empty values, validate, sanity check, etc
+	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
+	result = addemployee.Validate()
+	if result {
+		fmt.Println("Validate() call completed")
+	}
+
+	// attempt to write to DB
+	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
+	if result {
+		fmt.Println("PostToDb() call completed successfully")
+		// NOTE: These sb and ob values will sort the list by ID DESC,
+		// which I think is useful so that the employee you just entered is
+		// right at the top of the list when you land back at /welcome
+		url := "employees?um=add_success&sb=" + sortByQs + "&ob=" + orderByQs
+		http.Redirect(w, r, url, 303)
+	}
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -293,48 +387,6 @@ func AddEmployee_GET(w http.ResponseWriter, r *http.Request) {
 		tmpl.Execute(w, data)
 	} else {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-	}
-}
-
-func AddEmployee_POST(w http.ResponseWriter, r *http.Request) {
-	var fname, lname, mi, title, dept, team, hireDate string
-	var result bool = false
-
-	loggedIn, userId := util.IsLoggedIn(r)
-	if !loggedIn {
-		// bounce out
-	}
-
-	// fmt.Printf("%#v", r)
-
-	fname = r.PostFormValue("fname")
-	lname = r.PostFormValue("lname")
-	mi = r.PostFormValue("mi")
-	title = r.PostFormValue("title")
-	dept = r.PostFormValue("dept")
-	team = r.PostFormValue("team")
-	hireDate = r.PostFormValue("hire_date")
-
-	// From the hidden form fields, for the query string
-	sortByQs := r.PostFormValue("hdn_sb")
-	orderByQs := r.PostFormValue("hdn_ob")
-
-	// obviously must check for empty values, validate, sanity check, etc
-	// result = addemployee.Validate(lname, fname, mi, title, dept, team, hireDate)
-	result = addemployee.Validate()
-	if result {
-		fmt.Println("Validate() call completed")
-	}
-
-	// attempt to write to DB
-	result = addemployee.PostToDb(lname, fname, mi, title, dept, team, hireDate, userId)
-	if result {
-		fmt.Println("PostToDb() call completed successfully")
-		// NOTE: These sb and ob values will sort the list by ID DESC,
-		// which I think is useful so that the employee you just entered is
-		// right at the top of the list when you land back at /welcome
-		url := "employees?um=add_success&sb=" + sortByQs + "&ob=" + orderByQs
-		http.Redirect(w, r, url, 303)
 	}
 }
 
