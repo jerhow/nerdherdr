@@ -50,6 +50,7 @@ bugs.txt
 
 # For quick experiments
 scratch.*
+tutorial*.go
 
 # Ignore some Docker things for the moment
 docker-compose.yml
